@@ -3,22 +3,74 @@
 #include "ResourceManager.h"
 #include "Renderer.h"
 
-dae::GameObject::~GameObject() = default;
+dae::GameObject::~GameObject()
+{
+	for (auto& component : m_components)
+	{
+		component.reset(); // delete for shared pointer
+	}
+	m_components.clear();
+}
 
-void dae::GameObject::Update(){}
+void dae::GameObject::Update(float deltaTime)
+{
+	for (auto& component : m_components)
+	{
+		component->Update(deltaTime);
+	}
+}
+
+void dae::GameObject::FixedUpdate(float){}
 
 void dae::GameObject::Render() const
 {
-	const auto& pos = m_transform.GetPosition();
-	Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y);
-}
-
-void dae::GameObject::SetTexture(const std::string& filename)
-{
-	m_texture = ResourceManager::GetInstance().LoadTexture(filename);
+	for (auto& component : m_components)
+	{
+		component->Render();
+	}
 }
 
 void dae::GameObject::SetPosition(float x, float y)
 {
 	m_transform.SetPosition(x, y, 0.0f);
+}
+
+void dae::GameObject::AddComponent(std::shared_ptr<Component> component)
+{
+	m_components.push_back(component);
+}
+
+void dae::GameObject::RemoveComponent(std::shared_ptr<Component> component)
+{
+	auto it = std::remove(m_components.begin(), m_components.end(), component);
+	for (auto iter = it; iter != m_components.end(); ++iter)
+	{
+		(*iter).reset();  // release shared_ptr
+	}
+	m_components.erase(it, m_components.end());
+}
+
+template <typename C>
+std::shared_ptr<C> dae::GameObject::GetComponent() const
+{
+	for (const std::shared_ptr<Component>& component : m_components)
+	{
+		std::shared_ptr<C> castedPointer = std::dynamic_pointer_cast<C>(component);
+		if (castedPointer)
+		{
+			return castedPointer;
+		}
+	}
+	return nullptr;
+}
+
+template <typename C>
+bool dae::GameObject::CheckComponent() const
+{
+	return GetComponent<C>() != nullptr;
+}
+
+dae::Transform dae::GameObject::GetTransform() const
+{
+	return m_transform;
 }
