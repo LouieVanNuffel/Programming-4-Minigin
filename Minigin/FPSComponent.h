@@ -1,13 +1,15 @@
 #pragma once
+#include "Component.h"
 #include "TextComponent.h"
 
 namespace dae
 {
-	class FpsComponent final : public TextComponent
+	class GameObject;
+	class FpsComponent final : public Component
 	{
 	public:
 		//Constructor
-		FpsComponent(const std::string& text, std::shared_ptr<Font> font, std::shared_ptr<GameObject> gameObjrct);
+		FpsComponent(std::shared_ptr<GameObject> gameObject);
 
 		//Destructor
 		virtual ~FpsComponent() override = default;
@@ -18,7 +20,14 @@ namespace dae
 		FpsComponent& operator=(const FpsComponent& other) = default;
 		FpsComponent& operator=(FpsComponent&& other) = default;
 
+		virtual void Start() override;
 		virtual void Update(float deltaTime) override;
+		virtual void Render() const override;
+		float GetFPSCount() const;
+
+	private:
+		float m_FPSCount{};
+		TextComponent* m_TextComponent{};
 	};
 }
 

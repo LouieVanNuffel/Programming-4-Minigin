@@ -85,6 +85,8 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
 
+	if (!m_HasStarted) sceneManager.Start(), m_HasStarted = true; // Call start
+
 	bool doContinue = true;
 	auto last_time = std::chrono::high_resolution_clock::now();
 	float lag = 0.0f;

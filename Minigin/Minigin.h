@@ -19,5 +19,6 @@ namespace dae
 	private:
 		const float m_FixedTimeStep{ 1.f / 60.f };
 		const int m_MillisecondsPerFrame{ static_cast<int>((1.f / 60.f) * 1000) };
+		bool m_HasStarted{ false };
 	};
 }

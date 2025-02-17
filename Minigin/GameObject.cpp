@@ -1,5 +1,6 @@
 #include <string>
 #include "GameObject.h"
+#include "Component.h"
 #include "ResourceManager.h"
 #include "Renderer.h"
 
@@ -10,6 +11,14 @@ dae::GameObject::~GameObject()
 		component.reset(); // delete for shared pointer
 	}
 	m_components.clear();
+}
+
+void dae::GameObject::Start()
+{
+	for (auto& component : m_components)
+	{
+		component->Start();
+	}
 }
 
 void dae::GameObject::Update(float deltaTime)
@@ -48,26 +57,6 @@ void dae::GameObject::RemoveComponent(std::shared_ptr<Component> component)
 		(*iter).reset();  // release shared_ptr
 	}
 	m_components.erase(it, m_components.end());
-}
-
-template <typename C>
-std::shared_ptr<C> dae::GameObject::GetComponent() const
-{
-	for (const std::shared_ptr<Component>& component : m_components)
-	{
-		std::shared_ptr<C> castedPointer = std::dynamic_pointer_cast<C>(component);
-		if (castedPointer)
-		{
-			return castedPointer;
-		}
-	}
-	return nullptr;
-}
-
-template <typename C>
-bool dae::GameObject::CheckComponent() const
-{
-	return GetComponent<C>() != nullptr;
 }
 
 dae::Transform dae::GameObject::GetTransform() const

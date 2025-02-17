@@ -17,6 +17,8 @@ TextComponent::~TextComponent()
 	m_font.reset();
 }
 
+void dae::TextComponent::Start(){}
+
 void TextComponent::Update(float)
 {
 	if (m_needsUpdate)

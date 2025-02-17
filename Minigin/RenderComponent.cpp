@@ -16,6 +16,8 @@ dae::RenderComponent::~RenderComponent()
 	m_texture.reset();
 }
 
+void dae::RenderComponent::Start(){}
+
 void dae::RenderComponent::Update(float){}
 
 void RenderComponent::Render() const

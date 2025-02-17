@@ -1,10 +1,14 @@
 #pragma once
+#include "Component.h"
+#include <memory>
+
 namespace dae
 {
 	class GameObject;
 	class Component
 	{
 	public:
+		virtual void Start() = 0;
 		virtual void Update(float deltaTime) = 0;
 		virtual void Render() const = 0;
 

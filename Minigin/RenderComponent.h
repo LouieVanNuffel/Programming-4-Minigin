@@ -23,6 +23,7 @@ namespace dae
 		RenderComponent& operator=(const RenderComponent& other) = delete;
 		RenderComponent& operator=(RenderComponent&& other) = delete;
 
+		virtual void Start() override;
 		virtual void Update(float deltaTime) override;
 		virtual void Render() const override;
 
