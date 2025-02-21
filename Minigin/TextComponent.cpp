@@ -7,7 +7,7 @@
 
 using namespace dae;
 
-TextComponent::TextComponent(const std::string& text, std::shared_ptr<Font> font, std::shared_ptr<GameObject> gameObject)
+TextComponent::TextComponent(const std::string& text, std::shared_ptr<Font> font, GameObject* gameObject)
 	:Component(gameObject), m_needsUpdate(true), m_text(text), m_font(std::move(font)), m_textTexture(nullptr)
 {}
 
@@ -40,9 +40,11 @@ void TextComponent::Update(float)
 	}
 }
 
+void dae::TextComponent::LateUpdate(float){}
+
 void TextComponent::Render() const
 {
-	if (auto gameObject = m_gameObject.lock())  // Convert weak_ptr to shared_ptr for safe access
+	if (auto gameObject = m_gameObject)
 	{
 		const auto& pos = gameObject->GetTransform().GetPosition();
 		Renderer::GetInstance().RenderTexture(*m_textTexture, pos.x, pos.y);

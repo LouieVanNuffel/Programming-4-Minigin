@@ -1,38 +1,40 @@
 #pragma once
 #include <memory>
 #include "Transform.h"
+#include "Component.h"
 #include <vector>
 
 namespace dae
 {
 	class Texture2D;
-	class Component;
 	class GameObject final
 	{
 	public:
 		virtual void Start();
 		virtual void Update(float deltaTime);
 		virtual void FixedUpdate(float fixedTime);
+		virtual void LateUpdate(float deltaTime);
 		virtual void Render() const;
 
 		void SetPosition(float x, float y);
 
-		void AddComponent(std::shared_ptr<Component> component);
-		void RemoveComponent(std::shared_ptr<Component> component);
+		void AddComponent(std::unique_ptr<Component> component);
+		void RemoveComponent(Component* component);
 
 		template <typename C>
-		std::shared_ptr<C> GetComponent() const
+		C* GetComponent() const
 		{
-			for (const std::shared_ptr<Component>& component : m_components)
+			for (const auto& component : m_components)
 			{
-				std::shared_ptr<C> castedPointer = std::dynamic_pointer_cast<C>(component);
-				if (castedPointer)
+				C* castedComponent = dynamic_cast<C*>(component.get());
+				if (castedComponent)
 				{
-					return castedPointer;
+					return castedComponent;
 				}
 			}
 			return nullptr;
 		}
+
 
 		template <typename C>
 		bool CheckComponent() const
@@ -51,6 +53,7 @@ namespace dae
 
 	private:
 		Transform m_transform{};
-		std::vector<std::shared_ptr<Component>> m_components{};
+		std::vector<std::unique_ptr<Component>> m_components{};
+		std::vector<Component*> m_unregisteredComponents{};
 	};
 }

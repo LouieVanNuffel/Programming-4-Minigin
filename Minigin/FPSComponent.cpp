@@ -4,12 +4,12 @@
 
 using namespace dae;
 
-FpsComponent::FpsComponent(std::shared_ptr<GameObject> gameObject)
+FpsComponent::FpsComponent(GameObject* gameObject)
 	:Component(gameObject){}
 
 void dae::FpsComponent::Start()
 {
-	m_TextComponent = m_gameObject.lock()->GetComponent<TextComponent>().get();
+	m_TextComponent = m_gameObject->GetComponent<TextComponent>();
 }
 
 void FpsComponent::Update(float deltaTime)
@@ -19,6 +19,8 @@ void FpsComponent::Update(float deltaTime)
 	if (m_TextComponent)
 	m_TextComponent->SetText(std::format("FPS: {:.1f}", m_FPSCount));
 }
+
+void dae::FpsComponent::LateUpdate(float){}
 
 void dae::FpsComponent::Render() const {}
 

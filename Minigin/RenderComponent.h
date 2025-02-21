@@ -12,7 +12,7 @@ namespace dae
 	{
 	public:
 		//Constructor
-		RenderComponent(std::shared_ptr<GameObject> gameObject);
+		RenderComponent(GameObject* gameObject);
 
 		//Destructor
 		virtual ~RenderComponent() override;
@@ -25,6 +25,7 @@ namespace dae
 
 		virtual void Start() override;
 		virtual void Update(float deltaTime) override;
+		virtual void LateUpdate(float deltaTime) override;
 		virtual void Render() const override;
 
 		void SetTexture(const std::string& filename);

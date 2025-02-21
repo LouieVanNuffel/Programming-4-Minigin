@@ -15,7 +15,7 @@ namespace dae
 	public:
 
 		//Constructor
-		TextComponent(const std::string& text, std::shared_ptr<Font> font, std::shared_ptr<GameObject> gameObject);
+		TextComponent(const std::string& text, std::shared_ptr<Font> font, GameObject* gameObject);
 
 		//Destructor
 		virtual ~TextComponent() override;
@@ -28,6 +28,7 @@ namespace dae
 
 		virtual void Start() override;
 		virtual void Update(float deltaTime) override;
+		virtual void LateUpdate(float deltaTime) override;
 		virtual void Render() const override;
 
 		virtual void SetText(const std::string& text);

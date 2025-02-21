@@ -5,20 +5,21 @@
 
 using namespace dae;
 
-RenderComponent::RenderComponent(std::shared_ptr<GameObject> gameObject) 
+RenderComponent::RenderComponent(GameObject* gameObject) 
 	:Component(gameObject)
 {
 }
 
 dae::RenderComponent::~RenderComponent()
 {
-	m_gameObject.reset();
 	m_texture.reset();
 }
 
 void dae::RenderComponent::Start(){}
 
 void dae::RenderComponent::Update(float){}
+
+void dae::RenderComponent::LateUpdate(float){}
 
 void RenderComponent::Render() const
 {
@@ -27,7 +28,7 @@ void RenderComponent::Render() const
 		return;
 	}
 
-	if (auto gameObject = m_gameObject.lock())
+	if (auto gameObject = m_gameObject)
 	{
 		const auto& pos = gameObject->GetTransform().GetPosition();
 		Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y);

@@ -9,7 +9,7 @@ namespace dae
 	{
 	public:
 		//Constructor
-		FpsComponent(std::shared_ptr<GameObject> gameObject);
+		FpsComponent(GameObject* gameObject);
 
 		//Destructor
 		virtual ~FpsComponent() override = default;
@@ -22,6 +22,7 @@ namespace dae
 
 		virtual void Start() override;
 		virtual void Update(float deltaTime) override;
+		virtual void LateUpdate(float deltaTime) override;
 		virtual void Render() const override;
 		float GetFPSCount() const;
 
