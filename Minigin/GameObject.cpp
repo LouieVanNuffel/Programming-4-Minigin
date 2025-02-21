@@ -85,3 +85,85 @@ dae::Transform dae::GameObject::GetTransform() const
 {
 	return m_transform;
 }
+
+void dae::GameObject::SetParent(GameObject* parent, bool keepWorldPosition)
+{
+	if (IsChild(parent) || parent == this || m_parent == parent)
+		return;
+	if (parent == nullptr)
+		SetLocalPosition(GetWorldPosition());
+	else
+	{
+		if (keepWorldPosition)
+			SetLocalPosition(GetWorldPosition() - parent->GetWorldPosition());
+		SetPositionDirty();
+	}
+	if (m_parent) m_parent->RemoveChild(this);
+	m_parent = parent;
+	if (m_parent) m_parent->AddChild(this);
+}
+
+dae::GameObject* dae::GameObject::GetParent() const
+{
+	return m_parent;
+}
+
+dae::GameObject* dae::GameObject::GetChildAt(int index) const
+{
+	return m_children[index];
+}
+
+int dae::GameObject::GetChildCount() const
+{
+	return static_cast<int>(m_children.size());
+}
+
+bool dae::GameObject::IsChild(GameObject* object) const
+{
+	for(GameObject* child : m_children)
+	{
+		if (child == object) return true;
+	}
+
+	return false;
+}
+
+void dae::GameObject::RemoveChild(GameObject* child)
+{
+	m_children.erase(std::remove(m_children.begin(), m_children.end(), child), m_children.end());
+}
+
+void dae::GameObject::AddChild(GameObject* child)
+{
+	m_children.emplace_back(child);
+}
+
+void dae::GameObject::SetLocalPosition(const glm::vec3& pos)
+{
+	m_localPosition = pos;
+	SetPositionDirty();
+}
+
+const glm::vec3& dae::GameObject::GetWorldPosition()
+{
+	if (m_positionIsDirty)
+		UpdateWorldPosition();
+	return m_worldPosition;
+}
+
+void dae::GameObject::UpdateWorldPosition()
+{
+	if (m_positionIsDirty)
+	{
+		if (m_parent == nullptr)
+			m_worldPosition = m_localPosition;
+		else
+			m_worldPosition = m_parent->GetWorldPosition() + m_localPosition;
+	}
+	m_positionIsDirty = false;
+}
+
+void dae::GameObject::SetPositionDirty()
+{
+	m_positionIsDirty = true;
+}

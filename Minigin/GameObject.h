@@ -44,6 +44,21 @@ namespace dae
 
 		Transform GetTransform() const;
 
+		void SetParent(GameObject* parent, bool keepWorldPosition);
+		GameObject* GetParent() const;
+		GameObject* GetChildAt(int index) const;
+		int GetChildCount() const;
+		bool IsChild(GameObject* object) const;
+		void RemoveChild(GameObject* child);
+		void AddChild(GameObject* child);
+
+
+		void SetLocalPosition(const glm::vec3& pos);
+		const glm::vec3& GetWorldPosition();
+		void UpdateWorldPosition();
+		void SetPositionDirty();
+
+
 		GameObject() = default;
 		~GameObject();
 		GameObject(const GameObject& other) = delete;
@@ -53,7 +68,14 @@ namespace dae
 
 	private:
 		Transform m_transform{};
+		glm::vec3 m_localPosition{};
+		glm::vec3 m_worldPosition{};
+		bool m_positionIsDirty{ false };
+
 		std::vector<std::unique_ptr<Component>> m_components{};
 		std::vector<Component*> m_unregisteredComponents{};
+
+		GameObject* m_parent{};
+		std::vector<GameObject*> m_children{};
 	};
 }
