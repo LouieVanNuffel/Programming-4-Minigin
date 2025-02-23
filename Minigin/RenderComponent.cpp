@@ -30,7 +30,7 @@ void RenderComponent::Render() const
 
 	if (auto gameObject = m_gameObject)
 	{
-		const auto& pos = gameObject->GetTransform().GetPosition();
+		const auto& pos = gameObject->GetWorldPosition();
 		Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y);
 	}
 }

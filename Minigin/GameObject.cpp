@@ -58,7 +58,7 @@ void dae::GameObject::Render() const
 
 void dae::GameObject::SetPosition(float x, float y)
 {
-	m_transform.SetPosition(x, y, 0.0f);
+	SetLocalPosition(glm::vec3{ x, y , 0.0f });
 }
 
 void dae::GameObject::AddComponent(std::unique_ptr<Component> component)
@@ -140,7 +140,7 @@ void dae::GameObject::AddChild(GameObject* child)
 
 void dae::GameObject::SetLocalPosition(const glm::vec3& pos)
 {
-	m_localPosition = pos;
+	m_transform.SetPosition(pos.x, pos.y, pos.z);
 	SetPositionDirty();
 }
 
@@ -156,9 +156,9 @@ void dae::GameObject::UpdateWorldPosition()
 	if (m_positionIsDirty)
 	{
 		if (m_parent == nullptr)
-			m_worldPosition = m_localPosition;
+			m_worldPosition = m_transform.GetPosition();
 		else
-			m_worldPosition = m_parent->GetWorldPosition() + m_localPosition;
+			m_worldPosition = m_parent->GetWorldPosition() + m_transform.GetPosition();
 	}
 	m_positionIsDirty = false;
 }

@@ -68,7 +68,6 @@ namespace dae
 
 	private:
 		Transform m_transform{};
-		glm::vec3 m_localPosition{};
 		glm::vec3 m_worldPosition{};
 		bool m_positionIsDirty{ false };
 
