@@ -229,7 +229,7 @@ float dae::TrashTheCache::GetAverage(std::vector<float>& durationTimes) const
 	if (durationTimes.size() > 4)
 	{
 		std::sort(durationTimes.begin(), durationTimes.end());
-		for (int index{ 1 }; index < durationTimes.size() - 1; ++index)
+		for (int index{ 1 }; index < static_cast<int>(durationTimes.size() - 1); ++index)
 		{
 			avgTime += durationTimes[index];
 		}
