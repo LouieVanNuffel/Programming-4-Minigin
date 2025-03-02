@@ -1,6 +1,8 @@
 #pragma once
 #include <SDL.h>
 #include "Singleton.h"
+#include <vector>
+#include "TrashTheCache.h"
 
 namespace dae
 {
@@ -10,6 +12,8 @@ namespace dae
 	 */
 	class Renderer final : public Singleton<Renderer>
 	{
+		TrashTheCache m_TrashTheCache{};
+
 		SDL_Renderer* m_renderer{};
 		SDL_Window* m_window{};
 		SDL_Color m_clearColor{};	

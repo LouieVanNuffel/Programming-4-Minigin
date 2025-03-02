@@ -49,9 +49,6 @@ namespace dae
 		GameObject* GetChildAt(int index) const;
 		int GetChildCount() const;
 		bool IsChild(GameObject* object) const;
-		void RemoveChild(GameObject* child);
-		void AddChild(GameObject* child);
-
 
 		void SetLocalPosition(const glm::vec3& pos);
 		const glm::vec3& GetWorldPosition();
@@ -67,6 +64,9 @@ namespace dae
 		GameObject& operator=(GameObject&& other) = delete;
 
 	private:
+		void RemoveChild(GameObject* child);
+		void AddChild(GameObject* child);
+
 		Transform m_transform{};
 		glm::vec3 m_worldPosition{};
 		bool m_positionIsDirty{ false };
