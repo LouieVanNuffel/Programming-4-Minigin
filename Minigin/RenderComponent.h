@@ -27,6 +27,7 @@ namespace dae
 		virtual void Update(float deltaTime) override;
 		virtual void LateUpdate(float deltaTime) override;
 		virtual void Render() const override;
+		virtual void RenderUI() const override;
 
 		void SetTexture(const std::string& filename);
 

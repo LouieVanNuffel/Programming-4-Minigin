@@ -35,6 +35,8 @@ void RenderComponent::Render() const
 	}
 }
 
+void dae::RenderComponent::RenderUI() const {}
+
 
 void RenderComponent::SetTexture(const std::string& filename)
 {

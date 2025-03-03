@@ -56,6 +56,14 @@ void dae::GameObject::Render() const
 	}
 }
 
+void dae::GameObject::RenderUI() const
+{
+	for (auto& component : m_components)
+	{
+		component->RenderUI();
+	}
+}
+
 void dae::GameObject::SetPosition(float x, float y)
 {
 	SetLocalPosition(glm::vec3{ x, y , 0.0f });

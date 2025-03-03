@@ -51,6 +51,8 @@ void TextComponent::Render() const
 	}
 }
 
+void dae::TextComponent::RenderUI() const{}
+
 // This implementation uses the "dirty flag" pattern
 void TextComponent::SetText(const std::string& text)
 {

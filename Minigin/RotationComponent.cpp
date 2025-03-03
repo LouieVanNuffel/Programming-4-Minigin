@@ -20,3 +20,5 @@ void dae::RotationComponent::Update(float deltaTime)
 void dae::RotationComponent::LateUpdate(float){}
 
 void dae::RotationComponent::Render() const{}
+
+void dae::RotationComponent::RenderUI() const{}

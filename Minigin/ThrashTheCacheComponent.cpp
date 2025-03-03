@@ -1,11 +1,31 @@
-#include "TrashTheCache.h"
+#include "ThrashTheCacheComponent.h"
 #include <iostream>
 #include <chrono>
 #include <algorithm>
 #include "imgui_plot.h"
 
+dae::ThrashTheCacheComponent::ThrashTheCacheComponent(GameObject* gameObject)
+	:Component(gameObject)
+{
+}
 
-void dae::TrashTheCache::RenderTrashTheCacheWindows() const
+void dae::ThrashTheCacheComponent::Start()
+{
+}
+
+void dae::ThrashTheCacheComponent::Update(float)
+{
+}
+
+void dae::ThrashTheCacheComponent::LateUpdate(float)
+{
+}
+
+void dae::ThrashTheCacheComponent::Render() const
+{
+}
+
+void dae::ThrashTheCacheComponent::RenderUI() const
 {
 	const int arrayLength{ static_cast<int>(std::pow(2,26)) };
 
@@ -111,7 +131,7 @@ void dae::TrashTheCache::RenderTrashTheCacheWindows() const
 	ImGui::End();
 }
 
-std::vector<float> dae::TrashTheCache::TestForIntArray(const int arrayLength, const int sampleSize) const
+std::vector<float> dae::ThrashTheCacheComponent::TestForIntArray(const int arrayLength, const int sampleSize) const
 {
 	std::vector<float> results{};
 
@@ -148,7 +168,7 @@ std::vector<float> dae::TrashTheCache::TestForIntArray(const int arrayLength, co
 	return results;
 }
 
-std::vector<float> dae::TrashTheCache::TestForGameObject3DArray(const int arrayLength, const int sampleSize) const
+std::vector<float> dae::ThrashTheCacheComponent::TestForGameObject3DArray(const int arrayLength, const int sampleSize) const
 {
 	std::vector<float> results{};
 
@@ -185,7 +205,7 @@ std::vector<float> dae::TrashTheCache::TestForGameObject3DArray(const int arrayL
 	return results;
 }
 
-std::vector<float> dae::TrashTheCache::TestForGameObject3DAltArray(const int arrayLength, const int sampleSize) const
+std::vector<float> dae::ThrashTheCacheComponent::TestForGameObject3DAltArray(const int arrayLength, const int sampleSize) const
 {
 	std::vector<float> results{};
 
@@ -222,7 +242,7 @@ std::vector<float> dae::TrashTheCache::TestForGameObject3DAltArray(const int arr
 	return results;
 }
 
-float dae::TrashTheCache::GetAverage(std::vector<float>& durationTimes) const
+float dae::ThrashTheCacheComponent::GetAverage(std::vector<float>& durationTimes) const
 {
 	float avgTime{};
 

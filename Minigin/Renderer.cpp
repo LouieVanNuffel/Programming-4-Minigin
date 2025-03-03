@@ -5,7 +5,6 @@
 #include "imgui.h"
 #include "backends/imgui_impl_sdl2.h"
 #include "backends/imgui_impl_opengl3.h"
-#include "imgui_plot.h"
 
 int GetOpenGLDriverIndex()
 {
@@ -48,7 +47,7 @@ void dae::Renderer::Render() const
 	ImGui_ImplSDL2_NewFrame(); // In example on leho m_window was given as parameter, but function doesn't take any parameters?
 	ImGui::NewFrame();
 
-	m_TrashTheCache.RenderTrashTheCacheWindows();
+	SceneManager::GetInstance().RenderUI();
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

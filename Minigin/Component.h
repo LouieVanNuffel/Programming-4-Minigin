@@ -12,6 +12,7 @@ namespace dae
 		virtual void Update(float deltaTime) = 0;
 		virtual void LateUpdate(float deltaTime) = 0;
 		virtual void Render() const = 0;
+		virtual void RenderUI() const = 0;
 
 		explicit Component(GameObject* gameObject)
 			:m_gameObject{ gameObject }

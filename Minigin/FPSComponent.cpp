@@ -24,6 +24,8 @@ void dae::FpsComponent::LateUpdate(float){}
 
 void dae::FpsComponent::Render() const {}
 
+void dae::FpsComponent::RenderUI() const {}
+
 float FpsComponent::GetFPSCount() const
 {
 	return m_FPSCount;

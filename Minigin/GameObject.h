@@ -15,6 +15,7 @@ namespace dae
 		virtual void FixedUpdate(float fixedTime);
 		virtual void LateUpdate(float deltaTime);
 		virtual void Render() const;
+		virtual void RenderUI() const;
 
 		void SetPosition(float x, float y);
 

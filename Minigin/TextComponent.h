@@ -30,6 +30,7 @@ namespace dae
 		virtual void Update(float deltaTime) override;
 		virtual void LateUpdate(float deltaTime) override;
 		virtual void Render() const override;
+		virtual void RenderUI() const override;
 
 		virtual void SetText(const std::string& text);
 	private:

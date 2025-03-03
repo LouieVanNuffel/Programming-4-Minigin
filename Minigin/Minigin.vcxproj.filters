@@ -93,7 +93,7 @@
     <ClInclude Include="..\3rdParty\imgui-1.91.8\imgui_plot.h">
       <Filter>Imgui</Filter>
     </ClInclude>
-    <ClInclude Include="TrashTheCache.h">
+    <ClInclude Include="ThrashTheCacheComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -167,7 +167,7 @@
     <ClCompile Include="..\3rdParty\imgui-1.91.8\imgui_plot.cpp">
       <Filter>Imgui</Filter>
     </ClCompile>
-    <ClCompile Include="TrashTheCache.cpp">
+    <ClCompile Include="ThrashTheCacheComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
