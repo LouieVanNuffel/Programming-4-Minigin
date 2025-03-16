@@ -34,27 +34,27 @@ void dae::Scene::Start()
 	}
 }
 
-void Scene::Update(float deltaTime)
+void Scene::Update()
 {
 	for(auto& object : m_objects)
 	{
-		object->Update(deltaTime);
+		object->Update();
 	}
 }
 
-void dae::Scene::FixedUpdate(float fixedTime)
+void dae::Scene::FixedUpdate()
 {
 	for (auto& object : m_objects)
 	{
-		object->FixedUpdate(fixedTime);
+		object->FixedUpdate();
 	}
 }
 
-void dae::Scene::LateUpdate(float deltaTime)
+void dae::Scene::LateUpdate()
 {
 	for (auto& object : m_objects)
 	{
-		object->LateUpdate(deltaTime);
+		object->LateUpdate();
 	}
 }
 

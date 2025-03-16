@@ -3,29 +3,20 @@
 
 void dae::Controller::Update()
 {
-    for (DWORD controllerIndex = 0; controllerIndex < 1; controllerIndex++) //Currently just one, could be more for multiple controllers?
-    {
-        CopyMemory(&previousState, &currentState, sizeof(XINPUT_STATE));
-        ZeroMemory(&currentState, sizeof(XINPUT_STATE));
-        XInputGetState(controllerIndex, &currentState);
-
-        buttonChanges = currentState.Gamepad.wButtons ^ previousState.Gamepad.wButtons;
-        buttonsPressedThisFrame = buttonChanges & currentState.Gamepad.wButtons;
-        buttonsReleasedThisFrame = buttonChanges & (~currentState.Gamepad.wButtons);
-    }
+    m_pXInputImpl->Update();
 }
 
-bool dae::Controller::IsDownThisFrame(unsigned int button) const
+bool dae::Controller::IsDownThisFrame(unsigned int button, int controllerIndex) const
 {
-    return buttonsPressedThisFrame & button;
+    return m_pXInputImpl->IsDownThisFrame(button, controllerIndex);
 }
 
-bool dae::Controller::IsUpThisFrame(unsigned int button) const
+bool dae::Controller::IsUpThisFrame(unsigned int button, int controllerIndex) const
 {
-    return buttonsReleasedThisFrame & button;
+    return m_pXInputImpl->IsUpThisFrame(button, controllerIndex);
 }
 
-bool dae::Controller::IsPressed(unsigned int button) const
+bool dae::Controller::IsPressed(unsigned int button, int controllerIndex) const
 {
-    return currentState.Gamepad.wButtons & button;
+    return m_pXInputImpl->IsPressed(button, controllerIndex);
 }

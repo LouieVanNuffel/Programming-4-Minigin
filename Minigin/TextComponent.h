@@ -27,8 +27,8 @@ namespace dae
 		TextComponent& operator=(TextComponent&& other) = delete;
 
 		virtual void Start() override;
-		virtual void Update(float deltaTime) override;
-		virtual void LateUpdate(float deltaTime) override;
+		virtual void Update() override;
+		virtual void LateUpdate() override;
 		virtual void Render() const override;
 		virtual void RenderUI() const override;
 

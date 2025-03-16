@@ -1,29 +1,28 @@
 #pragma once
 #include "GameObjectCommand.h"
-#include "MoveComponent.h"
+#include "Time.h"
 
 namespace dae
 {
 	class MoveCommand : public GameObjectCommand
 	{
 	public:
-		MoveCommand(GameObject* gameObject, float directionX, float directionY)
-			:GameObjectCommand(gameObject), m_DirectionX{ directionX }, m_DirectionY{ directionY }
+		MoveCommand(GameObject* gameObject, float directionX, float directionY, float speed)
+			:GameObjectCommand(gameObject), m_DirectionX{ directionX }, m_DirectionY{ directionY }, m_Speed{ speed }
 		{
-			m_MoveComponent = gameObject->GetComponent<MoveComponent>();
 		}
 
 		virtual void Execute() override
 		{
-			if (m_MoveComponent == nullptr) return;
-
-			m_MoveComponent->Move(m_DirectionX, m_DirectionY);
+			glm::vec3 currentPosition{ GetGameObject()->GetTransform().GetPosition()};
+			GetGameObject()->SetPosition(currentPosition.x + m_DirectionX * m_Speed * Time::GetInstance().GetDeltaTime(),
+				currentPosition.y + m_DirectionY * m_Speed * Time::GetInstance().GetDeltaTime());
 		}
 
 	private:
-		MoveComponent* m_MoveComponent;
 		float m_DirectionX;
 		float m_DirectionY;
+		float m_Speed;
 	};
 }
 

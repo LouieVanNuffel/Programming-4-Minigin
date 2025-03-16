@@ -9,6 +9,7 @@
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
+#include "Time.h"
 
 #include <thread>
 
@@ -67,6 +68,8 @@ dae::Minigin::Minigin(const std::string &dataPath)
 	Renderer::GetInstance().Init(g_window);
 
 	ResourceManager::GetInstance().Init(dataPath);
+
+	Time::GetInstance().SetFixedTime(m_FixedTimeStep);
 }
 
 dae::Minigin::~Minigin()
@@ -94,17 +97,18 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	{
 		const auto current_time = std::chrono::high_resolution_clock::now();
 		const float delta_time = std::chrono::duration<float>(current_time - last_time).count();
+		Time::GetInstance().SetDeltaTime(delta_time);
 		last_time = current_time;
 		lag += delta_time;
 
 		doContinue = input.ProcessInput();
 		while (lag >= m_FixedTimeStep)
 		{
-			sceneManager.FixedUpdate(m_FixedTimeStep);
+			sceneManager.FixedUpdate();
 			lag -= m_FixedTimeStep;
 		}
-		sceneManager.Update(delta_time);
-		sceneManager.LateUpdate(delta_time);
+		sceneManager.Update();
+		sceneManager.LateUpdate();
 		renderer.Render();
 		const auto sleep_time = current_time + std::chrono::milliseconds(m_MillisecondsPerFrame) - 
 																		std::chrono::high_resolution_clock::now();

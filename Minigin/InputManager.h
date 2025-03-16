@@ -15,12 +15,14 @@ namespace dae
 	{
 	public:
 		bool ProcessInput();
-		void BindCommandToController(std::unique_ptr<Command> command, unsigned int button, PollType pollType);
-		void BindCommandToKeyboard(std::unique_ptr<Command> command, SDL_KeyCode keyCode, SDL_EventType eventType);
+		void BindCommandToController(std::unique_ptr<Command> command, unsigned int button, PollType pollType, int controllerIndex);
+		void BindCommandToKeyboard(std::unique_ptr<Command> command, SDL_Scancode scanCode);
+		void UnbindCommandFromController(std::unique_ptr<Command> command, unsigned int button, PollType pollType, int controllerIndex);
+		void UnbindCommandFromKeyboard(std::unique_ptr<Command> command, SDL_Scancode scanCode);
 
 	private:
-		std::vector<std::tuple<std::unique_ptr<Command>, unsigned int, PollType>> m_CommandBindingsController;
-		std::vector<std::tuple<std::unique_ptr<Command>, SDL_KeyCode, SDL_EventType>> m_CommandBindingsKeyboard;
+		std::vector<std::tuple<std::unique_ptr<Command>, unsigned int, PollType, int>> m_CommandBindingsController;
+		std::vector<std::tuple<std::unique_ptr<Command>, SDL_Scancode>> m_CommandBindingsKeyboard;
 	};
 
 }

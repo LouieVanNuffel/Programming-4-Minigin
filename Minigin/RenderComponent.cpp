@@ -17,9 +17,9 @@ dae::RenderComponent::~RenderComponent()
 
 void dae::RenderComponent::Start(){}
 
-void dae::RenderComponent::Update(float){}
+void dae::RenderComponent::Update(){}
 
-void dae::RenderComponent::LateUpdate(float){}
+void dae::RenderComponent::LateUpdate(){}
 
 void RenderComponent::Render() const
 {

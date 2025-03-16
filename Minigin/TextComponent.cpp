@@ -19,7 +19,7 @@ TextComponent::~TextComponent()
 
 void dae::TextComponent::Start(){}
 
-void TextComponent::Update(float)
+void TextComponent::Update()
 {
 	if (m_needsUpdate)
 	{
@@ -40,7 +40,7 @@ void TextComponent::Update(float)
 	}
 }
 
-void dae::TextComponent::LateUpdate(float){}
+void dae::TextComponent::LateUpdate(){}
 
 void TextComponent::Render() const
 {

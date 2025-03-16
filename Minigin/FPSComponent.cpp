@@ -1,5 +1,6 @@
 #include "FpsComponent.h"
 #include "GameObject.h"
+#include "Time.h"
 #include <format>
 
 using namespace dae;
@@ -12,15 +13,15 @@ void dae::FpsComponent::Start()
 	m_TextComponent = m_gameObject->GetComponent<TextComponent>();
 }
 
-void FpsComponent::Update(float deltaTime)
+void FpsComponent::Update()
 {
-	m_FPSCount = 1.f / deltaTime;
+	m_FPSCount = 1.f / Time::GetInstance().GetDeltaTime();
 	assert(m_TextComponent);
 	if (m_TextComponent)
 	m_TextComponent->SetText(std::format("FPS: {:.1f}", m_FPSCount));
 }
 
-void dae::FpsComponent::LateUpdate(float){}
+void dae::FpsComponent::LateUpdate(){}
 
 void dae::FpsComponent::Render() const {}
 

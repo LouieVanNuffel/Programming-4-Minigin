@@ -21,8 +21,8 @@ namespace dae
 		FpsComponent& operator=(FpsComponent&& other) = default;
 
 		virtual void Start() override;
-		virtual void Update(float deltaTime) override;
-		virtual void LateUpdate(float deltaTime) override;
+		virtual void Update() override;
+		virtual void LateUpdate() override;
 		virtual void Render() const override;
 		virtual void RenderUI() const override;
 		float GetFPSCount() const;

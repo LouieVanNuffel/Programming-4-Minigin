@@ -9,27 +9,27 @@ void dae::SceneManager::Start()
 	}
 }
 
-void dae::SceneManager::Update(float deltaTime)
+void dae::SceneManager::Update()
 {
 	for(auto& scene : m_scenes)
 	{
-		scene->Update(deltaTime);
+		scene->Update();
 	}
 }
 
-void dae::SceneManager::FixedUpdate(float fixedTime)
+void dae::SceneManager::FixedUpdate()
 {
 	for (auto& scene : m_scenes)
 	{
-		scene->FixedUpdate(fixedTime);
+		scene->FixedUpdate();
 	}
 }
 
-void dae::SceneManager::LateUpdate(float deltaTime)
+void dae::SceneManager::LateUpdate()
 {
 	for (auto& scene : m_scenes)
 	{
-		scene->LateUpdate(deltaTime);
+		scene->LateUpdate();
 	}
 }
 

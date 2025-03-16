@@ -11,9 +11,9 @@ namespace dae
 	{
 	public:
 		virtual void Start();
-		virtual void Update(float deltaTime);
-		virtual void FixedUpdate(float fixedTime);
-		virtual void LateUpdate(float deltaTime);
+		virtual void Update();
+		virtual void FixedUpdate();
+		virtual void LateUpdate();
 		virtual void Render() const;
 		virtual void RenderUI() const;
 

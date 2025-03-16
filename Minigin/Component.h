@@ -9,8 +9,8 @@ namespace dae
 	{
 	public:
 		virtual void Start() = 0;
-		virtual void Update(float deltaTime) = 0;
-		virtual void LateUpdate(float deltaTime) = 0;
+		virtual void Update() = 0;
+		virtual void LateUpdate() = 0;
 		virtual void Render() const = 0;
 		virtual void RenderUI() const = 0;
 

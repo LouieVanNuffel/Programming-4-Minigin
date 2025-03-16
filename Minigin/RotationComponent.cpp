@@ -1,5 +1,6 @@
 #include "RotationComponent.h"
 #include "GameObject.h"
+#include "Time.h"
 
 dae::RotationComponent::RotationComponent(GameObject* gameObject, float rotationSpeedPerSecond, float rotationCircleRadius)
 	:Component(gameObject), m_rotationSpeedPerSecond{ rotationSpeedPerSecond }, m_rotationCircleRadius{ rotationCircleRadius }
@@ -8,16 +9,16 @@ dae::RotationComponent::RotationComponent(GameObject* gameObject, float rotation
 
 void dae::RotationComponent::Start(){}
 
-void dae::RotationComponent::Update(float deltaTime)
+void dae::RotationComponent::Update()
 {
-	m_currentRotation += m_rotationSpeedPerSecond * deltaTime;
+	m_currentRotation += m_rotationSpeedPerSecond * Time::GetInstance().GetDeltaTime();
 	glm::vec3 rotatedPos{};
 	rotatedPos.x = m_rotationCircleRadius * cosf(m_currentRotation);
 	rotatedPos.y = m_rotationCircleRadius * sinf(m_currentRotation);
 	m_gameObject->SetLocalPosition(rotatedPos);
 }
 
-void dae::RotationComponent::LateUpdate(float){}
+void dae::RotationComponent::LateUpdate(){}
 
 void dae::RotationComponent::Render() const{}
 

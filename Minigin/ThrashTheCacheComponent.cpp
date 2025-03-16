@@ -13,11 +13,11 @@ void dae::ThrashTheCacheComponent::Start()
 {
 }
 
-void dae::ThrashTheCacheComponent::Update(float)
+void dae::ThrashTheCacheComponent::Update()
 {
 }
 
-void dae::ThrashTheCacheComponent::LateUpdate(float)
+void dae::ThrashTheCacheComponent::LateUpdate()
 {
 }
 

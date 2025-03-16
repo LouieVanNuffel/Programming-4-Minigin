@@ -16,21 +16,21 @@ void dae::GameObject::Start()
 	}
 }
 
-void dae::GameObject::Update(float deltaTime)
+void dae::GameObject::Update()
 {
 	for (auto& component : m_components)
 	{
-		component->Update(deltaTime);
+		component->Update();
 	}
 }
 
-void dae::GameObject::FixedUpdate(float){}
+void dae::GameObject::FixedUpdate(){}
 
-void dae::GameObject::LateUpdate(float deltaTime)
+void dae::GameObject::LateUpdate()
 {
 	for (auto& component : m_components)
 	{
-		component->LateUpdate(deltaTime);
+		component->LateUpdate();
 	}
 
 	for (auto& unregisteredComponent : m_unregisteredComponents)

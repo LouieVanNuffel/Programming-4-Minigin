@@ -1,7 +1,7 @@
 #pragma once
 #include "Singleton.h"
-#include "Windows.h"
-#include "Xinput.h"
+#include "XInputImpl.cpp"
+#include <memory>
 
 namespace dae
 {
@@ -10,17 +10,12 @@ namespace dae
 	public:
 		void Update();
 
-		bool IsDownThisFrame(unsigned int button) const;
-		bool IsUpThisFrame(unsigned int button) const;
-		bool IsPressed(unsigned int button) const;
+		bool IsDownThisFrame(unsigned int button, int controllerIndex) const;
+		bool IsUpThisFrame(unsigned int button, int controllerIndex) const;
+		bool IsPressed(unsigned int button, int controllerIndex) const;
 
 	private:
-		XINPUT_STATE previousState;
-		XINPUT_STATE currentState;
-
-		unsigned int buttonChanges;
-		unsigned int buttonsPressedThisFrame;
-		unsigned int buttonsReleasedThisFrame;
+		std::unique_ptr<XInputImpl> m_pXInputImpl{ std::make_unique<XInputImpl>() };
 
 	};
 }
