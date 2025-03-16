@@ -135,6 +135,9 @@
     <ClInclude Include="PointsDisplayComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SteamAchievement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
@@ -219,6 +222,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PointsDisplayComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SteamAchievement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

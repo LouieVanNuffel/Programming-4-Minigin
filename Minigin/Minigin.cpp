@@ -13,6 +13,8 @@
 
 #include <thread>
 
+#include <steam_api.h>
+
 SDL_Window* g_window{};
 
 void PrintSDLVersion()
@@ -83,6 +85,8 @@ dae::Minigin::~Minigin()
 void dae::Minigin::Run(const std::function<void()>& load)
 {
 	load();
+
+	SteamAPI_RunCallbacks();
 
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
