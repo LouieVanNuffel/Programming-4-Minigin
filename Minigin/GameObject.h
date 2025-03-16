@@ -6,6 +6,8 @@
 
 namespace dae
 {
+	struct Event;
+	class Observer;
 	class Texture2D;
 	class GameObject final
 	{
@@ -56,6 +58,9 @@ namespace dae
 		void UpdateWorldPosition();
 		void SetPositionDirty();
 
+		void NotifyObservers(const Event& event);
+		void AddObserver(Observer* observer);
+		void RemoveObserver(Observer* observer);
 
 		GameObject() = default;
 		~GameObject();
@@ -77,5 +82,7 @@ namespace dae
 
 		GameObject* m_parent{};
 		std::vector<GameObject*> m_children{};
+
+		std::vector<Observer*> m_observers{};
 	};
 }
