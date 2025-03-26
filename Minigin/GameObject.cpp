@@ -137,14 +137,6 @@ bool dae::GameObject::IsChild(GameObject* object) const
 	return false;
 }
 
-void dae::GameObject::NotifyObservers(const Event& event)
-{
-	for (auto observer : m_observers)
-	{
-		observer->Notify(event, this);
-	}
-}
-
 void dae::GameObject::RemoveChild(GameObject* child)
 {
 	m_children.erase(std::remove(m_children.begin(), m_children.end(), child), m_children.end());
@@ -187,15 +179,4 @@ void dae::GameObject::SetPositionDirty()
 	{
 		child->SetPositionDirty();
 	}
-}
-
-void dae::GameObject::AddObserver(Observer* observer)
-{
-	m_observers.emplace_back(observer);
-}
-
-void dae::GameObject::RemoveObserver(Observer* observer)
-{
-	auto it = std::find(std::begin(m_observers), std::end(m_observers), observer);
-	m_observers.erase(it);
 }
