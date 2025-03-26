@@ -30,7 +30,6 @@ namespace dae
 		{
 			m_Points += amountOfPoints;
 			m_gameObject->NotifyObservers(Event{ make_sdbm_hash("PlayerScored") });
-			if (m_Points >= 500) m_gameObject->NotifyObservers(Event{ make_sdbm_hash("GameWon") });
 		}
 
 	private:
