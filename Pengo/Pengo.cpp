@@ -39,7 +39,7 @@ void Load()
 #if _DEBUG
 	ServiceLocator::register_sound_system(std::make_unique<LoggingSoundSystem>(std::make_unique<QueuedSoundSystem>()));
 #else
-	ServiceLocator::register_sound_system(std::make_unique<SDL_SoundSystem>());
+	ServiceLocator::register_sound_system(std::make_unique<QueuedSoundSystem>());
 #endif
 
 	auto& ss = ServiceLocator::get_sound_system();
