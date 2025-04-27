@@ -159,7 +159,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="LivesDisplayComponent.cpp" />
     <ClCompile Include="Pengo.cpp" />
+    <ClCompile Include="PointsDisplayComponent.cpp" />
+    <ClCompile Include="RotationComponent.cpp" />
+    <ClCompile Include="ThrashTheCacheComponent.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="HealthComponent.h" />
+    <ClInclude Include="LivesDisplayComponent.h" />
+    <ClInclude Include="MoveCommand.h" />
+    <ClInclude Include="PickUpPointCommand.h" />
+    <ClInclude Include="PointComponent.h" />
+    <ClInclude Include="PointsDisplayComponent.h" />
+    <ClInclude Include="RotationComponent.h" />
+    <ClInclude Include="TakeDamageCommand.h" />
+    <ClInclude Include="ThrashTheCacheComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
