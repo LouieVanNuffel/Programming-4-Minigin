@@ -27,11 +27,25 @@
 #include "Controller.h"
 #include "Subject.h"
 #include "Scene.h"
+#include "ServiceLocator.h"
+#include "SDL_SoundSystem.h"
+#include "LoggingSoundSystem.h"
+#include "direct.h"
 
 using namespace dae;
 
-void load()
+void Load()
 {
+#if _DEBUG
+	ServiceLocator::register_sound_system(std::make_unique<LoggingSoundSystem>(std::make_unique<SDL_SoundSystem>()));
+#else
+	ServiceLocator::register_sound_system(std::make_unique<SDL_SoundSystem>());
+#endif
+
+	auto& ss = ServiceLocator::get_sound_system();
+	ss.AddAudioClip(0, "../Data/CreditSound.wav");
+	ss.Play(0, 100);
+
 	auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
 
 	//Background
@@ -198,6 +212,6 @@ void load()
 
 int main(int, char* []) {
 	dae::Minigin engine("../Data/");
-	engine.Run(load);
+	engine.Run(Load);
 	return 0;
 }
