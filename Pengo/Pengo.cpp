@@ -28,23 +28,22 @@
 #include "Subject.h"
 #include "Scene.h"
 #include "ServiceLocator.h"
-#include "SDL_SoundSystem.h"
+#include "QueuedSoundSystem.h"
 #include "LoggingSoundSystem.h"
-#include "direct.h"
+#include "PlaySoundCommand.h"
 
 using namespace dae;
 
 void Load()
 {
 #if _DEBUG
-	ServiceLocator::register_sound_system(std::make_unique<LoggingSoundSystem>(std::make_unique<SDL_SoundSystem>()));
+	ServiceLocator::register_sound_system(std::make_unique<LoggingSoundSystem>(std::make_unique<QueuedSoundSystem>()));
 #else
 	ServiceLocator::register_sound_system(std::make_unique<SDL_SoundSystem>());
 #endif
 
 	auto& ss = ServiceLocator::get_sound_system();
 	ss.AddAudioClip(0, "../Data/CreditSound.wav");
-	ss.Play(0, 100);
 
 	auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
 
@@ -110,15 +109,15 @@ void Load()
 
 	// Display Controls
 	auto controllerControlsTextObject = std::make_shared<dae::GameObject>();
-	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 18);
-	textComponent = std::make_unique<dae::TextComponent>("Use the D-Pad to move green pengo, X to inflict damage, A to pick up points", std::move(font), controllerControlsTextObject.get());
+	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 16);
+	textComponent = std::make_unique<dae::TextComponent>("Use the D-Pad to move green pengo, X to inflict damage, A to pick up points (sound)", std::move(font), controllerControlsTextObject.get());
 	controllerControlsTextObject->SetPosition(0, 50);
 	controllerControlsTextObject->AddComponent(std::move(textComponent));
 	scene.Add(controllerControlsTextObject);
 
 	auto keyboardControlsTextObject = std::make_shared<dae::GameObject>();
-	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 18);
-	textComponent = std::make_unique<dae::TextComponent>("Use WASD to move red pengo, C to inflict damage, Z to pick up points", std::move(font), keyboardControlsTextObject.get());
+	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 16);
+	textComponent = std::make_unique<dae::TextComponent>("Use WASD to move red pengo, C to inflict damage, Z to pick up points (sound)", std::move(font), keyboardControlsTextObject.get());
 	keyboardControlsTextObject->SetPosition(0, 70);
 	keyboardControlsTextObject->AddComponent(std::move(textComponent));
 	scene.Add(keyboardControlsTextObject);
@@ -188,12 +187,16 @@ void Load()
 	auto inflictDamage = std::make_unique<TakeDamageCommand>(characterObject1.get(), 50.f);
 	auto pickUpPoint = std::make_unique<PickUpPointCommand>(characterObject1.get(), 1);
 
+	//Commands (sound)
+	auto creditSoundCommand = std::make_unique<PlaySoundCommand>(SoundId{ 0 }, 100.0f);
+
 	InputManager::GetInstance().BindCommandToKeyboard(std::move(moveUpCommand), SDL_SCANCODE_W);
 	InputManager::GetInstance().BindCommandToKeyboard(std::move(moveDownCommand), SDL_SCANCODE_S);
 	InputManager::GetInstance().BindCommandToKeyboard(std::move(moveLeftCommand), SDL_SCANCODE_A);
 	InputManager::GetInstance().BindCommandToKeyboard(std::move(moveRightCommand), SDL_SCANCODE_D);
 	InputManager::GetInstance().BindCommandToKeyboard(std::move(inflictDamage), SDL_SCANCODE_C);
 	InputManager::GetInstance().BindCommandToKeyboard(std::move(pickUpPoint), SDL_SCANCODE_Z);
+	InputManager::GetInstance().BindCommandToKeyboard(std::move(creditSoundCommand), SDL_SCANCODE_Z);
 
 	moveUpCommand = std::make_unique<MoveCommand>(characterObject2.get(), 0.f, -1.f, 100.f);
 	moveDownCommand = std::make_unique<MoveCommand>(characterObject2.get(), 0.f, 1.f, 100.f);
@@ -202,12 +205,15 @@ void Load()
 	inflictDamage = std::make_unique<TakeDamageCommand>(characterObject2.get(), 50.f);
 	pickUpPoint = std::make_unique<PickUpPointCommand>(characterObject2.get(), 1);
 
+	creditSoundCommand = std::make_unique<PlaySoundCommand>(SoundId{0}, 100.0f);
+
 	InputManager::GetInstance().BindCommandToController(std::move(moveUpCommand), XINPUT_GAMEPAD_DPAD_UP, PollType::IsPressed, 0);
 	InputManager::GetInstance().BindCommandToController(std::move(moveDownCommand), XINPUT_GAMEPAD_DPAD_DOWN, PollType::IsPressed, 0);
 	InputManager::GetInstance().BindCommandToController(std::move(moveLeftCommand), XINPUT_GAMEPAD_DPAD_LEFT, PollType::IsPressed, 0);
 	InputManager::GetInstance().BindCommandToController(std::move(moveRightCommand), XINPUT_GAMEPAD_DPAD_RIGHT, PollType::IsPressed, 0);
 	InputManager::GetInstance().BindCommandToController(std::move(inflictDamage), XINPUT_GAMEPAD_X, PollType::IsPressed, 0);
 	InputManager::GetInstance().BindCommandToController(std::move(pickUpPoint), XINPUT_GAMEPAD_A, PollType::IsPressed, 0);
+	InputManager::GetInstance().BindCommandToController(std::move(creditSoundCommand), XINPUT_GAMEPAD_A, PollType::IsPressed, 0);
 }
 
 int main(int, char* []) {

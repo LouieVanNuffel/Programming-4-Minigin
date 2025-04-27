@@ -117,7 +117,7 @@
     <ClInclude Include="ServiceLocator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SDL_SoundSystem.h">
+    <ClInclude Include="QueuedSoundSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LoggingSoundSystem.h">
@@ -127,6 +127,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AudioClip.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioThread.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -204,6 +207,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AudioClip.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SDL_AudioImpl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

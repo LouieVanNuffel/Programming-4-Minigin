@@ -1,8 +1,5 @@
 #pragma once
-#include <SDL_mixer.h>
-#include <string>
-#include <cassert>
-#include <iostream>
+#include "SDL_AudioImpl.cpp"
 
 namespace dae
 {
@@ -10,44 +7,38 @@ namespace dae
     {
     public:
         AudioClip(const std::string& filepath)
-            : m_FilePath(filepath), m_Chunk(nullptr) {}
+        {
+            m_pSDL_AudioImpl = new SDL_AudioImpl(filepath);
+        }
 
         ~AudioClip()
         {
-            if (m_Chunk)
-                Mix_FreeChunk(m_Chunk);
+            delete m_pSDL_AudioImpl;
+            m_pSDL_AudioImpl = nullptr;
         }
 
         bool IsLoaded() const 
         { 
-            return m_Chunk != nullptr; 
+            return m_pSDL_AudioImpl->IsLoaded();
         }
 
         void Load()
         {
-            if (!m_Chunk)
-                m_Chunk = Mix_LoadWAV(m_FilePath.c_str());
-
-            if (!m_Chunk)
-                std::cerr << "Mix_LoadWAV failed: " << Mix_GetError() << std::endl;
+            m_pSDL_AudioImpl->Load();
         }
 
         void Play()
         {
-            if (m_Chunk) Mix_PlayChannel(-1, m_Chunk, 0); // Play once on a free channel
+            m_pSDL_AudioImpl->Play();
         }
 
         void SetVolume(float volume)
         {
-            if (m_Chunk)
-            {
-                Mix_VolumeChunk(m_Chunk, static_cast<int>(volume));
-            }
+            m_pSDL_AudioImpl->SetVolume(volume);
         }
 
     private:
-        std::string m_FilePath;
-        Mix_Chunk* m_Chunk;
+        SDL_AudioImpl* m_pSDL_AudioImpl;
     };
 }
 
