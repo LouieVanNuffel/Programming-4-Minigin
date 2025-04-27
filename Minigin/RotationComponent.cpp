@@ -1,6 +1,6 @@
 #include "RotationComponent.h"
 #include "GameObject.h"
-#include "Time.h"
+#include "EngineTime.h"
 
 dae::RotationComponent::RotationComponent(GameObject* gameObject, float rotationSpeedPerSecond, float rotationCircleRadius)
 	:Component(gameObject), m_rotationSpeedPerSecond{ rotationSpeedPerSecond }, m_rotationCircleRadius{ rotationCircleRadius }
