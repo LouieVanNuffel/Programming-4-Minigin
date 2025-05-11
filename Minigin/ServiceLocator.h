@@ -16,6 +16,12 @@ namespace dae
 		static void register_sound_system(std::unique_ptr<SoundSystem>&& ss)
 		{
 			if (ss != nullptr) _ss_instance = std::move(ss);
+			else
+			{
+				// Unregister it
+				_ss_instance.release();
+				_ss_instance = nullptr;
+			}
 		}
 	};
 }

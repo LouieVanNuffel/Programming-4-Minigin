@@ -31,6 +31,7 @@
 #include "QueuedSoundSystem.h"
 #include "LoggingSoundSystem.h"
 #include "PlaySoundCommand.h"
+#include "Animator.h"
 
 using namespace dae;
 
@@ -85,12 +86,15 @@ void Load()
 	auto healthComponent = std::make_unique<HealthComponent>(characterObject1.get());
 	auto pointComponent = std::make_unique<PointComponent>(characterObject1.get());
 	auto subjectComponent = std::make_unique<Subject>(characterObject1.get());
+	auto animator = std::make_unique<Animator>(characterObject1.get());
+	subjectComponent->AddObserver(animator.get());
 	textureComponent = std::make_unique<dae::RenderComponent>(characterObject1.get());
 	textureComponent->SetTexture("PengoRed.png");
 	characterObject1->AddComponent(std::move(healthComponent));
 	characterObject1->AddComponent(std::move(pointComponent));
 	characterObject1->AddComponent(std::move(subjectComponent));
 	characterObject1->AddComponent(std::move(textureComponent));
+	characterObject1->AddComponent(std::move(animator));
 	characterObject1->SetPosition(180, 180);
 	scene.Add(characterObject1);
 
@@ -99,11 +103,14 @@ void Load()
 	pointComponent = std::make_unique<PointComponent>(characterObject2.get());
 	subjectComponent = std::make_unique<Subject>(characterObject2.get());
 	textureComponent = std::make_unique<dae::RenderComponent>(characterObject2.get());
+	animator = std::make_unique<Animator>(characterObject2.get());
+	subjectComponent->AddObserver(animator.get());
 	textureComponent->SetTexture("PengoGreen.png");
 	characterObject2->AddComponent(std::move(healthComponent));
 	characterObject2->AddComponent(std::move(pointComponent));
 	characterObject2->AddComponent(std::move(subjectComponent));
 	characterObject2->AddComponent(std::move(textureComponent));
+	characterObject2->AddComponent(std::move(animator));
 	characterObject2->SetPosition(160, 180);
 	scene.Add(characterObject2);
 

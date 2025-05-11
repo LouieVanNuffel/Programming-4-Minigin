@@ -42,3 +42,8 @@ void RenderComponent::SetTexture(const std::string& filename)
 {
 	m_texture = ResourceManager::GetInstance().LoadTexture(filename);
 }
+
+void dae::RenderComponent::SetTexture(std::shared_ptr<Texture2D> texture)
+{
+	m_texture = texture;
+}
