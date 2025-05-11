@@ -10,7 +10,7 @@ public:
 		:AnimationState(animator), m_Texture{}
 	{
 		m_StateToTransitionTo = AnimationStates::idle;
-		m_Texture = ResourceManager::GetInstance().LoadTexture("PengoRed.png");
+		m_Texture = dae::ResourceManager::GetInstance().LoadTexture("PengoRed.png");
 	}
 
 	virtual AnimationState* GetNewState() override;
@@ -30,29 +30,29 @@ public:
 
 	}
 
-	virtual void Notify(const Event& event, const GameObject*) override
+	virtual void Notify(const dae::Event& event, const dae::GameObject*) override
 	{
-		if (event.id == make_sdbm_hash("PlayerDied"))
+		if (event.id == dae::make_sdbm_hash("PlayerDied"))
 		{
 			m_StateToTransitionTo = AnimationStates::dead;
 		}
 
-		if (event.id == make_sdbm_hash("PlayerLeft"))
+		if (event.id == dae::make_sdbm_hash("PlayerLeft"))
 		{
 			m_StateToTransitionTo = AnimationStates::left;
 		}
 
-		if (event.id == make_sdbm_hash("PlayerRight"))
+		if (event.id == dae::make_sdbm_hash("PlayerRight"))
 		{
 			m_StateToTransitionTo = AnimationStates::right;
 		}
 
-		if (event.id == make_sdbm_hash("PlayerUp"))
+		if (event.id == dae::make_sdbm_hash("PlayerUp"))
 		{
 			m_StateToTransitionTo = AnimationStates::up;
 		}
 	}
 
 private:
-	std::shared_ptr<Texture2D> m_Texture;
+	std::shared_ptr<dae::Texture2D> m_Texture;
 };

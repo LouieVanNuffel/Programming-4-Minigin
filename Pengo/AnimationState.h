@@ -2,15 +2,13 @@
 #include "Observer.h"
 #include "Event.h"
 
-using namespace dae;
-
 enum class AnimationStates
 {
 	idle, dead, left, right, up
 };
 
 class Animator;
-class AnimationState : public Observer
+class AnimationState : public dae::Observer
 {
 public:
 	AnimationState(Animator* animator)
@@ -24,7 +22,7 @@ public:
 	virtual void Update() {};
 	virtual void OnEnter() {};
 	virtual void OnExit() {};
-	virtual void Notify(const Event&, const GameObject*) override {};
+	virtual void Notify(const dae::Event&, const dae::GameObject*) override {};
 
 protected:
 	Animator* m_pAnimator;

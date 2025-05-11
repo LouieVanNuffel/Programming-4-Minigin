@@ -3,12 +3,11 @@
 #include "Observer.h"
 #include "RenderComponent.h"
 
-using namespace dae;
 class AnimationState;
-class Animator final : public Component, public Observer
+class Animator final : public dae::Component, public dae::Observer
 {
 public:
-	Animator(GameObject* gameObject);
+	Animator(dae::GameObject* gameObject);
 	~Animator();
 
 	virtual void Start() override;
@@ -19,13 +18,13 @@ public:
 	virtual void Render() const override;
 	virtual void RenderUI() const override;
 
-	virtual void Notify(const Event& event, const GameObject* gameObject) override;
+	virtual void Notify(const dae::Event& event, const dae::GameObject* gameObject) override;
 
-	void SetTexture(std::shared_ptr<Texture2D> texture);
+	void SetTexture(std::shared_ptr<dae::Texture2D> texture);
 
 private:
 	AnimationState* m_pAnimationState;
-	RenderComponent* m_pRenderComponent;
+	dae::RenderComponent* m_pRenderComponent;
 
 	void EnterNewState(AnimationState* newState);
 };

@@ -3,6 +3,8 @@
 #include "IdleState.h"
 #include "GameObject.h"
 
+using namespace dae;
+
 Animator::Animator(dae::GameObject* gameObject)
 	:Component(gameObject), m_pAnimationState{}, m_pRenderComponent{}
 {

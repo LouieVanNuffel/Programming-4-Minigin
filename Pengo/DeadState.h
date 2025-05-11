@@ -10,7 +10,7 @@ public:
 		:AnimationState(animator), m_Texture{}
 	{
 		m_StateToTransitionTo = AnimationStates::dead;
-		m_Texture = ResourceManager::GetInstance().LoadTexture("PengoDead.png");
+		m_Texture = dae::ResourceManager::GetInstance().LoadTexture("PengoDead.png");
 	}
 
 	virtual AnimationState* GetNewState() override
@@ -39,11 +39,11 @@ public:
 
 	}
 
-	virtual void Notify(const Event&, const GameObject*) override
+	virtual void Notify(const dae::Event&, const dae::GameObject*) override
 	{
 		
 	}
 
 private:
-	std::shared_ptr<Texture2D> m_Texture;
+	std::shared_ptr<dae::Texture2D> m_Texture;
 };
