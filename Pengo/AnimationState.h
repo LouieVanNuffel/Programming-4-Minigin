@@ -6,7 +6,7 @@ using namespace dae;
 
 enum class AnimationStates
 {
-	idle, dead
+	idle, dead, left, right, up
 };
 
 class Animator;

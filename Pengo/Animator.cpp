@@ -4,9 +4,15 @@
 #include "GameObject.h"
 
 Animator::Animator(dae::GameObject* gameObject)
-	:Component(gameObject), m_AnimationState{}, m_pRenderComponent{}
+	:Component(gameObject), m_pAnimationState{}, m_pRenderComponent{}
 {
-	m_AnimationState = new IdleState(this);
+	m_pAnimationState = new IdleState(this);
+}
+
+Animator::~Animator()
+{
+	delete m_pAnimationState;
+	m_pAnimationState = nullptr;
 }
 
 void Animator::Start()
@@ -16,7 +22,7 @@ void Animator::Start()
 
 void Animator::Update()
 {
-	m_AnimationState->Update();
+	m_pAnimationState->Update();
 };
 
 void Animator::LateUpdate() {};
@@ -25,8 +31,8 @@ void Animator::RenderUI() const {};
 
 void Animator::Notify(const Event& event, const dae::GameObject* gameObject)
 {
-	m_AnimationState->Notify(event, gameObject);
-	AnimationState* newState = m_AnimationState->GetNewState();
+	m_pAnimationState->Notify(event, gameObject);
+	AnimationState* newState = m_pAnimationState->GetNewState();
 	if (newState != nullptr) EnterNewState(newState);
 }
 
@@ -37,7 +43,8 @@ void Animator::SetTexture(std::shared_ptr<Texture2D> texture)
 
 void Animator::EnterNewState(AnimationState* newState)
 {
-	m_AnimationState->OnExit();
-	m_AnimationState = newState;
-	m_AnimationState->OnEnter();
+	m_pAnimationState->OnExit();
+	delete m_pAnimationState;
+	m_pAnimationState = newState;
+	m_pAnimationState->OnEnter();
 }

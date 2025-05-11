@@ -3,14 +3,14 @@
 #include "AnimationState.h"
 #include "ResourceManager.h"
 
-class IdleState final : public AnimationState
+class RightState final : public AnimationState
 {
 public:
-	IdleState(Animator* animator)
+	RightState(Animator* animator)
 		:AnimationState(animator), m_Texture{}
 	{
-		m_StateToTransitionTo = AnimationStates::idle;
-		m_Texture = ResourceManager::GetInstance().LoadTexture("PengoRed.png");
+		m_StateToTransitionTo = AnimationStates::right;
+		m_Texture = ResourceManager::GetInstance().LoadTexture("PengoRight.png");
 	}
 
 	virtual AnimationState* GetNewState() override;
@@ -42,14 +42,14 @@ public:
 			m_StateToTransitionTo = AnimationStates::left;
 		}
 
-		if (event.id == make_sdbm_hash("PlayerRight"))
-		{
-			m_StateToTransitionTo = AnimationStates::right;
-		}
-
 		if (event.id == make_sdbm_hash("PlayerUp"))
 		{
 			m_StateToTransitionTo = AnimationStates::up;
+		}
+
+		if (event.id == make_sdbm_hash("PlayerDown"))
+		{
+			m_StateToTransitionTo = AnimationStates::idle;
 		}
 	}
 

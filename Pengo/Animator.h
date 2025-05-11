@@ -9,6 +9,7 @@ class Animator final : public Component, public Observer
 {
 public:
 	Animator(GameObject* gameObject);
+	~Animator();
 
 	virtual void Start() override;
 
@@ -23,7 +24,7 @@ public:
 	void SetTexture(std::shared_ptr<Texture2D> texture);
 
 private:
-	AnimationState* m_AnimationState;
+	AnimationState* m_pAnimationState;
 	RenderComponent* m_pRenderComponent;
 
 	void EnterNewState(AnimationState* newState);
