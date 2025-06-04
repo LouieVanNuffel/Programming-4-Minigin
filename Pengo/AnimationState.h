@@ -4,7 +4,7 @@
 
 enum class AnimationStates
 {
-	idle, dead, left, right, up
+	idle, dead
 };
 
 class Animator;
@@ -17,12 +17,22 @@ public:
 
 	}
 
-	virtual AnimationState* GetNewState() { return nullptr; }
+	const AnimationStates& GetNewStateToTransitionTo()
+	{
+		return m_StateToTransitionTo;
+	}
 
 	virtual void Update() {};
 	virtual void OnEnter() {};
 	virtual void OnExit() {};
-	virtual void Notify(const dae::Event&, const dae::GameObject*) override {};
+
+	virtual void Notify(const dae::Event& event, const dae::GameObject*) override
+	{
+		if (event.id == dae::make_sdbm_hash("PlayerDied"))
+		{
+			m_StateToTransitionTo = AnimationStates::dead;
+		}
+	}
 
 protected:
 	Animator* m_pAnimator;

@@ -1,6 +1,7 @@
 #include "Animator.h"
 #include "AnimationState.h"
 #include "IdleState.h"
+#include "DeadState.h"
 #include "GameObject.h"
 
 using namespace dae;
@@ -34,7 +35,7 @@ void Animator::RenderUI() const {};
 void Animator::Notify(const Event& event, const dae::GameObject* gameObject)
 {
 	m_pAnimationState->Notify(event, gameObject);
-	AnimationState* newState = m_pAnimationState->GetNewState();
+	AnimationState* newState = LoadNewStateFromEnum(m_pAnimationState->GetNewStateToTransitionTo());
 	if (newState != nullptr) EnterNewState(newState);
 }
 
@@ -49,4 +50,20 @@ void Animator::EnterNewState(AnimationState* newState)
 	delete m_pAnimationState;
 	m_pAnimationState = newState;
 	m_pAnimationState->OnEnter();
+}
+
+AnimationState* Animator::LoadNewStateFromEnum(const AnimationStates& animationStateToTransitionTo)
+{
+	switch (animationStateToTransitionTo)
+	{
+	case AnimationStates::idle:
+		return new IdleState(this);
+		break;
+	case AnimationStates::dead:
+		return new DeadState(this);
+		break;
+	default:
+		return nullptr;
+		break;
+	}
 }

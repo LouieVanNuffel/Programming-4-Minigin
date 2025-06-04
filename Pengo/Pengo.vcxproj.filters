@@ -33,18 +33,6 @@
     <ClCompile Include="Animator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="IdleState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LeftState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RightState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UpState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HealthComponent.h">
@@ -87,15 +75,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DeadState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LeftState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RightState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UpState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

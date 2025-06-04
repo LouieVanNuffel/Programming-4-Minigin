@@ -13,8 +13,6 @@ public:
 		m_Texture = dae::ResourceManager::GetInstance().LoadTexture("PengoRed.png");
 	}
 
-	virtual AnimationState* GetNewState() override;
-
 	virtual void Update() override
 	{
 
@@ -28,29 +26,6 @@ public:
 	virtual void OnExit() override
 	{
 
-	}
-
-	virtual void Notify(const dae::Event& event, const dae::GameObject*) override
-	{
-		if (event.id == dae::make_sdbm_hash("PlayerDied"))
-		{
-			m_StateToTransitionTo = AnimationStates::dead;
-		}
-
-		if (event.id == dae::make_sdbm_hash("PlayerLeft"))
-		{
-			m_StateToTransitionTo = AnimationStates::left;
-		}
-
-		if (event.id == dae::make_sdbm_hash("PlayerRight"))
-		{
-			m_StateToTransitionTo = AnimationStates::right;
-		}
-
-		if (event.id == dae::make_sdbm_hash("PlayerUp"))
-		{
-			m_StateToTransitionTo = AnimationStates::up;
-		}
 	}
 
 private:

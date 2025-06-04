@@ -2,6 +2,7 @@
 #include "Component.h"
 #include "Observer.h"
 #include "RenderComponent.h"
+#include "AnimationState.h"
 
 class AnimationState;
 class Animator final : public dae::Component, public dae::Observer
@@ -27,4 +28,5 @@ private:
 	dae::RenderComponent* m_pRenderComponent;
 
 	void EnterNewState(AnimationState* newState);
+	AnimationState* LoadNewStateFromEnum(const AnimationStates& animationStateToTransitionTo);
 };

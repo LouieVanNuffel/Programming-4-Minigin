@@ -13,17 +13,6 @@ public:
 		m_Texture = dae::ResourceManager::GetInstance().LoadTexture("PengoDead.png");
 	}
 
-	virtual AnimationState* GetNewState() override
-	{
-		/*switch (m_StateToTransitionTo)
-		{
-		default:
-			return nullptr;
-			break;
-		}*/
-		return nullptr;
-	}
-
 	virtual void Update() override
 	{
 
@@ -37,11 +26,6 @@ public:
 	virtual void OnExit() override
 	{
 
-	}
-
-	virtual void Notify(const dae::Event&, const dae::GameObject*) override
-	{
-		
 	}
 
 private:

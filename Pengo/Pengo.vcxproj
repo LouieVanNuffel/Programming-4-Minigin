@@ -160,22 +160,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Animator.cpp" />
-    <ClCompile Include="IdleState.cpp" />
-    <ClCompile Include="LeftState.cpp" />
     <ClCompile Include="LivesDisplayComponent.cpp" />
     <ClCompile Include="Pengo.cpp" />
     <ClCompile Include="PointsDisplayComponent.cpp" />
-    <ClCompile Include="RightState.cpp" />
     <ClCompile Include="RotationComponent.cpp" />
     <ClCompile Include="ThrashTheCacheComponent.cpp" />
-    <ClCompile Include="UpState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animator.h" />
     <ClInclude Include="DeadState.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="IdleState.h" />
-    <ClInclude Include="LeftState.h" />
     <ClInclude Include="LivesDisplayComponent.h" />
     <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="PickUpPointCommand.h" />
@@ -183,11 +178,9 @@
     <ClInclude Include="PlaySoundCommand.h" />
     <ClInclude Include="PointComponent.h" />
     <ClInclude Include="PointsDisplayComponent.h" />
-    <ClInclude Include="RightState.h" />
     <ClInclude Include="RotationComponent.h" />
     <ClInclude Include="TakeDamageCommand.h" />
     <ClInclude Include="ThrashTheCacheComponent.h" />
-    <ClInclude Include="UpState.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
