@@ -105,7 +105,7 @@ void Load()
 	textureComponent = std::make_unique<dae::RenderComponent>(characterObject2.get());
 	animator = std::make_unique<Animator>(characterObject2.get());
 	subjectComponent->AddObserver(animator.get());
-	textureComponent->SetTexture("characterSprites.png", SDL_Rect{ 0, 0, 16, 16 });
+	textureComponent->SetTexture("characterSprites.png", SDL_Rect{ 8*16, 0, 16, 16 });
 	characterObject2->AddComponent(std::move(healthComponent));
 	characterObject2->AddComponent(std::move(pointComponent));
 	characterObject2->AddComponent(std::move(subjectComponent));
