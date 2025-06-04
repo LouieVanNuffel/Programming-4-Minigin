@@ -25,6 +25,7 @@ public:
 
 private:
 	AnimationState* m_pAnimationState;
+	AnimationStates m_CurrentAnimationStateEnum = AnimationStates::idle;
 	dae::RenderComponent* m_pRenderComponent;
 
 	void EnterNewState(AnimationState* newState);

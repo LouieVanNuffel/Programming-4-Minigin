@@ -4,7 +4,7 @@
 
 enum class AnimationStates
 {
-	idle, dead
+	idle, dead, moving
 };
 
 class Animator;
@@ -28,6 +28,11 @@ public:
 
 	virtual void Notify(const dae::Event& event, const dae::GameObject*) override
 	{
+		if (event.id == dae::make_sdbm_hash("PlayerMoved"))
+		{
+			m_StateToTransitionTo = AnimationStates::moving;
+		}
+
 		if (event.id == dae::make_sdbm_hash("PlayerDied"))
 		{
 			m_StateToTransitionTo = AnimationStates::dead;

@@ -173,6 +173,7 @@
     <ClInclude Include="IdleState.h" />
     <ClInclude Include="LivesDisplayComponent.h" />
     <ClInclude Include="MoveCommand.h" />
+    <ClInclude Include="MovingState.h" />
     <ClInclude Include="PickUpPointCommand.h" />
     <ClInclude Include="AnimationState.h" />
     <ClInclude Include="PlaySoundCommand.h" />

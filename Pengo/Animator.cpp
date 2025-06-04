@@ -2,6 +2,7 @@
 #include "AnimationState.h"
 #include "IdleState.h"
 #include "DeadState.h"
+#include "MovingState.h"
 #include "GameObject.h"
 
 using namespace dae;
@@ -54,13 +55,21 @@ void Animator::EnterNewState(AnimationState* newState)
 
 AnimationState* Animator::LoadNewStateFromEnum(const AnimationStates& animationStateToTransitionTo)
 {
+	if (m_CurrentAnimationStateEnum == animationStateToTransitionTo) return nullptr;
+
 	switch (animationStateToTransitionTo)
 	{
 	case AnimationStates::idle:
+		m_CurrentAnimationStateEnum = animationStateToTransitionTo;
 		return new IdleState(this);
 		break;
 	case AnimationStates::dead:
+		m_CurrentAnimationStateEnum = animationStateToTransitionTo;
 		return new DeadState(this);
+		break;
+	case AnimationStates::moving:
+		m_CurrentAnimationStateEnum = animationStateToTransitionTo;
+		return new MovingState(this);
 		break;
 	default:
 		return nullptr;

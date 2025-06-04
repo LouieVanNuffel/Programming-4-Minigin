@@ -77,5 +77,8 @@
     <ClInclude Include="DeadState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MovingState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

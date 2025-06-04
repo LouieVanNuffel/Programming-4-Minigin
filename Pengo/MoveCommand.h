@@ -23,6 +23,8 @@ namespace dae
 
 			if (m_pSubject != nullptr)
 			{
+				m_pSubject->NotifyObservers(Event{ make_sdbm_hash("PlayerMoved") });
+
 				if (m_DirectionX < 0) m_pSubject->NotifyObservers(Event{ make_sdbm_hash("PlayerLeft") });
 				else if (m_DirectionX > 0) m_pSubject->NotifyObservers(Event{ make_sdbm_hash("PlayerRight") });
 				else if (m_DirectionY > 0) m_pSubject->NotifyObservers(Event{ make_sdbm_hash("PlayerDown") });
