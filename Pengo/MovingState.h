@@ -8,10 +8,9 @@ class MovingState final : public AnimationState
 {
 public:
 	MovingState(Animator* animator)
-		:AnimationState(animator), m_Texture{}
+		:AnimationState(animator)
 	{
 		m_StateToTransitionTo = AnimationStates::moving;
-		m_Texture = dae::ResourceManager::GetInstance().LoadTexture("PengoUp.png");
 	}
 
 	virtual void Update() override
@@ -21,15 +20,15 @@ public:
 
 	virtual void OnEnter() override
 	{
-		m_pAnimator->SetTexture(m_Texture);
-		std::cout << "g" << std::endl;
+		m_pAnimator->AddSourceRectPosition(m_SourceRectOffsetX, m_SourceRectOffsetY);
 	}
 
 	virtual void OnExit() override
 	{
-
+		m_pAnimator->AddSourceRectPosition(-m_SourceRectOffsetX, -m_SourceRectOffsetY);
 	}
 
 private:
-	std::shared_ptr<dae::Texture2D> m_Texture;
+	int m_SourceRectOffsetX{ 4 * 16 };
+	int m_SourceRectOffsetY{ 0 };
 };

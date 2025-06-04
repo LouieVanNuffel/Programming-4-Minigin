@@ -45,6 +45,11 @@ void Animator::SetTexture(std::shared_ptr<Texture2D> texture)
 	if (m_pRenderComponent != nullptr) m_pRenderComponent->SetTexture(texture);
 }
 
+void Animator::AddSourceRectPosition(int x, int y)
+{
+	if (m_pRenderComponent != nullptr) m_pRenderComponent->AddSourceRectPosition(x, y);
+}
+
 void Animator::EnterNewState(AnimationState* newState)
 {
 	m_pAnimationState->OnExit();

@@ -3,6 +3,7 @@
 
 #include "Component.h"
 #include "Texture2D.h"
+#include <SDL_rect.h>
 
 namespace dae
 {
@@ -30,9 +31,16 @@ namespace dae
 		virtual void RenderUI() const override;
 
 		void SetTexture(const std::string& filename);
+		void SetTexture(const std::string& filename, const SDL_Rect& sourceRect);
 		void SetTexture(std::shared_ptr<Texture2D> texture);
 
+		void SetSourceRect(const SDL_Rect& sourceRect);
+		void SetSourceRectPosition(int x, int y);
+		void AddSourceRectPosition(int x, int y);
+		void SetSourceRectSize(int w, int h);
+
 	private:
+		SDL_Rect m_SourceRect{};
 		std::shared_ptr<Texture2D> m_texture{ nullptr };
 	};
 }

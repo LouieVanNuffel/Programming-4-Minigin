@@ -89,7 +89,7 @@ void Load()
 	auto animator = std::make_unique<Animator>(characterObject1.get());
 	subjectComponent->AddObserver(animator.get());
 	textureComponent = std::make_unique<dae::RenderComponent>(characterObject1.get());
-	textureComponent->SetTexture("PengoRed.png");
+	textureComponent->SetTexture("characterSprites.png", SDL_Rect{ 0, 0, 16, 16 });
 	characterObject1->AddComponent(std::move(healthComponent));
 	characterObject1->AddComponent(std::move(pointComponent));
 	characterObject1->AddComponent(std::move(subjectComponent));
@@ -105,7 +105,7 @@ void Load()
 	textureComponent = std::make_unique<dae::RenderComponent>(characterObject2.get());
 	animator = std::make_unique<Animator>(characterObject2.get());
 	subjectComponent->AddObserver(animator.get());
-	textureComponent->SetTexture("PengoGreen.png");
+	textureComponent->SetTexture("characterSprites.png", SDL_Rect{ 0, 0, 16, 16 });
 	characterObject2->AddComponent(std::move(healthComponent));
 	characterObject2->AddComponent(std::move(pointComponent));
 	characterObject2->AddComponent(std::move(subjectComponent));

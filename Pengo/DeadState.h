@@ -7,10 +7,9 @@ class DeadState final : public AnimationState
 {
 public:
 	DeadState(Animator* animator)
-		:AnimationState(animator), m_Texture{}
+		:AnimationState(animator)
 	{
 		m_StateToTransitionTo = AnimationStates::dead;
-		m_Texture = dae::ResourceManager::GetInstance().LoadTexture("PengoDead.png");
 	}
 
 	virtual void Update() override
@@ -20,14 +19,15 @@ public:
 
 	virtual void OnEnter() override
 	{
-		m_pAnimator->SetTexture(m_Texture);
+		m_pAnimator->AddSourceRectPosition(m_SourceRectOffsetX, m_SourceRectOffsetY);
 	}
 
 	virtual void OnExit() override
 	{
-
+		m_pAnimator->AddSourceRectPosition(-m_SourceRectOffsetX, -m_SourceRectOffsetY);
 	}
 
 private:
-	std::shared_ptr<dae::Texture2D> m_Texture;
+	int m_SourceRectOffsetX{ 5 * 16 };
+	int m_SourceRectOffsetY{ 3 * 16 };
 };
