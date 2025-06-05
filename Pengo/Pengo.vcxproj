@@ -160,6 +160,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Animator.cpp" />
+    <ClCompile Include="Level.cpp" />
     <ClCompile Include="LivesDisplayComponent.cpp" />
     <ClCompile Include="Pengo.cpp" />
     <ClCompile Include="PointsDisplayComponent.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="DeadState.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="IdleState.h" />
+    <ClInclude Include="Level.h" />
     <ClInclude Include="LivesDisplayComponent.h" />
     <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="MovingState.h" />
