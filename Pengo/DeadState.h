@@ -30,6 +30,11 @@ public:
 
 	}
 
+	virtual void Notify(const dae::Event&, const dae::GameObject*) override
+	{
+		// Does nothing because once dead, no state transitions should happen anymore
+	}
+
 private:
 	int m_SourceRectOffsetX{ 0 };
 	int m_SourceRectOffsetY{ 2 * 16 };
