@@ -8,7 +8,7 @@
 using namespace dae;
 
 Animator::Animator(dae::GameObject* gameObject)
-	:Component(gameObject), m_pAnimationState{}, m_pRenderComponent{}
+	:Component(gameObject)
 {
 	m_pAnimationState = new IdleState(this);
 }
@@ -22,6 +22,8 @@ Animator::~Animator()
 void Animator::Start()
 {
 	m_pRenderComponent = m_gameObject->GetComponent<dae::RenderComponent>();
+
+	assert(m_pRenderComponent);
 }
 
 void Animator::Update()
@@ -45,9 +47,9 @@ void Animator::SetTexture(std::shared_ptr<Texture2D> texture)
 	if (m_pRenderComponent != nullptr) m_pRenderComponent->SetTexture(texture);
 }
 
-void Animator::AddSourceRectPosition(int x, int y)
+void Animator::AddSourceRectPositionToStartPosition(int x, int y)
 {
-	if (m_pRenderComponent != nullptr) m_pRenderComponent->AddSourceRectPosition(x, y);
+	if (m_pRenderComponent != nullptr) m_pRenderComponent->AddSourceRectToStartPosition(x, y);
 }
 
 void Animator::EnterNewState(AnimationState* newState)

@@ -1,0 +1,41 @@
+#pragma once
+#include "Component.h"
+#include "glm.hpp"
+
+// This component just tracks the velocity of a gameobject and notifies observers about the current velocity
+
+namespace dae
+{
+	class Subject;
+	class GameObject;
+	class VelocityComponent final : public Component
+	{
+	public:
+
+		//Constructor
+		VelocityComponent(GameObject* gameObject);
+
+		//Destructor
+		virtual ~VelocityComponent() override;
+
+		//Rule of 5
+		VelocityComponent(const VelocityComponent& other) = delete;
+		VelocityComponent(VelocityComponent&& other) = delete;
+		VelocityComponent& operator=(const VelocityComponent& other) = delete;
+		VelocityComponent& operator=(VelocityComponent&& other) = delete;
+
+		virtual void Start() override;
+		virtual void Update() override;
+		virtual void LateUpdate() override;
+		virtual void Render() const override;
+		virtual void RenderUI() const override;
+
+		const glm::vec3& GetVelocity() const;
+
+	private:
+		glm::vec3 m_Velocity{};
+		glm::vec3 m_PositionLastFrame{};
+		glm::vec3 m_PositionThisFrame{};
+		Subject* m_pSubject{ nullptr };
+	};
+}

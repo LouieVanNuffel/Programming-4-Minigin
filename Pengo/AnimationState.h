@@ -1,6 +1,7 @@
 #pragma once
 #include "Observer.h"
 #include "Event.h"
+#include "AnimationSequence.h"
 
 enum class AnimationStates
 {
@@ -12,9 +13,18 @@ class AnimationState : public dae::Observer
 {
 public:
 	AnimationState(Animator* animator)
-		: m_pAnimator{ animator }, m_StateToTransitionTo{}
+		: m_pAnimator{ animator }
 	{
 
+	}
+
+	~AnimationState()
+	{
+		if (m_pAnimationSequence != nullptr)
+		{
+			delete m_pAnimationSequence;
+			m_pAnimationSequence = nullptr;
+		}
 	}
 
 	const AnimationStates& GetNewStateToTransitionTo()
@@ -33,6 +43,11 @@ public:
 			m_StateToTransitionTo = AnimationStates::moving;
 		}
 
+		if (event.id == dae::make_sdbm_hash("PlayerDidNotMove"))
+		{
+			m_StateToTransitionTo = AnimationStates::idle;
+		}
+
 		if (event.id == dae::make_sdbm_hash("PlayerDied"))
 		{
 			m_StateToTransitionTo = AnimationStates::dead;
@@ -41,5 +56,6 @@ public:
 
 protected:
 	Animator* m_pAnimator;
-	AnimationStates m_StateToTransitionTo;
+	AnimationStates m_StateToTransitionTo{};
+	AnimationSequence* m_pAnimationSequence{ nullptr };
 };

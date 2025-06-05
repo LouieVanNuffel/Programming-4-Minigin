@@ -22,12 +22,12 @@ public:
 	virtual void Notify(const dae::Event& event, const dae::GameObject* gameObject) override;
 
 	void SetTexture(std::shared_ptr<dae::Texture2D> texture);
-	void AddSourceRectPosition(int x, int y);
+	void AddSourceRectPositionToStartPosition(int x, int y);
 
 private:
-	AnimationState* m_pAnimationState;
+	AnimationState* m_pAnimationState{ nullptr };
 	AnimationStates m_CurrentAnimationStateEnum = AnimationStates::idle;
-	dae::RenderComponent* m_pRenderComponent;
+	dae::RenderComponent* m_pRenderComponent{ nullptr };
 
 	void EnterNewState(AnimationState* newState);
 	AnimationState* LoadNewStateFromEnum(const AnimationStates& animationStateToTransitionTo);

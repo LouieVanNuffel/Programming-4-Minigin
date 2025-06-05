@@ -48,6 +48,7 @@ void RenderComponent::SetTexture(const std::string& filename, const SDL_Rect& so
 {
 	m_texture = ResourceManager::GetInstance().LoadTexture(filename);
 	SetSourceRect(sourceRect);
+	m_StartSourceRect = sourceRect;
 }
 
 void dae::RenderComponent::SetTexture(std::shared_ptr<Texture2D> texture)
@@ -64,6 +65,11 @@ void dae::RenderComponent::SetSourceRect(const SDL_Rect& sourceRect)
 void dae::RenderComponent::AddSourceRectPosition(int x, int y)
 {
 	SetSourceRectPosition(m_SourceRect.x + x, m_SourceRect.y + y);
+}
+
+void dae::RenderComponent::AddSourceRectToStartPosition(int x, int y)
+{
+	SetSourceRectPosition(m_StartSourceRect.x + x, m_StartSourceRect.y + y);
 }
 
 void dae::RenderComponent::SetSourceRectPosition(int x, int y)

@@ -230,6 +230,7 @@
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="EngineTime.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="VelocityComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\3rdParty\imgui-1.91.8\backends\imgui_impl_opengl3.cpp" />
@@ -258,6 +259,7 @@
     <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="VelocityComponent.cpp" />
     <ClCompile Include="XInputImpl.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

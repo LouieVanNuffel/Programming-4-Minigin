@@ -10,21 +10,24 @@ public:
 		:AnimationState(animator)
 	{
 		m_StateToTransitionTo = AnimationStates::idle;
+		m_pAnimationSequence = new AnimationSequence(16, 0, 8, 1, false);
 	}
 
 	virtual void Update() override
 	{
-
+		m_pAnimationSequence->Update();
+		m_pAnimator->AddSourceRectPositionToStartPosition(m_SourceRectOffsetX + m_pAnimationSequence->GetOffsetX(),
+			m_SourceRectOffsetY + m_pAnimationSequence->GetOffsetY());
 	}
 
 	virtual void OnEnter() override
 	{
-		m_pAnimator->AddSourceRectPosition(m_SourceRectOffsetX, m_SourceRectOffsetY);
+		
 	}
 
 	virtual void OnExit() override
 	{
-		m_pAnimator->AddSourceRectPosition(-m_SourceRectOffsetX, -m_SourceRectOffsetY);
+
 	}
 
 private:

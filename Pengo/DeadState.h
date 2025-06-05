@@ -10,24 +10,27 @@ public:
 		:AnimationState(animator)
 	{
 		m_StateToTransitionTo = AnimationStates::dead;
+		m_pAnimationSequence = new AnimationSequence(16, 0, 8, 2, true);
 	}
 
 	virtual void Update() override
 	{
-
+		m_pAnimationSequence->Update();
+		m_pAnimator->AddSourceRectPositionToStartPosition(m_SourceRectOffsetX + m_pAnimationSequence->GetOffsetX(), 
+														  m_SourceRectOffsetY + m_pAnimationSequence->GetOffsetY());
 	}
 
 	virtual void OnEnter() override
 	{
-		m_pAnimator->AddSourceRectPosition(m_SourceRectOffsetX, m_SourceRectOffsetY);
+		
 	}
 
 	virtual void OnExit() override
 	{
-		m_pAnimator->AddSourceRectPosition(-m_SourceRectOffsetX, -m_SourceRectOffsetY);
+
 	}
 
 private:
-	int m_SourceRectOffsetX{ 5 * 16 };
-	int m_SourceRectOffsetY{ 3 * 16 };
+	int m_SourceRectOffsetX{ 0 };
+	int m_SourceRectOffsetY{ 2 * 16 };
 };

@@ -37,10 +37,12 @@ namespace dae
 		void SetSourceRect(const SDL_Rect& sourceRect);
 		void SetSourceRectPosition(int x, int y);
 		void AddSourceRectPosition(int x, int y);
+		void AddSourceRectToStartPosition(int x, int y);
 		void SetSourceRectSize(int w, int h);
 
 	private:
 		SDL_Rect m_SourceRect{};
+		SDL_Rect m_StartSourceRect{};
 		std::shared_ptr<Texture2D> m_texture{ nullptr };
 	};
 }
