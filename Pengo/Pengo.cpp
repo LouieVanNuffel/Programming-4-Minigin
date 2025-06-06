@@ -53,7 +53,7 @@ void Load()
 	//Level
 	Level level{ "Levels/Level1.pengo", 16, 1.5f, 150, 50 };
 	const std::vector<std::shared_ptr<GameObject>>& levelGameObjects = level.LoadLevelGameObjects();
-	for (int index{}; index < levelGameObjects.size(); ++index)
+	for (uint32_t index{}; index < levelGameObjects.size(); ++index)
 	{
 		scene.Add(levelGameObjects[index]);
 	}
@@ -77,7 +77,7 @@ void Load()
 	scene.Add(fpsObject);
 
 	//Characters
-	PengoCharacter pengo1{PengoColor::red};
+	PengoCharacter pengo1{ PengoColor::red };
 	auto characterObject1 = pengo1.GetCharacterObject();
 	characterObject1->SetPosition(180.0f, 180.0f);
 	scene.Add(characterObject1);

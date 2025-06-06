@@ -52,9 +52,9 @@ void Level::LoadInBlockTypesPerTileBinary(const std::string& filePath)
 	std::streamsize fileSize = inputFile.tellg();
 	inputFile.seekg(0, std::ios::beg);
 	
-	size_t numberOfBlocks = fileSize / sizeof(BlockType);
+	size_t numberOfBlocks = static_cast<size_t>(fileSize / sizeof(BlockType));
 
-	for (int index{}; index < numberOfBlocks; ++index)
+	for (uint32_t index{}; index < numberOfBlocks; ++index)
 	{
 		BlockType raw{};
 		inputFile.read(reinterpret_cast<char*>(&raw), sizeof(BlockType));
@@ -81,7 +81,7 @@ void Level::SaveLevelToFile(const std::string& filePath)
 		return;
 	}
 
-	for (int index{}; index < m_BlockTypesPerTile.size(); ++index)
+	for (uint32_t index{}; index < m_BlockTypesPerTile.size(); ++index)
 	{
 		outputFile.write(reinterpret_cast<const char*>(&m_BlockTypesPerTile[index]), sizeof(BlockType));
 	}
@@ -103,7 +103,7 @@ const std::vector<std::shared_ptr<dae::GameObject>>& Level::LoadLevelGameObjects
 	m_LevelGameObjects.emplace_back(backgroundObject);
 
 	// Add Blocks
-	for (int index{}; index < m_BlockTypesPerTile.size(); ++index)
+	for (uint32_t index{}; index < m_BlockTypesPerTile.size(); ++index)
 	{
 		auto blockObject = std::make_shared<dae::GameObject>();
 		// The half block offset is because the edge of the background is half a block
