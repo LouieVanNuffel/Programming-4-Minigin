@@ -25,9 +25,9 @@ void CollisionSystem::RemoveCollider(BoxColliderComponent* boxColliderComponent)
 
 void CollisionSystem::Update()
 {
-	for (int index1{}; index1 < m_BoxColliderComponents.size(); ++index1)
+	for (uint32_t index1{}; index1 < m_BoxColliderComponents.size(); ++index1)
 	{
-		for (int index2{index1 + 1}; index2 < m_BoxColliderComponents.size(); ++index2)
+		for (uint32_t index2{index1 + 1}; index2 < m_BoxColliderComponents.size(); ++index2)
 		{
 			if (m_BoxColliderComponents[index1] == m_BoxColliderComponents[index2]) continue;
 			if (!MovedThisFrame(m_BoxColliderComponents[index1]) && !MovedThisFrame(m_BoxColliderComponents[index2])) continue;
