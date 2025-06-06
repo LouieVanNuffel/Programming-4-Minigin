@@ -25,20 +25,20 @@ void CollisionSystem::RemoveCollider(BoxColliderComponent* boxColliderComponent)
 
 void CollisionSystem::Update()
 {
-	for (BoxColliderComponent* boxColliderComponent1 : m_BoxColliderComponents)
+	for (int index1{}; index1 < m_BoxColliderComponents.size(); ++index1)
 	{
-		for (BoxColliderComponent* boxColliderComponent2 : m_BoxColliderComponents)
+		for (int index2{}; index2 < m_BoxColliderComponents.size(); ++index2)
 		{
-			if (boxColliderComponent1 == boxColliderComponent2) continue;
+			if (m_BoxColliderComponents[index1] == m_BoxColliderComponents[index2]) continue;
 
-			BoxCollider collider1 = boxColliderComponent1->BoxDimensions();
-			BoxCollider collider2 = boxColliderComponent2->BoxDimensions();
+			BoxCollider collider1 = m_BoxColliderComponents[index1]->BoxDimensions();
+			BoxCollider collider2 = m_BoxColliderComponents[index2]->BoxDimensions();
 
 			if (AreColliding(collider1, collider2))
 			{
-				boxColliderComponent1->CallOnCollisionEnter(*boxColliderComponent2);
-				boxColliderComponent2->CallOnCollisionEnter(*boxColliderComponent1);
-				MoveColliders(boxColliderComponent1, boxColliderComponent2);
+				m_BoxColliderComponents[index1]->CallOnCollisionEnter(*m_BoxColliderComponents[index2]);
+				m_BoxColliderComponents[index2]->CallOnCollisionEnter(*m_BoxColliderComponents[index1]);
+				MoveColliders(m_BoxColliderComponents[index1], m_BoxColliderComponents[index2]);
 			}
 		}
 	}
@@ -100,50 +100,32 @@ void dae::CollisionSystem::MoveColliders(BoxColliderComponent* boxColliderCompon
 
 	if (objectType1 == ObjectType::immovable && objectType2 == ObjectType::immovable) return;
 
+	BoxCollider collider1 = boxColliderComponent1->BoxDimensions();
+	BoxCollider collider2 = boxColliderComponent2->BoxDimensions();
+
+	float overlapX = OverlapX(collider1, collider2);
+	float overlapY = OverlapY(collider1, collider2);
+
+	// Only move on the axis of least penetration to avoid glitchyness
+	if (overlapX < overlapY) overlapY = 0;
+	else overlapX = 0;
+
 	if (objectType1 == ObjectType::movable && objectType2 == ObjectType::immovable)
 	{
-		BoxCollider collider1 = boxColliderComponent1->BoxDimensions();
-		BoxCollider collider2 = boxColliderComponent2->BoxDimensions();
-
-		float overlapX = OverlapX(collider1, collider2);
-		float overlapY = OverlapY(collider1, collider2);
-
-		if (overlapX < overlapY) overlapY = 0;
-		else overlapX = 0;
-
 		boxColliderComponent1->Move(DirectionX(collider2, collider1) * overlapX, DirectionY(collider2, collider1) * overlapY);
-
 		return;
 	}
 
 	if (objectType1 == ObjectType::immovable && objectType2 == ObjectType::movable)
 	{
-		BoxCollider collider1 = boxColliderComponent1->BoxDimensions();
-		BoxCollider collider2 = boxColliderComponent2->BoxDimensions();
-
-		float overlapX = OverlapX(collider1, collider2);
-		float overlapY = OverlapY(collider1, collider2);
-
-		if (overlapX < overlapY) overlapY = 0;
-		else overlapX = 0;
-
 		boxColliderComponent2->Move(DirectionX(collider1, collider2) * overlapX, DirectionY(collider1, collider2) * overlapY);
-
 		return;
 	}
 
 	if (objectType1 == ObjectType::movable && objectType2 == ObjectType::movable)
 	{
-		BoxCollider collider1 = boxColliderComponent1->BoxDimensions();
-		BoxCollider collider2 = boxColliderComponent2->BoxDimensions();
-
-		float overlapX = OverlapX(collider1, collider2);
-		float overlapY = OverlapY(collider1, collider2);
-
-		if (overlapX < overlapY) overlapY = 0;
-		else overlapX = 0;
-
 		boxColliderComponent1->Move(DirectionX(collider2, collider1) * overlapX * 0.5f, DirectionY(collider2, collider1) * overlapY * 0.5f);
 		boxColliderComponent2->Move(DirectionX(collider1, collider2) * overlapX * 0.5f, DirectionY(collider1, collider2) * overlapY * 0.5f);
+		return;
 	}
 }
