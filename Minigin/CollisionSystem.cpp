@@ -27,7 +27,7 @@ void CollisionSystem::Update()
 {
 	for (int index1{}; index1 < m_BoxColliderComponents.size(); ++index1)
 	{
-		for (int index2{}; index2 < m_BoxColliderComponents.size(); ++index2)
+		for (int index2{index1 + 1}; index2 < m_BoxColliderComponents.size(); ++index2)
 		{
 			if (m_BoxColliderComponents[index1] == m_BoxColliderComponents[index2]) continue;
 
