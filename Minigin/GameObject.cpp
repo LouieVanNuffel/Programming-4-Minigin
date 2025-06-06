@@ -3,6 +3,7 @@
 #include "ResourceManager.h"
 #include "Renderer.h"
 #include "Observer.h"
+#include "BoxColliderComponent.h"
 
 dae::GameObject::~GameObject()
 {
@@ -62,6 +63,14 @@ void dae::GameObject::RenderUI() const
 	for (auto& component : m_components)
 	{
 		component->RenderUI();
+	}
+}
+
+void dae::GameObject::OnCollisionEnter(const BoxColliderComponent& other)
+{
+	for (auto& component : m_components)
+	{
+		component->OnCollisionEnter(other);
 	}
 }
 

@@ -9,6 +9,7 @@ namespace dae
 	struct Event;
 	class Observer;
 	class Texture2D;
+	class BoxColliderComponent;
 	class GameObject final
 	{
 	public:
@@ -18,6 +19,7 @@ namespace dae
 		virtual void LateUpdate();
 		virtual void Render() const;
 		virtual void RenderUI() const;
+		virtual void OnCollisionEnter(const BoxColliderComponent& other);
 
 		void SetPosition(float x, float y);
 

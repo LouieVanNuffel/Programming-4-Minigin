@@ -11,6 +11,7 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include "EngineTime.h"
+#include "CollisionSystem.h"
 
 #include <thread>
 
@@ -94,6 +95,7 @@ void dae::Minigin::Run(const std::function<void()>& Load)
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
+	auto& collisionSystem = CollisionSystem::GetInstance();
 
 	if (!m_HasStarted) sceneManager.Start(), m_HasStarted = true; // Call start
 
@@ -115,6 +117,7 @@ void dae::Minigin::Run(const std::function<void()>& Load)
 			lag -= m_FixedTimeStep;
 		}
 		sceneManager.Update();
+		collisionSystem.Update();
 		sceneManager.LateUpdate();
 		renderer.Render();
 		const auto sleep_time = current_time + std::chrono::milliseconds(m_MillisecondsPerFrame) - 

@@ -35,6 +35,7 @@
 #include "VelocityComponent.h"
 #include "Level.h"
 #include "PengoCharacter.h"
+#include "CollisionSystem.h"
 
 using namespace dae;
 
@@ -79,7 +80,7 @@ void Load()
 	//Characters
 	PengoCharacter pengo1{ PengoColor::red };
 	auto characterObject1 = pengo1.GetCharacterObject();
-	characterObject1->SetPosition(180.0f, 180.0f);
+	characterObject1->SetPosition(200.0f, 180.0f);
 	scene.Add(characterObject1);
 
 	PengoCharacter pengo2{ PengoColor::green };

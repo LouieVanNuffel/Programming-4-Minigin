@@ -9,11 +9,9 @@
 namespace dae
 {
 	class GameObject;
-
 	class TextComponent : public Component
 	{
 	public:
-
 		//Constructor
 		TextComponent(const std::string& text, std::shared_ptr<Font> font, GameObject* gameObject);
 

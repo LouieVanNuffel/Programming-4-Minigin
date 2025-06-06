@@ -5,6 +5,7 @@
 #include "Subject.h"
 #include "VelocityComponent.h"
 #include "Animator.h"
+#include "BoxColliderComponent.h"
 
 using namespace dae;
 
@@ -20,6 +21,7 @@ PengoCharacter::PengoCharacter(PengoColor pengoColor)
 	auto textureComponent = std::make_unique<dae::RenderComponent>(m_CharacterObject.get());
 	textureComponent->SetTexture("characterSprites.png", 
 								SDL_Rect{ GetTextureOffsetX(pengoColor), GetTextureOffsetY(pengoColor), 16, 16}, 1.5f);
+	auto boxColliderComponent = std::make_unique<BoxColliderComponent>(16 * 1.5f, 16 * 1.5f, ObjectType::movable, m_CharacterObject.get());
 
 	m_CharacterObject->AddComponent(std::move(healthComponent));
 	m_CharacterObject->AddComponent(std::move(pointComponent));
@@ -27,6 +29,7 @@ PengoCharacter::PengoCharacter(PengoColor pengoColor)
 	m_CharacterObject->AddComponent(std::move(textureComponent));
 	m_CharacterObject->AddComponent(std::move(velocityComponent));
 	m_CharacterObject->AddComponent(std::move(animator));
+	m_CharacterObject->AddComponent(std::move(boxColliderComponent));
 }
 
 std::shared_ptr<dae::GameObject> PengoCharacter::GetCharacterObject()

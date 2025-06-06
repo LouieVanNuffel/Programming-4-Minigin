@@ -4,6 +4,7 @@
 namespace dae
 {
 	class GameObject;
+	class BoxColliderComponent;
 	class Component
 	{
 	public:
@@ -12,6 +13,7 @@ namespace dae
 		virtual void LateUpdate() = 0;
 		virtual void Render() const = 0;
 		virtual void RenderUI() const = 0;
+		virtual void OnCollisionEnter(const BoxColliderComponent&) {};
 
 		explicit Component(GameObject* gameObject)
 			:m_gameObject{ gameObject }
