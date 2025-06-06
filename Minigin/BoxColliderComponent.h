@@ -46,12 +46,14 @@ namespace dae
 		void CallOnCollisionEnter(const BoxColliderComponent& other);
 		const BoxCollider& BoxDimensions() const;
 		const ObjectType& GetObjectType() const;
+		const glm::vec3& Velocity() const;
 
 	private:
 		void UpdatePosition();
 
 		BoxCollider m_BoxDimensions{};
 		ObjectType m_ObjectType;
+		VelocityComponent* m_pVelocityComponent{ nullptr };
 
 	};
 }

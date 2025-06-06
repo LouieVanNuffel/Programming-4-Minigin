@@ -30,6 +30,7 @@ void CollisionSystem::Update()
 		for (int index2{index1 + 1}; index2 < m_BoxColliderComponents.size(); ++index2)
 		{
 			if (m_BoxColliderComponents[index1] == m_BoxColliderComponents[index2]) continue;
+			if (!MovedThisFrame(m_BoxColliderComponents[index1]) && !MovedThisFrame(m_BoxColliderComponents[index2])) continue;
 
 			BoxCollider collider1 = m_BoxColliderComponents[index1]->BoxDimensions();
 			BoxCollider collider2 = m_BoxColliderComponents[index2]->BoxDimensions();
@@ -91,6 +92,17 @@ float dae::CollisionSystem::DistanceX(const BoxCollider& box1, const BoxCollider
 float dae::CollisionSystem::DistanceY(const BoxCollider& box1, const BoxCollider& box2) const
 {
 	return fabsf(box1.centerY - box2.centerY);
+}
+
+bool dae::CollisionSystem::MovedThisFrame(const BoxColliderComponent* boxColliderComponent) const
+{
+	if (fabsf(boxColliderComponent->Velocity().x) < FLT_EPSILON
+		&& fabsf(boxColliderComponent->Velocity().y) < FLT_EPSILON)
+	{
+		return false;
+	}
+
+	return true;
 }
 
 void dae::CollisionSystem::MoveColliders(BoxColliderComponent* boxColliderComponent1, BoxColliderComponent* boxColliderComponent2)

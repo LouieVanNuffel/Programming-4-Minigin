@@ -38,6 +38,8 @@ namespace dae
 		float DistanceX(const BoxCollider& box1, const BoxCollider& box2) const;
 		float DistanceY(const BoxCollider& box1, const BoxCollider& box2) const;
 
+		bool MovedThisFrame(const BoxColliderComponent* boxColliderComponent) const;
+
 		void MoveColliders(BoxColliderComponent* boxColliderComponent1, BoxColliderComponent* boxColliderComponent2);
 
 		std::vector<BoxColliderComponent*> m_BoxColliderComponents{};
