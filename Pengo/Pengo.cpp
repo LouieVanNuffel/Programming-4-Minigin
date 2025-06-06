@@ -44,7 +44,7 @@ void Load()
 #else
 	ServiceLocator::register_sound_system(std::make_unique<QueuedSoundSystem>());
 #endif
-	Level level{ "Levels/Level0.pengo" };
+	Level level{ "Levels/Level1.pengo" };
 
 	auto& ss = ServiceLocator::get_sound_system();
 	ss.AddAudioClip(0, "../Data/CreditSound.wav");

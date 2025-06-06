@@ -23,7 +23,8 @@ private:
 		none, ice, egg, diamond
 	};
 
-	void LoadInBlockTypesPerTile(const std::string& filePath);
+	void LoadInBlockTypesPerTileText(const std::string& filePath);
+	void LoadInBlockTypesPerTileBinary(const std::string& filePath);
 	void SaveLevelToFile(const std::string& filePath);
 
 	int m_NumberOfRows{ 15 };
