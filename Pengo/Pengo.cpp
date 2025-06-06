@@ -34,6 +34,7 @@
 #include "Animator.h"
 #include "VelocityComponent.h"
 #include "Level.h"
+#include "PengoCharacter.h"
 
 using namespace dae;
 
@@ -44,27 +45,18 @@ void Load()
 #else
 	ServiceLocator::register_sound_system(std::make_unique<QueuedSoundSystem>());
 #endif
-	Level level{ "Levels/Level1.pengo" };
-
 	auto& ss = ServiceLocator::get_sound_system();
 	ss.AddAudioClip(0, "../Data/CreditSound.wav");
 
 	auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
 
-	//Background
-	auto backgroundObject = std::make_shared<dae::GameObject>();
-	auto textureComponent = std::make_unique<dae::RenderComponent>(backgroundObject.get());
-	textureComponent->SetTexture("background.tga");
-	backgroundObject->AddComponent(std::move(textureComponent));
-	scene.Add(backgroundObject);
-
-	//DAE Picture
-	auto logoObject = std::make_shared<dae::GameObject>();
-	textureComponent = std::make_unique<dae::RenderComponent>(logoObject.get());
-	textureComponent->SetTexture("logo.tga");
-	logoObject->SetPosition(320, 180);
-	logoObject->AddComponent(std::move(textureComponent));
-	scene.Add(logoObject);
+	//Level
+	Level level{ "Levels/Level1.pengo", 16, 1.5f, 150, 50 };
+	const std::vector<std::shared_ptr<GameObject>>& levelGameObjects = level.LoadLevelGameObjects();
+	for (int index{}; index < levelGameObjects.size(); ++index)
+	{
+		scene.Add(levelGameObjects[index]);
+	}
 
 	//Assignment Text
 	auto textObject = std::make_shared<dae::GameObject>();
@@ -85,42 +77,14 @@ void Load()
 	scene.Add(fpsObject);
 
 	//Characters
-	auto characterObject1 = std::make_shared<dae::GameObject>();
-	auto healthComponent = std::make_unique<HealthComponent>(characterObject1.get());
-	auto pointComponent = std::make_unique<PointComponent>(characterObject1.get());
-	auto subjectComponent = std::make_unique<Subject>(characterObject1.get());
-	auto velocityComponent = std::make_unique<VelocityComponent>(characterObject1.get());
-	auto animator = std::make_unique<Animator>(characterObject1.get());
-	subjectComponent->AddObserver(animator.get());
-	textureComponent = std::make_unique<dae::RenderComponent>(characterObject1.get());
-	textureComponent->SetTexture("characterSprites.png", SDL_Rect{ 0, 0, 16, 16 });
-
-	characterObject1->AddComponent(std::move(healthComponent));
-	characterObject1->AddComponent(std::move(pointComponent));
-	characterObject1->AddComponent(std::move(subjectComponent));
-	characterObject1->AddComponent(std::move(textureComponent));
-	characterObject1->AddComponent(std::move(velocityComponent));
-	characterObject1->AddComponent(std::move(animator));
-	characterObject1->SetPosition(180, 180);
+	PengoCharacter pengo1{PengoColor::red};
+	auto characterObject1 = pengo1.GetCharacterObject();
+	characterObject1->SetPosition(180.0f, 180.0f);
 	scene.Add(characterObject1);
 
-	auto characterObject2 = std::make_shared<dae::GameObject>();
-	healthComponent = std::make_unique<HealthComponent>(characterObject2.get());
-	pointComponent = std::make_unique<PointComponent>(characterObject2.get());
-	subjectComponent = std::make_unique<Subject>(characterObject2.get());
-	textureComponent = std::make_unique<dae::RenderComponent>(characterObject2.get());
-	velocityComponent = std::make_unique<VelocityComponent>(characterObject2.get());
-	animator = std::make_unique<Animator>(characterObject2.get());
-	subjectComponent->AddObserver(animator.get());
-	textureComponent->SetTexture("characterSprites.png", SDL_Rect{ 8*16, 0, 16, 16 });
-
-	characterObject2->AddComponent(std::move(healthComponent));
-	characterObject2->AddComponent(std::move(pointComponent));
-	characterObject2->AddComponent(std::move(subjectComponent));
-	characterObject2->AddComponent(std::move(textureComponent));
-	characterObject2->AddComponent(std::move(velocityComponent));
-	characterObject2->AddComponent(std::move(animator));
-	characterObject2->SetPosition(160, 180);
+	PengoCharacter pengo2{ PengoColor::green };
+	auto characterObject2 = pengo2.GetCharacterObject();
+	characterObject2->SetPosition(160.0f, 180.0f);
 	scene.Add(characterObject2);
 
 	// Display Controls

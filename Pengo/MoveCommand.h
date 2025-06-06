@@ -16,8 +16,8 @@ namespace dae
 
 		virtual void Execute() override
 		{
-			glm::vec3 currentPosition{ GetGameObject()->GetTransform().GetPosition()};
-			GetGameObject()->SetPosition(currentPosition.x + m_DirectionX * m_Speed * Time::GetInstance().GetDeltaTime(),
+			glm::vec3 currentPosition{ GetCharacterObject()->GetTransform().GetPosition()};
+			GetCharacterObject()->SetPosition(currentPosition.x + m_DirectionX * m_Speed * Time::GetInstance().GetDeltaTime(),
 				currentPosition.y + m_DirectionY * m_Speed * Time::GetInstance().GetDeltaTime());
 		}
 

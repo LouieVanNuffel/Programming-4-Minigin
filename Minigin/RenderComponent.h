@@ -30,9 +30,9 @@ namespace dae
 		virtual void Render() const override;
 		virtual void RenderUI() const override;
 
-		void SetTexture(const std::string& filename);
-		void SetTexture(const std::string& filename, const SDL_Rect& sourceRect);
-		void SetTexture(std::shared_ptr<Texture2D> texture);
+		void SetTexture(const std::string& filename, float scale = 1.0f);
+		void SetTexture(const std::string& filename, const SDL_Rect& sourceRect, float scale = 1.0f);
+		void SetTexture(std::shared_ptr<Texture2D> texture, float scale = 1.0f);
 
 		void SetSourceRect(const SDL_Rect& sourceRect);
 		void SetSourceRectPosition(int x, int y);
@@ -43,6 +43,7 @@ namespace dae
 	private:
 		SDL_Rect m_SourceRect{};
 		SDL_Rect m_StartSourceRect{};
+		float m_Scale{};
 		std::shared_ptr<Texture2D> m_texture{ nullptr };
 	};
 }

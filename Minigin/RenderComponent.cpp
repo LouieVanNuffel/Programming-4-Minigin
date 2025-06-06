@@ -31,28 +31,31 @@ void RenderComponent::Render() const
 	if (auto gameObject = m_gameObject)
 	{
 		const auto& pos = gameObject->GetWorldPosition();
-		if (m_SourceRect.w == 0 || m_SourceRect.h == 0) Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y);
-		else Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y, m_SourceRect);
+		if (m_SourceRect.w == 0 || m_SourceRect.h == 0) Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y, m_Scale);
+		else Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y, m_SourceRect, m_Scale);
 	}
 }
 
 void dae::RenderComponent::RenderUI() const {}
 
 
-void RenderComponent::SetTexture(const std::string& filename)
+void RenderComponent::SetTexture(const std::string& filename, float scale)
 {
+	m_Scale = scale;
 	m_texture = ResourceManager::GetInstance().LoadTexture(filename);
 }
 
-void RenderComponent::SetTexture(const std::string& filename, const SDL_Rect& sourceRect)
+void RenderComponent::SetTexture(const std::string& filename, const SDL_Rect& sourceRect, float scale)
 {
+	m_Scale = scale;
 	m_texture = ResourceManager::GetInstance().LoadTexture(filename);
 	SetSourceRect(sourceRect);
 	m_StartSourceRect = sourceRect;
 }
 
-void dae::RenderComponent::SetTexture(std::shared_ptr<Texture2D> texture)
+void dae::RenderComponent::SetTexture(std::shared_ptr<Texture2D> texture, float scale)
 {
+	m_Scale = scale;
 	m_texture = texture;
 }
 

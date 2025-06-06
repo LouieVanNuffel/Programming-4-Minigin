@@ -163,6 +163,7 @@
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LivesDisplayComponent.cpp" />
     <ClCompile Include="Pengo.cpp" />
+    <ClCompile Include="PengoCharacter.cpp" />
     <ClCompile Include="PointsDisplayComponent.cpp" />
     <ClCompile Include="RotationComponent.cpp" />
     <ClCompile Include="ThrashTheCacheComponent.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="LivesDisplayComponent.h" />
     <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="MovingState.h" />
+    <ClInclude Include="PengoCharacter.h" />
     <ClInclude Include="PickUpPointCommand.h" />
     <ClInclude Include="AnimationState.h" />
     <ClInclude Include="PlaySoundCommand.h" />

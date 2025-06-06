@@ -8,7 +8,7 @@ namespace dae
 	{
 		GameObject* m_GameObject;
 	protected:
-		GameObject* GetGameObject() const { return m_GameObject; }
+		GameObject* GetCharacterObject() const { return m_GameObject; }
 	public:
 		GameObjectCommand(GameObject* gameObject)
 		:m_GameObject{ gameObject } {}

@@ -1,8 +1,11 @@
 #include "Level.h"
 #include "fstream"
+#include "GameObject.h"
+#include "RenderComponent.h"
 #include <iostream>
 
-Level::Level(const std::string& filePath)
+Level::Level(const std::string& filePath, int blockSize, float scale, int offsetX, int offsetY)
+	:m_BlockSize{ static_cast<int>(blockSize * scale) }, m_Scale{ scale }, m_OffsetX{ offsetX }, m_OffsetY{ offsetY }
 {
 	LoadInBlockTypesPerTileBinary("../Data/" + filePath);
 }
@@ -84,4 +87,43 @@ void Level::SaveLevelToFile(const std::string& filePath)
 	}
 
 	outputFile.close();
+}
+
+const std::vector<std::shared_ptr<dae::GameObject>>& Level::LoadLevelGameObjects()
+{
+	m_LevelGameObjects.clear();
+	m_LevelGameObjects.reserve(m_BlockTypesPerTile.size());
+
+	// Add background
+	auto backgroundObject = std::make_shared<dae::GameObject>();
+	auto textureComponent = std::make_unique<dae::RenderComponent>(backgroundObject.get());
+	textureComponent->SetTexture("levels.png", SDL_Rect{ 0, 0, 224, 256 }, m_Scale);
+	backgroundObject->AddComponent(std::move(textureComponent));
+	backgroundObject->SetPosition(static_cast<float>(m_OffsetX), static_cast<float>(m_OffsetY));
+	m_LevelGameObjects.emplace_back(backgroundObject);
+
+	// Add Blocks
+	for (int index{}; index < m_BlockTypesPerTile.size(); ++index)
+	{
+		auto blockObject = std::make_shared<dae::GameObject>();
+		// The half block offset is because the edge of the background is half a block
+		blockObject->SetPosition(static_cast<float>(m_OffsetX + m_BlockSize * 0.5f + GetColumnIndexFromVectorIndex(index) * m_BlockSize),
+								static_cast<float>(m_OffsetY + m_BlockSize * 0.5f + GetRowIndexFromVectorIndex(index) * m_BlockSize));
+		textureComponent = std::make_unique<dae::RenderComponent>(blockObject.get());
+		textureComponent->SetTexture("blocks.png", SDL_Rect{ 0, 0, 16, 16 }, m_Scale);
+		blockObject->AddComponent(std::move(textureComponent));
+		m_LevelGameObjects.emplace_back(blockObject);
+	}
+
+	return m_LevelGameObjects;
+}
+
+int Level::GetRowIndexFromVectorIndex(int index) const
+{
+	return index / m_NumberOfColumns;
+}
+
+int Level::GetColumnIndexFromVectorIndex(int index) const
+{
+	return index - (GetRowIndexFromVectorIndex(index) * m_NumberOfColumns);
 }
