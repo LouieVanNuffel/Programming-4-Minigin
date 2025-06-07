@@ -23,6 +23,31 @@ void CollisionSystem::RemoveCollider(BoxColliderComponent* boxColliderComponent)
 	m_BoxColliderComponents.erase(it);
 }
 
+bool dae::CollisionSystem::PerformRaycast(const Raycast& raycast, HitInfo& hitInfo_Out)
+{
+	for (const BoxColliderComponent* boxColiderComponent : m_BoxColliderComponents)
+	{
+		const BoxCollider& boxCollider = boxColiderComponent->BoxDimensions();
+		float currentX{};
+		float currentY{};
+
+		for (float currentDistance{}; currentDistance <= raycast.distance; currentDistance += 0.5f)
+		{
+			currentX = raycast.startX + (raycast.directionX * currentDistance);
+			currentY = raycast.startY + (raycast.directionY * currentDistance);
+			if (AreColliding(currentX, currentY, boxCollider))
+			{
+				hitInfo_Out.x = currentX;
+				hitInfo_Out.y = currentY;
+				hitInfo_Out.other = boxColiderComponent;
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
 void CollisionSystem::Update()
 {
 	for (uint32_t index1{}; index1 < m_BoxColliderComponents.size(); ++index1)
@@ -49,6 +74,17 @@ bool dae::CollisionSystem::AreColliding(const BoxCollider& box1, const BoxCollid
 {
 	if (DistanceX(box1, box2) <= (box1.width * 0.5f + box2.width * 0.5f)
 		&& DistanceY(box1, box2) <= (box1.height * 0.5f + box2.height * 0.5f))
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool dae::CollisionSystem::AreColliding(float positionX, float positionY, const BoxCollider& box) const
+{
+	if (positionX >= box.x && positionX <= box.x + box.width
+		&& positionY >= box.y && positionY <= box.y + box.height)
 	{
 		return true;
 	}

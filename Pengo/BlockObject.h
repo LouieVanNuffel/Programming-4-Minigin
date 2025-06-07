@@ -1,15 +1,11 @@
 #pragma once
 #include <memory>
+#include "BlockComponent.h"
 
 namespace dae
 {
 	class GameObject;
 }
-
-enum class BlockType
-{
-	none, ice, egg, diamond
-};
 
 class BlockObject
 {

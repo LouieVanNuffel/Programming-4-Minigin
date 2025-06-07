@@ -4,6 +4,11 @@
 #include "RenderComponent.h"
 #include "AnimationState.h"
 
+enum class Direction
+{
+	up, down, left, right
+};
+
 class AnimationState;
 class Animator final : public dae::Component, public dae::Observer
 {
@@ -24,10 +29,14 @@ public:
 	void SetTexture(std::shared_ptr<dae::Texture2D> texture);
 	void AddSourceRectPositionToStartPosition(int x, int y);
 
+	const Direction& GetDirection() const;
+
 private:
 	AnimationState* m_pAnimationState{ nullptr };
 	AnimationStates m_CurrentAnimationStateEnum = AnimationStates::idle;
 	dae::RenderComponent* m_pRenderComponent{ nullptr };
+	
+	Direction m_Direction{ Direction::up };
 
 	void EnterNewState(AnimationState* newState);
 	AnimationState* LoadNewStateFromEnum(const AnimationStates& animationStateToTransitionTo);

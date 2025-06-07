@@ -55,6 +55,11 @@ const glm::vec3 dae::BoxColliderComponent::Velocity() const
 	return glm::vec3{};
 }
 
+const dae::GameObject* dae::BoxColliderComponent::GetGameObject() const
+{
+	return m_gameObject;
+}
+
 void dae::BoxColliderComponent::UpdatePosition()
 {
 	glm::vec3 gameObjectPosition = m_gameObject->GetWorldPosition();

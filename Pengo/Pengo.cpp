@@ -36,6 +36,7 @@
 #include "Level.h"
 #include "PengoCharacter.h"
 #include "CollisionSystem.h"
+#include "PushCommand.h"
 
 using namespace dae;
 
@@ -167,6 +168,7 @@ void Load()
 	auto moveRightCommand = std::make_unique<MoveCommand>(characterObject1.get(), 1.f, 0.f, 50.f);
 	auto inflictDamage = std::make_unique<TakeDamageCommand>(characterObject1.get(), 50.f);
 	auto pickUpPoint = std::make_unique<PickUpPointCommand>(characterObject1.get(), 1);
+	auto pushCommand = std::make_unique<PushCommand>(characterObject1.get());
 
 	//Commands (sound)
 	auto creditSoundCommand = std::make_unique<PlaySoundCommand>(SoundId{ 0 }, 100.0f);
@@ -178,6 +180,7 @@ void Load()
 	InputManager::GetInstance().BindCommandToKeyboard(std::move(inflictDamage), SDL_SCANCODE_C);
 	InputManager::GetInstance().BindCommandToKeyboard(std::move(pickUpPoint), SDL_SCANCODE_Z);
 	InputManager::GetInstance().BindCommandToKeyboard(std::move(creditSoundCommand), SDL_SCANCODE_Z);
+	InputManager::GetInstance().BindCommandToKeyboard(std::move(pushCommand), SDL_SCANCODE_SPACE);
 
 	moveUpCommand = std::make_unique<MoveCommand>(characterObject2.get(), 0.f, -1.f, 100.f);
 	moveDownCommand = std::make_unique<MoveCommand>(characterObject2.get(), 0.f, 1.f, 100.f);
@@ -185,6 +188,7 @@ void Load()
 	moveRightCommand = std::make_unique<MoveCommand>(characterObject2.get(), 1.f, 0.f, 100.f);
 	inflictDamage = std::make_unique<TakeDamageCommand>(characterObject2.get(), 50.f);
 	pickUpPoint = std::make_unique<PickUpPointCommand>(characterObject2.get(), 1);
+	pushCommand = std::make_unique<PushCommand>(characterObject2.get());
 
 	creditSoundCommand = std::make_unique<PlaySoundCommand>(SoundId{0}, 100.0f);
 
@@ -195,6 +199,7 @@ void Load()
 	InputManager::GetInstance().BindCommandToController(std::move(inflictDamage), XINPUT_GAMEPAD_X, PollType::IsPressed, 0);
 	InputManager::GetInstance().BindCommandToController(std::move(pickUpPoint), XINPUT_GAMEPAD_A, PollType::IsPressed, 0);
 	InputManager::GetInstance().BindCommandToController(std::move(creditSoundCommand), XINPUT_GAMEPAD_A, PollType::IsPressed, 0);
+	InputManager::GetInstance().BindCommandToController(std::move(pushCommand), XINPUT_GAMEPAD_B, PollType::IsPressed, 0);
 }
 
 int main(int, char* []) {

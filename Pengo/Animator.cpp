@@ -40,6 +40,26 @@ void Animator::Notify(const Event& event, const dae::GameObject* gameObject)
 	m_pAnimationState->Notify(event, gameObject);
 	AnimationState* newState = LoadNewStateFromEnum(m_pAnimationState->GetNewStateToTransitionTo());
 	if (newState != nullptr) EnterNewState(newState);
+
+	if (event.id == dae::make_sdbm_hash("PlayerMovedLeft"))
+	{
+		m_Direction = Direction::left;
+	}
+
+	if (event.id == dae::make_sdbm_hash("PlayerMovedRight"))
+	{
+		m_Direction = Direction::right;
+	}
+
+	if (event.id == dae::make_sdbm_hash("PlayerMovedUp"))
+	{
+		m_Direction = Direction::up;
+	}
+
+	if (event.id == dae::make_sdbm_hash("PlayerMovedDown"))
+	{
+		m_Direction = Direction::down;
+	}
 }
 
 void Animator::SetTexture(std::shared_ptr<Texture2D> texture)
@@ -50,6 +70,11 @@ void Animator::SetTexture(std::shared_ptr<Texture2D> texture)
 void Animator::AddSourceRectPositionToStartPosition(int x, int y)
 {
 	if (m_pRenderComponent != nullptr) m_pRenderComponent->AddSourceRectToStartPosition(x, y);
+}
+
+const Direction& Animator::GetDirection() const
+{
+	return m_Direction;
 }
 
 void Animator::EnterNewState(AnimationState* newState)

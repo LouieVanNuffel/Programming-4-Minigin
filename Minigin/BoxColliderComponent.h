@@ -47,6 +47,7 @@ namespace dae
 		const BoxCollider& BoxDimensions() const;
 		const ObjectType& GetObjectType() const;
 		const glm::vec3 Velocity() const;
+		const GameObject* GetGameObject() const;
 
 	private:
 		void UpdatePosition();

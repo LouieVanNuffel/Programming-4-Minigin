@@ -6,6 +6,23 @@ namespace dae
 {
 	class BoxColliderComponent;
 	struct BoxCollider;
+
+	struct HitInfo
+	{
+		float x;
+		float y;
+		const BoxColliderComponent* other = nullptr;
+	};
+
+	struct Raycast
+	{
+		float startX;
+		float startY;
+		int directionX;
+		int directionY;
+		float distance;
+	};
+
 	class CollisionSystem final : public Singleton<CollisionSystem>
 	{
 	public:
@@ -24,10 +41,13 @@ namespace dae
 		void AddCollider(BoxColliderComponent* boxColliderComponent);
 		void RemoveCollider(BoxColliderComponent* boxColliderComponent);
 
+		bool PerformRaycast(const Raycast& raycast, HitInfo& hitInfo_Out);
+
 		void Update();
 
 	private:
 		bool AreColliding(const BoxCollider& box1, const BoxCollider& box2) const;
+		bool AreColliding(float positionX, float positionY, const BoxCollider& box) const;
 
 		float OverlapX(const BoxCollider& box1, const BoxCollider& box2) const;
 		float OverlapY(const BoxCollider& box1, const BoxCollider& box2) const;
