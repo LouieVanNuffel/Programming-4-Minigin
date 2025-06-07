@@ -19,7 +19,7 @@ BlockObject::BlockObject(BlockType blockType, int blockSize, float positionX, fl
 		sourceRect = SDL_Rect{ 0, 0, 32, 32 };
 		break;
 	case BlockType::diamond:
-		sourceRect = SDL_Rect{ 32 * 2, 32 * 2, 32, 32 };
+		sourceRect = SDL_Rect{ 32 * 2, 32 * 1, 32, 32 };
 		break;
 	default:
 		break;

@@ -50,7 +50,7 @@ void RenderComponent::SetTexture(const std::string& filename, const SDL_Rect& so
 	m_Scale = scale;
 	m_texture = ResourceManager::GetInstance().LoadTexture(filename);
 	SetSourceRect(sourceRect);
-	m_StartSourceRect = sourceRect;
+	SetStartSourceRect(sourceRect);
 }
 
 void dae::RenderComponent::SetTexture(std::shared_ptr<Texture2D> texture, float scale)
@@ -61,34 +61,40 @@ void dae::RenderComponent::SetTexture(std::shared_ptr<Texture2D> texture, float 
 
 void dae::RenderComponent::SetSourceRect(const SDL_Rect& sourceRect)
 {
-	SetSourceRectPosition(sourceRect.x, sourceRect.y);
-	SetSourceRectSize(sourceRect.w, sourceRect.h);
+	SetSourceRectPosition(sourceRect.x, sourceRect.y, m_SourceRect);
+	SetSourceRectSize(sourceRect.w, sourceRect.h, m_SourceRect);
+}
+
+void dae::RenderComponent::SetStartSourceRect(const SDL_Rect& sourceRect)
+{
+	SetSourceRectPosition(sourceRect.x, sourceRect.y, m_StartSourceRect);
+	SetSourceRectSize(sourceRect.w, sourceRect.h, m_StartSourceRect);
 }
 
 void dae::RenderComponent::AddSourceRectPosition(int x, int y)
 {
-	SetSourceRectPosition(m_SourceRect.x + x, m_SourceRect.y + y);
+	SetSourceRectPosition(m_SourceRect.x + x, m_SourceRect.y + y, m_SourceRect);
 }
 
 void dae::RenderComponent::AddSourceRectToStartPosition(int x, int y)
 {
-	SetSourceRectPosition(m_StartSourceRect.x + x, m_StartSourceRect.y + y);
+	SetSourceRectPosition(m_StartSourceRect.x + x, m_StartSourceRect.y + y, m_SourceRect);
 }
 
-void dae::RenderComponent::SetSourceRectPosition(int x, int y)
+void dae::RenderComponent::SetSourceRectPosition(int x, int y, SDL_Rect& sourceRect)
 {
 	assert(x >= 0 && y >= 0
 		&& x <= m_texture->GetSize().x && y <= m_texture->GetSize().y);
 
-	m_SourceRect.x = x;
-	m_SourceRect.y = y;
+	sourceRect.x = x;
+	sourceRect.y = y;
 }
 
-void dae::RenderComponent::SetSourceRectSize(int w, int h)
+void dae::RenderComponent::SetSourceRectSize(int w, int h, SDL_Rect& sourceRect)
 {
 	assert(w >= 0 && h >= 0
 		&& w <= m_texture->GetSize().x && h <= m_texture->GetSize().y);
 
-	m_SourceRect.w = w;
-	m_SourceRect.h = h;
+	sourceRect.w = w;
+	sourceRect.h = h;
 }

@@ -33,6 +33,8 @@ public:
 	int GetOffsetX() const { return m_FrameOffsetX * m_OffsetPerFrameX; };
 	int GetOffsetY() const { return m_FrameOffsetY * m_OffsetPerFrameY; };
 
+	bool Finished() const { return !m_IsAnimating; };
+
 private:
 	int m_FrameOffsetX{};
 	int m_FrameOffsetY{};

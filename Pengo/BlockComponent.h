@@ -1,9 +1,11 @@
 #pragma once
 #include "Component.h"
+#include "AnimationSequence.h"
 
 namespace dae
 {
 	class BoxColliderComponent;
+	class RenderComponent;
 }
 
 enum class BlockType
@@ -33,13 +35,18 @@ public:
 	virtual void RenderUI() const override {};
 
 	void Push(int directionX, int directionY);
+	void Break();
 
 private:
-	void PerformRaycast();
+	bool PerformRaycast();
 	void SetPositionNextToBlock(const dae::BoxColliderComponent* other);
 	void SetPositionNextToWall(float x, float y);
+	void UpdateBreakAnimation();
 
 	dae::BoxColliderComponent* m_pBoxColliderComponent{ nullptr };
+	
+	dae::RenderComponent* m_pRenderComponent{ nullptr };
+	AnimationSequence m_BreakAnimationSequence{ 32, 0, 8, 8, false };
 
 	BlockType m_BlockType;
 
@@ -48,6 +55,8 @@ private:
 	int m_DirectionX{};
 	int m_DirectionY{};
 	bool m_IsMoving{ false };
+	bool m_IsBroken{ false };
+	bool m_IsDead{ false };
 
 };
 
