@@ -3,12 +3,13 @@
 #include "GameObject.h"
 #include "RenderComponent.h"
 #include "BoxColliderComponent.h"
+#include "BlockObject.h"
 #include <iostream>
 
 Level::Level(const std::string& filePath, int blockSize, float scale, int offsetX, int offsetY)
 	:m_BlockSize{ static_cast<int>(blockSize * scale) }, m_Scale{ scale }, m_OffsetX{ offsetX }, m_OffsetY{ offsetY }
 {
-	LoadInBlockTypesPerTileBinary("../Data/" + filePath);
+	LoadInBlockTypesPerTileText("../Data/" + filePath);
 }
 
 void Level::LoadInBlockTypesPerTileText(const std::string& filePath)
@@ -103,20 +104,19 @@ const std::vector<std::shared_ptr<dae::GameObject>>& Level::LoadLevelGameObjects
 	backgroundObject->SetPosition(static_cast<float>(m_OffsetX), static_cast<float>(m_OffsetY));
 	m_LevelGameObjects.emplace_back(backgroundObject);
 
+	// Add border colliders
+	AddBorderColliders();
+
 	// Add Blocks
 	for (uint32_t index{}; index < m_BlockTypesPerTile.size(); ++index)
 	{
-		auto blockObject = std::make_shared<dae::GameObject>();
-		// The half block offset is because the edge of the background is half a block
-		blockObject->SetPosition(static_cast<float>(m_OffsetX + m_BlockSize * 0.5f + GetColumnIndexFromVectorIndex(index) * m_BlockSize),
-								static_cast<float>(m_OffsetY + m_BlockSize * 0.5f + GetRowIndexFromVectorIndex(index) * m_BlockSize));
-		textureComponent = std::make_unique<dae::RenderComponent>(blockObject.get());
-		textureComponent->SetTexture("blocks.png", SDL_Rect{ 0, 0, 16, 16 }, m_Scale);
+		if (m_BlockTypesPerTile[index] == BlockType::none) continue;
 
-		auto boxColliderComponent = std::make_unique<dae::BoxColliderComponent>(static_cast<float>(m_BlockSize), static_cast<float>(m_BlockSize), 
-																				dae::ObjectType::immovable, blockObject.get());
-		blockObject->AddComponent(std::move(textureComponent));
-		blockObject->AddComponent(std::move(boxColliderComponent));
+		// Position adds half a block size as extra offset for the background border
+		float positionX = static_cast<float>(m_OffsetX + m_BlockSize * 0.5f + GetColumnIndexFromVectorIndex(index) * m_BlockSize);
+		float positionY = static_cast<float>(m_OffsetY + m_BlockSize * 0.5f + GetRowIndexFromVectorIndex(index) * m_BlockSize);
+
+		auto blockObject = BlockObject{ m_BlockTypesPerTile[index], m_BlockSize, positionX, positionY, m_Scale }.GetGameObject();
 		m_LevelGameObjects.emplace_back(blockObject);
 	}
 
@@ -131,4 +131,34 @@ int Level::GetRowIndexFromVectorIndex(int index) const
 int Level::GetColumnIndexFromVectorIndex(int index) const
 {
 	return index - (GetRowIndexFromVectorIndex(index) * m_NumberOfColumns);
+}
+
+void Level::AddBorderColliders()
+{
+	//std::vector<std::pair<float, float>> positions =
+	//{
+	//	{m_OffsetX + m_BlockSize * 0.5f, m_OffsetY + m_BlockSize * 0.5f - 50.0f * m_Scale}, // top left
+	//	{m_OffsetX + 224 * m_Scale - m_BlockSize * 0.5f, m_OffsetY + m_BlockSize * 0.5f}, // top right
+	//	{m_OffsetX + m_BlockSize * 0.5f, m_OffsetY + 256 * m_Scale - m_BlockSize * 0.5f}, // bottom left
+	//	{m_OffsetX + 224 * m_Scale - m_BlockSize * 0.5f, m_OffsetY + 256 * m_Scale - m_BlockSize * 0.5f} // bottom right
+	//};
+
+	//std::pair<float, float> horizontalBorder = std::make_pair(224.0f * m_Scale, 50.0f * m_Scale);
+	//std::pair<float, float> verticalBorder = std::make_pair(50.0f * m_Scale, 256.0f * m_Scale);
+
+	//float width{};
+	//float height{};
+
+	//for (uint32_t index{}; index < positions.size(); ++index)
+	//{
+	//	auto object = std::make_shared<dae::GameObject>();
+	//	object->SetPosition(positions[index].first, positions[index].second);
+
+	//	if (index == 0 || index == 2) width = horizontalBorder.first, height = horizontalBorder.second;
+	//	else width = verticalBorder.first, height = verticalBorder.second;
+
+	//	auto boxColliderComponent = std::make_unique<dae::BoxColliderComponent>(width, height, dae::ObjectType::immovable, object.get());
+	//	object->AddComponent(std::move(boxColliderComponent));
+	//	m_LevelGameObjects.emplace_back(object);
+	}
 }

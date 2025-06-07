@@ -160,6 +160,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Animator.cpp" />
+    <ClCompile Include="BlockObject.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LivesDisplayComponent.cpp" />
     <ClCompile Include="Pengo.cpp" />
@@ -171,6 +172,7 @@
   <ItemGroup>
     <ClInclude Include="AnimationSequence.h" />
     <ClInclude Include="Animator.h" />
+    <ClInclude Include="BlockObject.h" />
     <ClInclude Include="DeadState.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="IdleState.h" />

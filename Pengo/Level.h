@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include "BlockObject.h"
 
 namespace dae
 {
@@ -26,17 +27,14 @@ public:
 	const std::vector<std::shared_ptr<dae::GameObject>>& LoadLevelGameObjects();
 
 private:
-	enum class BlockType
-	{
-		none, ice, egg, diamond
-	};
-
 	void LoadInBlockTypesPerTileText(const std::string& filePath);
 	void LoadInBlockTypesPerTileBinary(const std::string& filePath);
 	void SaveLevelToFile(const std::string& filePath);
 
 	int GetRowIndexFromVectorIndex(int index) const;
 	int GetColumnIndexFromVectorIndex(int index) const;
+
+	void AddBorderColliders();
 
 	int m_NumberOfRows{ 15 };
 	int m_NumberOfColumns{ 13 };

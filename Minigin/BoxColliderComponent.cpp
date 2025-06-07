@@ -17,14 +17,7 @@ void dae::BoxColliderComponent::Start()
 {
 	UpdatePosition();
 
-	// Force velocity component onto gameObject, if there isn't one already
 	m_pVelocityComponent = m_gameObject->GetComponent<VelocityComponent>();
-	if (m_pVelocityComponent == nullptr)
-	{
-		auto velocityComponent = std::make_unique<VelocityComponent>(m_gameObject);
-		m_pVelocityComponent = velocityComponent.get();
-		m_gameObject->AddComponent(std::move(velocityComponent));
-	}
 }
 
 void dae::BoxColliderComponent::Update()
@@ -56,9 +49,10 @@ const dae::ObjectType& dae::BoxColliderComponent::GetObjectType() const
 	return m_ObjectType;
 }
 
-const glm::vec3& dae::BoxColliderComponent::Velocity() const
+const glm::vec3 dae::BoxColliderComponent::Velocity() const
 {
-	return m_pVelocityComponent->GetVelocity();
+	if (m_pVelocityComponent != nullptr) return m_pVelocityComponent->GetVelocity();
+	return glm::vec3{};
 }
 
 void dae::BoxColliderComponent::UpdatePosition()
