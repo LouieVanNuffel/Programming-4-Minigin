@@ -79,6 +79,17 @@ void dae::GameObject::SetPosition(float x, float y)
 	SetLocalPosition(glm::vec3{ x, y , 0.0f });
 }
 
+void dae::GameObject::SetWorldPosition(float x, float y)
+{
+	glm::vec3 worldPosition = GetWorldPosition();
+
+	float differenceX = x - worldPosition.x;
+	float differenceY = y - worldPosition.y;
+
+	glm::vec3 currentLocalPosition = GetTransform().GetPosition();
+	SetPosition(currentLocalPosition.x + differenceX, currentLocalPosition.y + differenceY);
+}
+
 void dae::GameObject::AddComponent(std::unique_ptr<Component> component)
 {
 	assert(component.get() != nullptr);

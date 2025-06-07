@@ -41,7 +41,7 @@ namespace dae
 		void AddCollider(BoxColliderComponent* boxColliderComponent);
 		void RemoveCollider(BoxColliderComponent* boxColliderComponent);
 
-		bool PerformRaycast(const Raycast& raycast, HitInfo& hitInfo_Out);
+		bool PerformRaycast(const Raycast& raycast, HitInfo& hitInfo_Out, const BoxColliderComponent* colliderToIgnore = nullptr);
 
 		void Update();
 

@@ -23,15 +23,17 @@ void CollisionSystem::RemoveCollider(BoxColliderComponent* boxColliderComponent)
 	m_BoxColliderComponents.erase(it);
 }
 
-bool dae::CollisionSystem::PerformRaycast(const Raycast& raycast, HitInfo& hitInfo_Out)
+bool dae::CollisionSystem::PerformRaycast(const Raycast& raycast, HitInfo& hitInfo_Out, const BoxColliderComponent* colliderToIgnore)
 {
 	for (const BoxColliderComponent* boxColiderComponent : m_BoxColliderComponents)
 	{
+		if (boxColiderComponent == colliderToIgnore) continue;
+
 		const BoxCollider& boxCollider = boxColiderComponent->BoxDimensions();
 		float currentX{};
 		float currentY{};
 
-		for (float currentDistance{}; currentDistance <= raycast.distance; currentDistance += 0.5f)
+		for (int currentDistance{}; currentDistance <= raycast.distance; ++currentDistance)
 		{
 			currentX = raycast.startX + (raycast.directionX * currentDistance);
 			currentY = raycast.startY + (raycast.directionY * currentDistance);

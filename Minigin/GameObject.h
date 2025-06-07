@@ -22,6 +22,7 @@ namespace dae
 		virtual void OnCollisionEnter(const BoxColliderComponent& other);
 
 		void SetPosition(float x, float y);
+		void SetWorldPosition(float x, float y);
 
 		void AddComponent(std::unique_ptr<Component> component);
 		void RemoveComponent(Component* component);

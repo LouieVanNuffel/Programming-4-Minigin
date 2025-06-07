@@ -16,20 +16,19 @@ namespace dae
 			:GameObjectCommand(gameObject)
 		{
 			m_pAnimator = gameObject->GetComponent<Animator>();
-			assert(m_pAnimator != nullptr);
+			m_pBoxColliderComponent = gameObject->GetComponent<BoxColliderComponent>();
+			assert(m_pAnimator != nullptr && m_pBoxColliderComponent != nullptr);
 		}
 
 		virtual void Execute() override
 		{
-			if (m_pAnimator == nullptr) return;
+			if (m_pAnimator == nullptr || m_pBoxColliderComponent == nullptr) return;
 
 			Raycast raycast{};
 			InitializeRaycast(raycast);
 
-			std::cout << raycast.directionX << ", " << raycast.directionY << std::endl;
-
 			HitInfo hitInfo_Out{};
-			if (!CollisionSystem::GetInstance().PerformRaycast(raycast, hitInfo_Out)) return;
+			if (!CollisionSystem::GetInstance().PerformRaycast(raycast, hitInfo_Out, m_pBoxColliderComponent)) return;
 			if (hitInfo_Out.other == nullptr) return;
 
 			BlockComponent* blockComponent = hitInfo_Out.other->GetGameObject()->GetComponent<BlockComponent>();
@@ -40,14 +39,15 @@ namespace dae
 
 	private:
 		Animator* m_pAnimator{ nullptr };
+		BoxColliderComponent* m_pBoxColliderComponent{ nullptr };
 		float m_Distance{ 16.0f };
 
 		void InitializeRaycast(Raycast& raycast)
 		{
-			glm::vec3 currentPosition = GetCharacterObject()->GetWorldPosition();
+			BoxCollider boxCollider = m_pBoxColliderComponent->BoxDimensions();
 
-			raycast.startX = currentPosition.x;
-			raycast.startY = currentPosition.y;
+			raycast.startX = boxCollider.centerX;
+			raycast.startY = boxCollider.centerY;
 			raycast.distance = m_Distance;
 
 			switch (m_pAnimator->GetDirection())
