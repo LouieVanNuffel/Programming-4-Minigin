@@ -9,7 +9,8 @@
 Level::Level(const std::string& filePath, int blockSize, float scale, int offsetX, int offsetY)
 	:m_BlockSize{ static_cast<int>(blockSize * scale) }, m_Scale{ scale }, m_OffsetX{ offsetX }, m_OffsetY{ offsetY }
 {
-	LoadInBlockTypesPerTileText("../Data/" + filePath);
+	LoadInBlockTypesPerTileBinary("../Data/" + filePath);
+	SaveLevelToFile("../Data/Levels/Level1.pengo");
 }
 
 void Level::LoadInBlockTypesPerTileText(const std::string& filePath)
@@ -135,30 +136,30 @@ int Level::GetColumnIndexFromVectorIndex(int index) const
 
 void Level::AddBorderColliders()
 {
-	//std::vector<std::pair<float, float>> positions =
-	//{
-	//	{m_OffsetX + m_BlockSize * 0.5f, m_OffsetY + m_BlockSize * 0.5f - 50.0f * m_Scale}, // top left
-	//	{m_OffsetX + 224 * m_Scale - m_BlockSize * 0.5f, m_OffsetY + m_BlockSize * 0.5f}, // top right
-	//	{m_OffsetX + m_BlockSize * 0.5f, m_OffsetY + 256 * m_Scale - m_BlockSize * 0.5f}, // bottom left
-	//	{m_OffsetX + 224 * m_Scale - m_BlockSize * 0.5f, m_OffsetY + 256 * m_Scale - m_BlockSize * 0.5f} // bottom right
-	//};
+	std::vector<std::pair<float, float>> positions =
+	{
+		{m_OffsetX + m_BlockSize * 0.5f, m_OffsetY + m_BlockSize * 0.5f - 50.0f * m_Scale}, // top left horizontal
+		{m_OffsetX + m_BlockSize * 0.5f, m_OffsetY + 256 * m_Scale - m_BlockSize * 0.5f}, // bottom left
+		{m_OffsetX + 224 * m_Scale - m_BlockSize * 0.5f, m_OffsetY + m_BlockSize * 0.5f}, // top right
+		{m_OffsetX + m_BlockSize * 0.5f - 50.0f * m_Scale, m_OffsetY + m_BlockSize * 0.5f} // top left vertical
+	};
 
-	//std::pair<float, float> horizontalBorder = std::make_pair(224.0f * m_Scale, 50.0f * m_Scale);
-	//std::pair<float, float> verticalBorder = std::make_pair(50.0f * m_Scale, 256.0f * m_Scale);
+	std::pair<float, float> horizontalBorder = std::make_pair(224.0f * m_Scale, 50.0f * m_Scale);
+	std::pair<float, float> verticalBorder = std::make_pair(50.0f * m_Scale, 256.0f * m_Scale);
 
-	//float width{};
-	//float height{};
+	float width{};
+	float height{};
 
-	//for (uint32_t index{}; index < positions.size(); ++index)
-	//{
-	//	auto object = std::make_shared<dae::GameObject>();
-	//	object->SetPosition(positions[index].first, positions[index].second);
+	for (uint32_t index{}; index < positions.size(); ++index)
+	{
+		auto object = std::make_shared<dae::GameObject>();
+		object->SetPosition(positions[index].first, positions[index].second);
 
-	//	if (index == 0 || index == 2) width = horizontalBorder.first, height = horizontalBorder.second;
-	//	else width = verticalBorder.first, height = verticalBorder.second;
+		if (index < 2) width = horizontalBorder.first, height = horizontalBorder.second;
+		else width = verticalBorder.first, height = verticalBorder.second;
 
-	//	auto boxColliderComponent = std::make_unique<dae::BoxColliderComponent>(width, height, dae::ObjectType::immovable, object.get());
-	//	object->AddComponent(std::move(boxColliderComponent));
-	//	m_LevelGameObjects.emplace_back(object);
+		auto boxColliderComponent = std::make_unique<dae::BoxColliderComponent>(width, height, dae::ObjectType::immovable, object.get());
+		object->AddComponent(std::move(boxColliderComponent));
+		m_LevelGameObjects.emplace_back(object);
 	}
 }
