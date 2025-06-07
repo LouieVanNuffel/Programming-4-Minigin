@@ -2,6 +2,7 @@
 #include "fstream"
 #include "GameObject.h"
 #include "RenderComponent.h"
+#include "BoxColliderComponent.h"
 #include <iostream>
 
 Level::Level(const std::string& filePath, int blockSize, float scale, int offsetX, int offsetY)
@@ -111,7 +112,11 @@ const std::vector<std::shared_ptr<dae::GameObject>>& Level::LoadLevelGameObjects
 								static_cast<float>(m_OffsetY + m_BlockSize * 0.5f + GetRowIndexFromVectorIndex(index) * m_BlockSize));
 		textureComponent = std::make_unique<dae::RenderComponent>(blockObject.get());
 		textureComponent->SetTexture("blocks.png", SDL_Rect{ 0, 0, 16, 16 }, m_Scale);
+
+		auto boxColliderComponent = std::make_unique<dae::BoxColliderComponent>(static_cast<float>(m_BlockSize), static_cast<float>(m_BlockSize), 
+																				dae::ObjectType::immovable, blockObject.get());
 		blockObject->AddComponent(std::move(textureComponent));
+		blockObject->AddComponent(std::move(boxColliderComponent));
 		m_LevelGameObjects.emplace_back(blockObject);
 	}
 

@@ -32,11 +32,13 @@ void dae::BoxColliderComponent::Update()
 	UpdatePosition();
 }
 
-void dae::BoxColliderComponent::Move(float x, float y)
+void dae::BoxColliderComponent::Move(float x, float y, ObjectType objectType)
 {
 	glm::vec3 currentPosition = m_gameObject->GetTransform().GetPosition();
 	m_gameObject->SetPosition(currentPosition.x + x, currentPosition.y + y);
 	UpdatePosition();
+
+	if (objectType == ObjectType::immovable) m_pVelocityComponent->AddCollisionsOffset(x, y);
 }
 
 void dae::BoxColliderComponent::CallOnCollisionEnter(const BoxColliderComponent& other)

@@ -31,11 +31,15 @@ namespace dae
 		virtual void RenderUI() const override;
 
 		const glm::vec3& GetVelocity() const;
+		void AddCollisionsOffset(float x, float y);
 
 	private:
 		glm::vec3 m_Velocity{};
 		glm::vec3 m_PositionLastFrame{};
 		glm::vec3 m_PositionThisFrame{};
+		// This gets set when position changes because of collision detection with an immovable object
+		// We don't want these position changes to influence our velocity calculation
+		glm::vec3 m_CollisionsOffset{};
 		Subject* m_pSubject{ nullptr };
 	};
 }

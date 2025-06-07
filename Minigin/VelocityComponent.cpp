@@ -32,7 +32,10 @@ void dae::VelocityComponent::LateUpdate()
 {
 	m_PositionLastFrame = m_PositionThisFrame;
 	m_PositionThisFrame = m_gameObject->GetWorldPosition();
-	m_Velocity = m_PositionThisFrame - m_PositionLastFrame;
+	m_Velocity = m_PositionThisFrame - m_PositionLastFrame - m_CollisionsOffset;
+	// reset collisions offset once it's been applied
+	m_CollisionsOffset.x = 0;
+	m_CollisionsOffset.y = 0;
 
 	//std::cout << m_Velocity.x << ", " << m_Velocity.y << ", " << m_Velocity.z << std::endl;
 
@@ -71,4 +74,10 @@ void dae::VelocityComponent::RenderUI() const
 const glm::vec3& dae::VelocityComponent::GetVelocity() const
 {
 	return m_Velocity;
+}
+
+void dae::VelocityComponent::AddCollisionsOffset(float x, float y)
+{
+	m_CollisionsOffset.x += x;
+	m_CollisionsOffset.y += y;
 }

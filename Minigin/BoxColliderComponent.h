@@ -42,7 +42,7 @@ namespace dae
 		virtual void Render() const override {};
 		virtual void RenderUI() const override {};
 
-		void Move(float x, float y);
+		void Move(float x, float y, ObjectType objectType = ObjectType::immovable);
 		void CallOnCollisionEnter(const BoxColliderComponent& other);
 		const BoxCollider& BoxDimensions() const;
 		const ObjectType& GetObjectType() const;

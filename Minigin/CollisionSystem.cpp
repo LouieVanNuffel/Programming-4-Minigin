@@ -124,20 +124,24 @@ void dae::CollisionSystem::MoveColliders(BoxColliderComponent* boxColliderCompon
 
 	if (objectType1 == ObjectType::movable && objectType2 == ObjectType::immovable)
 	{
-		boxColliderComponent1->Move(DirectionX(collider2, collider1) * overlapX, DirectionY(collider2, collider1) * overlapY);
+		boxColliderComponent1->Move(DirectionX(collider2, collider1) * overlapX, 
+									DirectionY(collider2, collider1) * overlapY, ObjectType::immovable);
 		return;
 	}
 
 	if (objectType1 == ObjectType::immovable && objectType2 == ObjectType::movable)
 	{
-		boxColliderComponent2->Move(DirectionX(collider1, collider2) * overlapX, DirectionY(collider1, collider2) * overlapY);
+		boxColliderComponent2->Move(DirectionX(collider1, collider2) * overlapX, 
+									DirectionY(collider1, collider2) * overlapY, ObjectType::immovable);
 		return;
 	}
 
 	if (objectType1 == ObjectType::movable && objectType2 == ObjectType::movable)
 	{
-		boxColliderComponent1->Move(DirectionX(collider2, collider1) * overlapX * 0.5f, DirectionY(collider2, collider1) * overlapY * 0.5f);
-		boxColliderComponent2->Move(DirectionX(collider1, collider2) * overlapX * 0.5f, DirectionY(collider1, collider2) * overlapY * 0.5f);
+		boxColliderComponent1->Move(DirectionX(collider2, collider1) * overlapX * 0.5f, 
+									DirectionY(collider2, collider1) * overlapY * 0.5f, ObjectType::movable);
+		boxColliderComponent2->Move(DirectionX(collider1, collider2) * overlapX * 0.5f, 
+									DirectionY(collider1, collider2) * overlapY * 0.5f, ObjectType::movable);
 		return;
 	}
 }
