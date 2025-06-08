@@ -37,6 +37,7 @@
 #include "PengoCharacter.h"
 #include "CollisionSystem.h"
 #include "PushCommand.h"
+#include "SnoBeeCharacter.h"
 
 using namespace dae;
 
@@ -59,6 +60,11 @@ void Load()
 	{
 		scene.Add(levelGameObjects[index]);
 	}
+
+	//SnoBee
+	SnoBeeCharacter snoBeeCharacter{ SnoBeeColor::red };
+	snoBeeCharacter.GetCharacterObject()->SetPosition(260, 180);
+	scene.Add(snoBeeCharacter.GetCharacterObject());
 
 	//Assignment Text
 	auto textObject = std::make_shared<dae::GameObject>();
