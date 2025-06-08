@@ -1,6 +1,15 @@
 #pragma once
 #include "EngineTime.h"
 
+struct AnimationSequenceData
+{
+	int offsetPerFrameX;
+	int offsetPerFrameY;
+	int framerate;
+	int amountOfFrames;
+	bool loops = false;
+};
+
 class AnimationSequence
 {
 public:
@@ -10,6 +19,12 @@ public:
 		m_TimePerFrame{ 1.0f / static_cast<float>(framerate) }
 	{
 		
+	}
+
+	AnimationSequence(const AnimationSequenceData& data)
+		:AnimationSequence(data.offsetPerFrameX, data.offsetPerFrameY, data.framerate, data.amountOfFrames, data.loops)
+	{
+
 	}
 
 	void Update()

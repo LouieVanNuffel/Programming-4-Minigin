@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include "AnimationState.h"
 
 namespace dae
 {
@@ -33,6 +34,14 @@ private:
 	int GetTextureOffsetY(PengoColor pengoColor) const;
 
 	std::shared_ptr<dae::GameObject> m_CharacterObject{};
+
+	AnimationSequenceData m_IdleAnimation{ 16, 0, 8, 1, false };
+	AnimationSequenceData m_MovingAnimation{ 16, 0, 8, 2, true };
+	AnimationSequenceData m_DeadAnimation{ 16, 0, 8, 2, true };
+
+	AnimationStateData m_IdleStateData{ AnimationStates::idle, m_IdleAnimation, 0, 0, { 4 * 16, 0 * 16, 2 * 16, 6 * 16 } };
+	AnimationStateData m_MovingStateData{ AnimationStates::moving, m_MovingAnimation, 4 * 16, 0, { 4 * 16, 0 * 16, 2 * 16, 6 * 16 } };
+	AnimationStateData m_DeadStateData{ AnimationStates::dead, m_DeadAnimation, 0, 2 * 16, { 0, 0, 0, 0 } };
 
 };
 

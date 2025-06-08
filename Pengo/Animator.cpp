@@ -1,22 +1,15 @@
 #include "Animator.h"
 #include "AnimationState.h"
-#include "IdleState.h"
-#include "DeadState.h"
-#include "MovingState.h"
 #include "GameObject.h"
+#include "Event.h"
 
 using namespace dae;
 
-Animator::Animator(dae::GameObject* gameObject)
-	:Component(gameObject)
+Animator::Animator(dae::GameObject* gameObject, const AnimationStateData& idleStateData,
+	const AnimationStateData& movingStateData, const AnimationStateData& deadStateData)
+	:Component(gameObject), m_IdleStateData{ idleStateData }, m_MovingStateData{ movingStateData }, m_DeadStateData{ deadStateData }
 {
-	m_pAnimationState = new IdleState(this);
-}
-
-Animator::~Animator()
-{
-	delete m_pAnimationState;
-	m_pAnimationState = nullptr;
+	m_pAnimationState = std::make_unique<AnimationState>(this, idleStateData);
 }
 
 void Animator::Start()
@@ -38,8 +31,8 @@ void Animator::RenderUI() const {};
 void Animator::Notify(const Event& event, const dae::GameObject* gameObject)
 {
 	m_pAnimationState->Notify(event, gameObject);
-	AnimationState* newState = LoadNewStateFromEnum(m_pAnimationState->GetNewStateToTransitionTo());
-	if (newState != nullptr) EnterNewState(newState);
+	std::unique_ptr<AnimationState> newState = LoadNewStateFromEnum(m_pAnimationState->GetNewStateToTransitionTo());
+	if (newState != nullptr) EnterNewState(std::move(newState));
 
 	if (event.id == dae::make_sdbm_hash("PlayerMovedLeft"))
 	{
@@ -77,15 +70,14 @@ const Direction& Animator::GetDirection() const
 	return m_Direction;
 }
 
-void Animator::EnterNewState(AnimationState* newState)
+void Animator::EnterNewState(std::unique_ptr<AnimationState> newState)
 {
 	m_pAnimationState->OnExit();
-	delete m_pAnimationState;
-	m_pAnimationState = newState;
+	m_pAnimationState = std::move(newState);
 	m_pAnimationState->OnEnter();
 }
 
-AnimationState* Animator::LoadNewStateFromEnum(const AnimationStates& animationStateToTransitionTo)
+std::unique_ptr<AnimationState> Animator::LoadNewStateFromEnum(const AnimationStates& animationStateToTransitionTo)
 {
 	if (m_CurrentAnimationStateEnum == animationStateToTransitionTo) return nullptr;
 
@@ -93,15 +85,15 @@ AnimationState* Animator::LoadNewStateFromEnum(const AnimationStates& animationS
 	{
 	case AnimationStates::idle:
 		m_CurrentAnimationStateEnum = animationStateToTransitionTo;
-		return new IdleState(this);
+		return std::make_unique<AnimationState>(this, m_IdleStateData);
 		break;
 	case AnimationStates::dead:
 		m_CurrentAnimationStateEnum = animationStateToTransitionTo;
-		return new DeadState(this);
+		return std::make_unique<AnimationState>(this, m_DeadStateData);
 		break;
 	case AnimationStates::moving:
 		m_CurrentAnimationStateEnum = animationStateToTransitionTo;
-		return new MovingState(this);
+		return std::make_unique<AnimationState>(this, m_MovingStateData);
 		break;
 	default:
 		return nullptr;

@@ -3,6 +3,7 @@
 #include "BoxColliderComponent.h"
 #include "RenderComponent.h"
 #include "BlockComponent.h"
+#include "VelocityComponent.h"
 
 BlockObject::BlockObject(BlockType blockType, int blockSize, float positionX, float positionY, float scale)
 	:m_BlockType{ blockType }
@@ -33,10 +34,12 @@ BlockObject::BlockObject(BlockType blockType, int blockSize, float positionX, fl
 		dae::ObjectType::immovable, m_GameObject.get());
 
 	auto blockComponent = std::make_unique<BlockComponent>(m_BlockType, blockSize, m_GameObject.get());
+	auto velocityComponent = std::make_unique<dae::VelocityComponent>(m_GameObject.get());
 
 	m_GameObject->AddComponent(std::move(boxColliderComponent));
 	m_GameObject->AddComponent(std::move(textureComponent));
 	m_GameObject->AddComponent(std::move(blockComponent));
+	m_GameObject->AddComponent(std::move(velocityComponent));
 }
 
 std::shared_ptr<dae::GameObject> BlockObject::GetGameObject()

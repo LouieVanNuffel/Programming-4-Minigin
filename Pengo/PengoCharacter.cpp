@@ -16,7 +16,7 @@ PengoCharacter::PengoCharacter(PengoColor pengoColor)
 	auto pointComponent = std::make_unique<PointComponent>(m_CharacterObject.get());
 	auto subjectComponent = std::make_unique<Subject>(m_CharacterObject.get());
 	auto velocityComponent = std::make_unique<VelocityComponent>(m_CharacterObject.get());
-	auto animator = std::make_unique<Animator>(m_CharacterObject.get());
+	auto animator = std::make_unique<Animator>(m_CharacterObject.get(), m_IdleStateData, m_MovingStateData, m_DeadStateData);
 	subjectComponent->AddObserver(animator.get());
 	auto textureComponent = std::make_unique<dae::RenderComponent>(m_CharacterObject.get());
 	textureComponent->SetTexture("characterSprites.png", 

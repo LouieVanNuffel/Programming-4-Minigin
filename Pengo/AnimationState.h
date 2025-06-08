@@ -1,30 +1,37 @@
 #pragma once
 #include "Observer.h"
-#include "Event.h"
 #include "AnimationSequence.h"
+#include <vector>
+#include <memory>
 
 enum class AnimationStates
 {
 	idle, dead, moving
 };
 
+struct AnimationStateData
+{
+	AnimationStates thisAnimationState;
+	AnimationSequenceData animationSequenceData;
+	int sourceRectOffsetX;
+	int sourceRectOffsetY;
+	std::vector<int> sourceRectOffsetsX; // Must match order of Direction enum class in Animator (up, down, left, right)
+};
+
+namespace dae
+{
+	struct Event;
+}
+
 class Animator;
 class AnimationState : public dae::Observer
 {
 public:
-	AnimationState(Animator* animator)
-		: m_pAnimator{ animator }
+	AnimationState(Animator* animator, const AnimationStateData& data)
+		: m_pAnimator{ animator }, m_StateToTransitionTo{ data.thisAnimationState }, m_SourceRectOffsetX{ data.sourceRectOffsetX },
+		m_SourceRectOffsetY{ data.sourceRectOffsetY }, m_SourceRectOffsetsX{ data.sourceRectOffsetsX }
 	{
-
-	}
-
-	~AnimationState()
-	{
-		if (m_pAnimationSequence != nullptr)
-		{
-			delete m_pAnimationSequence;
-			m_pAnimationSequence = nullptr;
-		}
+		m_pAnimationSequence = std::make_unique<AnimationSequence>(data.animationSequenceData);
 	}
 
 	const AnimationStates& GetNewStateToTransitionTo()
@@ -32,30 +39,20 @@ public:
 		return m_StateToTransitionTo;
 	}
 
-	virtual void Update() {};
+	virtual void Update();
 	virtual void OnEnter() {};
 	virtual void OnExit() {};
 
-	virtual void Notify(const dae::Event& event, const dae::GameObject*) override
-	{
-		if (event.id == dae::make_sdbm_hash("PlayerMoved"))
-		{
-			m_StateToTransitionTo = AnimationStates::moving;
-		}
-
-		if (event.id == dae::make_sdbm_hash("PlayerDidNotMove"))
-		{
-			m_StateToTransitionTo = AnimationStates::idle;
-		}
-
-		if (event.id == dae::make_sdbm_hash("PlayerDied"))
-		{
-			m_StateToTransitionTo = AnimationStates::dead;
-		}
-	}
+	virtual void Notify(const dae::Event& event, const dae::GameObject*) override;
 
 protected:
+	void UpdateOffset();
+
 	Animator* m_pAnimator;
-	AnimationStates m_StateToTransitionTo{};
-	AnimationSequence* m_pAnimationSequence{ nullptr };
+	AnimationStates m_StateToTransitionTo;
+	std::unique_ptr<AnimationSequence> m_pAnimationSequence{ nullptr };
+
+	int m_SourceRectOffsetX;
+	int m_SourceRectOffsetY;
+	std::vector<int> m_SourceRectOffsetsX;
 };

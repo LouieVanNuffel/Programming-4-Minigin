@@ -159,6 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AnimationState.cpp" />
     <ClCompile Include="Animator.cpp" />
     <ClCompile Include="BlockComponent.cpp" />
     <ClCompile Include="BlockObject.cpp" />
@@ -176,13 +177,10 @@
     <ClInclude Include="Animator.h" />
     <ClInclude Include="BlockComponent.h" />
     <ClInclude Include="BlockObject.h" />
-    <ClInclude Include="DeadState.h" />
     <ClInclude Include="HealthComponent.h" />
-    <ClInclude Include="IdleState.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="LivesDisplayComponent.h" />
     <ClInclude Include="MoveCommand.h" />
-    <ClInclude Include="MovingState.h" />
     <ClInclude Include="PengoCharacter.h" />
     <ClInclude Include="PickUpPointCommand.h" />
     <ClInclude Include="AnimationState.h" />

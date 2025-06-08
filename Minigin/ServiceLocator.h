@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include <cassert>
+#include "NullSoundSystem.h"
 namespace dae
 {
 	class SoundSystem;
@@ -19,8 +20,8 @@ namespace dae
 			else
 			{
 				// Unregister it
-				_ss_instance.release();
-				_ss_instance = nullptr;
+				_ss_instance.reset();
+				_ss_instance = std::make_unique<NullSoundSystem>();
 			}
 		}
 	};

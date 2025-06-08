@@ -9,12 +9,18 @@ enum class Direction
 	up, down, left, right
 };
 
+namespace dae
+{
+	struct Event;
+}
+
 class AnimationState;
 class Animator final : public dae::Component, public dae::Observer
 {
 public:
-	Animator(dae::GameObject* gameObject);
-	~Animator();
+	Animator(dae::GameObject* gameObject, const AnimationStateData& idleStateData, 
+		const AnimationStateData& movingStateData, const AnimationStateData& deadStateData);
+	~Animator() = default;
 
 	virtual void Start() override;
 
@@ -32,12 +38,16 @@ public:
 	const Direction& GetDirection() const;
 
 private:
-	AnimationState* m_pAnimationState{ nullptr };
+	std::unique_ptr<AnimationState> m_pAnimationState{ nullptr };
 	AnimationStates m_CurrentAnimationStateEnum = AnimationStates::idle;
 	dae::RenderComponent* m_pRenderComponent{ nullptr };
 	
 	Direction m_Direction{ Direction::up };
 
-	void EnterNewState(AnimationState* newState);
-	AnimationState* LoadNewStateFromEnum(const AnimationStates& animationStateToTransitionTo);
+	AnimationStateData m_IdleStateData;
+	AnimationStateData m_MovingStateData;
+	AnimationStateData m_DeadStateData;
+
+	void EnterNewState(std::unique_ptr<AnimationState> newState);
+	std::unique_ptr<AnimationState> LoadNewStateFromEnum(const AnimationStates& animationStateToTransitionTo);
 };
