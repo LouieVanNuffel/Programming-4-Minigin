@@ -9,8 +9,8 @@ namespace dae
 	class HealthComponent : public Component
 	{
 	public:
-		HealthComponent(GameObject* gameObject)
-			: Component(gameObject)
+		HealthComponent(GameObject* gameObject, int amountOfLives)
+			: Component(gameObject), m_Lives{ amountOfLives }
 		{
 		}
 
@@ -39,14 +39,14 @@ namespace dae
 			{
 				m_Health = 100.f;
 				--m_Lives;
-				if (m_Subject != nullptr) m_Subject->NotifyObservers(Event{ make_sdbm_hash("PlayerDied") });
+				if (m_Subject != nullptr && m_Lives <= 0) m_Subject->NotifyObservers(Event{ make_sdbm_hash("PlayerDied") });
 			}
 		}
 
 	private:
 		float m_Health{ 100.f };
-		int m_Lives{ 3 };
-		Subject* m_Subject;
+		int m_Lives;
+		Subject* m_Subject{ nullptr };
 	};
 }
 

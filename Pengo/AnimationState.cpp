@@ -13,6 +13,8 @@ void AnimationState::Update()
 
 void AnimationState::Notify(const dae::Event& event, const dae::GameObject*)
 {
+	if (m_StateToTransitionTo == AnimationStates::dead) return;
+
 	if (event.id == dae::make_sdbm_hash("PlayerMoved"))
 	{
 		m_StateToTransitionTo = AnimationStates::moving;

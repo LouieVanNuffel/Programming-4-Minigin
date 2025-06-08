@@ -12,7 +12,7 @@ using namespace dae;
 PengoCharacter::PengoCharacter(PengoColor pengoColor)
 {
 	m_CharacterObject = std::make_shared<dae::GameObject>();
-	auto healthComponent = std::make_unique<HealthComponent>(m_CharacterObject.get());
+	auto healthComponent = std::make_unique<HealthComponent>(m_CharacterObject.get(), 4);
 	auto pointComponent = std::make_unique<PointComponent>(m_CharacterObject.get());
 	auto subjectComponent = std::make_unique<Subject>(m_CharacterObject.get());
 	auto velocityComponent = std::make_unique<VelocityComponent>(m_CharacterObject.get());
