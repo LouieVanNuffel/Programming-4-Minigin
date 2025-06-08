@@ -21,7 +21,7 @@ namespace dae
 
 	enum class Layer
 	{
-		none, pengo, snobee
+		none, pengo, snobee, block
 	};
 
 	class VelocityComponent;
@@ -52,7 +52,7 @@ namespace dae
 		const BoxCollider& BoxDimensions() const;
 		const ObjectType& GetObjectType() const;
 		const glm::vec3 Velocity() const;
-		const GameObject* GetGameObject() const;
+		GameObject* GetGameObject() const;
 		const Layer& GetLayer() const;
 
 	private:

@@ -22,7 +22,7 @@ SnoBeeCharacter::SnoBeeCharacter(SnoBeeColor snoBeeColor)
 		SDL_Rect{ GetTextureOffsetX(snoBeeColor), GetTextureOffsetY(snoBeeColor), 16, 16 }, 1.5f);
 	auto boxColliderComponent = std::make_unique<BoxColliderComponent>(16 * 1.5f, 16 * 1.5f, ObjectType::movable, 
 																	   m_CharacterObject.get(), dae::Layer::snobee);
-	auto snoBeeComponent = std::make_unique<SnoBeeComponent>(m_CharacterObject.get());
+	auto snoBeeComponent = std::make_unique<SnoBeeComponent>(m_CharacterObject.get(), 16 * 1.5f);
 
 	m_CharacterObject->AddComponent(std::move(healthComponent));
 	m_CharacterObject->AddComponent(std::move(subjectComponent));

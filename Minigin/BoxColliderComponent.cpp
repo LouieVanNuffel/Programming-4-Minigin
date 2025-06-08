@@ -55,7 +55,7 @@ const glm::vec3 dae::BoxColliderComponent::Velocity() const
 	return glm::vec3{};
 }
 
-const dae::GameObject* dae::BoxColliderComponent::GetGameObject() const
+dae::GameObject* dae::BoxColliderComponent::GetGameObject() const
 {
 	return m_gameObject;
 }
