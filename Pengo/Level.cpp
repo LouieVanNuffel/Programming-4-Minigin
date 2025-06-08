@@ -6,11 +6,15 @@
 #include "BlockObject.h"
 #include <iostream>
 
-Level::Level(const std::string& filePath, int blockSize, float scale, int offsetX, int offsetY)
+Level::Level(const std::string& levelName, int blockSize, float scale, int offsetX, int offsetY)
 	:m_BlockSize{ static_cast<int>(blockSize * scale) }, m_Scale{ scale }, m_OffsetX{ offsetX }, m_OffsetY{ offsetY }
 {
-	LoadInBlockTypesPerTileBinary("../Data/" + filePath);
-	SaveLevelToFile("../Data/Levels/Level1.pengo");
+#if _DEBUG
+	LoadInBlockTypesPerTileText("../Data/Levels/" + levelName + ".txt");
+	SaveLevelToFile("../Data/Levels/" + levelName + ".pengo");
+#else
+	LoadInBlockTypesPerTileBinary("../Data/Levels/" + levelName + ".pengo");
+#endif
 }
 
 void Level::LoadInBlockTypesPerTileText(const std::string& filePath)
@@ -29,7 +33,7 @@ void Level::LoadInBlockTypesPerTileText(const std::string& filePath)
 
 	inputFile.close();
 
-	std::cout << "Level data loaded: ";
+	std::cout << "Level data loaded from " + filePath + ": ";
 	for (const BlockType& blockType : m_BlockTypesPerTile)
 	{
 		std::cout << static_cast<int>(blockType) << " ";
@@ -66,7 +70,7 @@ void Level::LoadInBlockTypesPerTileBinary(const std::string& filePath)
 
 	inputFile.close();
 
-	std::cout << "Level data loaded: ";
+	std::cout << "Level data loaded from " + filePath + ": ";
 	for (const BlockType& blockType : m_BlockTypesPerTile)
 	{
 		std::cout << static_cast<int>(blockType) << " ";
@@ -90,6 +94,8 @@ void Level::SaveLevelToFile(const std::string& filePath)
 	}
 
 	outputFile.close();
+
+	std::cout << "Level data saved to " + filePath << std::endl;
 }
 
 const std::vector<std::shared_ptr<dae::GameObject>>& Level::LoadLevelGameObjects()

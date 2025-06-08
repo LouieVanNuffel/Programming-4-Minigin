@@ -53,7 +53,7 @@ void Load()
 	auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
 
 	//Level
-	Level level{ "Levels/Level1.pengo", 16, 1.5f, 150, 50 };
+	Level level{ "Level1", 16, 1.5f, 150, 50 };
 	const std::vector<std::shared_ptr<GameObject>>& levelGameObjects = level.LoadLevelGameObjects();
 	for (uint32_t index{}; index < levelGameObjects.size(); ++index)
 	{

@@ -38,12 +38,12 @@ void BlockComponent::Push(int directionX, int directionY)
 {
 	if (directionX == 0 && directionY == 0) return;
 
-	// If there is no empty space in the direction the block gets pushed, break the block
-	if (PerformRaycast()) Break();
-
-	m_IsMoving = true;
 	m_DirectionX = directionX;
 	m_DirectionY = directionY;
+
+	// If there is no empty space in the direction the block gets pushed, break the block
+	if (PerformRaycast()) Break();
+	else m_IsMoving = true;
 }
 
 void BlockComponent::Break()
@@ -76,7 +76,7 @@ bool BlockComponent::PerformRaycast()
 		if (healthComponent != nullptr)
 		{
 			healthComponent->TakeDamage(100.0f);
-			return true;
+			return false; // returns false because the block shouldn't stop when it hits a damageable object
 		}
 		else
 		{

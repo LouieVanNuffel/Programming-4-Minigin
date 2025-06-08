@@ -13,7 +13,7 @@ class Level final
 {
 public:
 	//Constructor
-	Level(const std::string& filePath, int blockSize, float scale = 1.0f, int offsetX = 0, int offsetY = 0);
+	Level(const std::string& levelName, int blockSize, float scale = 1.0f, int offsetX = 0, int offsetY = 0);
 
 	//Destructor
 	~Level() = default;
