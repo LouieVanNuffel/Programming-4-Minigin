@@ -51,6 +51,9 @@
     <ClCompile Include="AnimationState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SnoBeeComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HealthComponent.h">
@@ -108,6 +111,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SnoBeeCharacter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SnoBeeComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

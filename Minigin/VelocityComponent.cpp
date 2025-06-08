@@ -44,22 +44,22 @@ void dae::VelocityComponent::LateUpdate()
 
 	if (fabsf(m_Velocity.x) < FLT_EPSILON && fabsf(m_Velocity.y) < FLT_EPSILON && fabsf(m_Velocity.z) < FLT_EPSILON)
 	{
-		m_pSubject->NotifyObservers(Event{ make_sdbm_hash("PlayerDidNotMove") });
+		m_pSubject->NotifyObservers(Event{ make_sdbm_hash("DidNotMove") });
 		return;
 	}
 	
-	m_pSubject->NotifyObservers(Event{ make_sdbm_hash("PlayerMoved") });
+	m_pSubject->NotifyObservers(Event{ make_sdbm_hash("Moved") });
 
 	if (fabsf(m_Velocity.x) > FLT_EPSILON)
 	{
-		if (m_Velocity.x < 0) m_pSubject->NotifyObservers(Event{ make_sdbm_hash("PlayerMovedLeft") });
-		else m_pSubject->NotifyObservers(Event{ make_sdbm_hash("PlayerMovedRight") });
+		if (m_Velocity.x < 0) m_pSubject->NotifyObservers(Event{ make_sdbm_hash("MovedLeft") });
+		else m_pSubject->NotifyObservers(Event{ make_sdbm_hash("MovedRight") });
 	}
 
 	if (fabsf(m_Velocity.y) > FLT_EPSILON)
 	{
-		if (m_Velocity.y < 0) m_pSubject->NotifyObservers(Event{ make_sdbm_hash("PlayerMovedUp") });
-		else m_pSubject->NotifyObservers(Event{ make_sdbm_hash("PlayerMovedDown") });
+		if (m_Velocity.y < 0) m_pSubject->NotifyObservers(Event{ make_sdbm_hash("MovedUp") });
+		else m_pSubject->NotifyObservers(Event{ make_sdbm_hash("MovedDown") });
 	}
 }
 

@@ -21,7 +21,8 @@ PengoCharacter::PengoCharacter(PengoColor pengoColor)
 	auto textureComponent = std::make_unique<dae::RenderComponent>(m_CharacterObject.get());
 	textureComponent->SetTexture("characterSprites.png", 
 								SDL_Rect{ GetTextureOffsetX(pengoColor), GetTextureOffsetY(pengoColor), 16, 16}, 1.5f);
-	auto boxColliderComponent = std::make_unique<BoxColliderComponent>(16 * 1.5f, 16 * 1.5f, ObjectType::movable, m_CharacterObject.get());
+	auto boxColliderComponent = std::make_unique<BoxColliderComponent>(16 * 1.5f, 16 * 1.5f, ObjectType::movable, 
+																	   m_CharacterObject.get(), Layer::pengo);
 
 	m_CharacterObject->AddComponent(std::move(healthComponent));
 	m_CharacterObject->AddComponent(std::move(pointComponent));

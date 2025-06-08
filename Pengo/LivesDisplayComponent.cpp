@@ -10,7 +10,7 @@ dae::LivesDisplayComponent::LivesDisplayComponent(const std::string& text, std::
 
 void dae::LivesDisplayComponent::Notify(const Event& event, const GameObject* gameObject)
 {
-	if (event.id == make_sdbm_hash("PlayerDied"))
+	if (event.id == make_sdbm_hash("TookDamage"))
 	{
 		SetText("# lives: " + std::to_string(gameObject->GetComponent<HealthComponent>()->GetLives()));
 	}

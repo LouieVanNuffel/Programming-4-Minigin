@@ -34,22 +34,22 @@ void Animator::Notify(const Event& event, const dae::GameObject* gameObject)
 	std::unique_ptr<AnimationState> newState = LoadNewStateFromEnum(m_pAnimationState->GetNewStateToTransitionTo());
 	if (newState != nullptr) EnterNewState(std::move(newState));
 
-	if (event.id == dae::make_sdbm_hash("PlayerMovedLeft"))
+	if (event.id == dae::make_sdbm_hash("MovedLeft"))
 	{
 		m_Direction = Direction::left;
 	}
 
-	if (event.id == dae::make_sdbm_hash("PlayerMovedRight"))
+	if (event.id == dae::make_sdbm_hash("MovedRight"))
 	{
 		m_Direction = Direction::right;
 	}
 
-	if (event.id == dae::make_sdbm_hash("PlayerMovedUp"))
+	if (event.id == dae::make_sdbm_hash("MovedUp"))
 	{
 		m_Direction = Direction::up;
 	}
 
-	if (event.id == dae::make_sdbm_hash("PlayerMovedDown"))
+	if (event.id == dae::make_sdbm_hash("MovedDown"))
 	{
 		m_Direction = Direction::down;
 	}

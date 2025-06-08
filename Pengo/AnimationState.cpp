@@ -15,17 +15,17 @@ void AnimationState::Notify(const dae::Event& event, const dae::GameObject*)
 {
 	if (m_StateToTransitionTo == AnimationStates::dead) return;
 
-	if (event.id == dae::make_sdbm_hash("PlayerMoved"))
+	if (event.id == dae::make_sdbm_hash("Moved"))
 	{
 		m_StateToTransitionTo = AnimationStates::moving;
 	}
 
-	if (event.id == dae::make_sdbm_hash("PlayerDidNotMove"))
+	if (event.id == dae::make_sdbm_hash("DidNotMove"))
 	{
 		m_StateToTransitionTo = AnimationStates::idle;
 	}
 
-	if (event.id == dae::make_sdbm_hash("PlayerDied"))
+	if (event.id == dae::make_sdbm_hash("Died"))
 	{
 		m_StateToTransitionTo = AnimationStates::dead;
 	}

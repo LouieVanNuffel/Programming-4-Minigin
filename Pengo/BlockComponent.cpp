@@ -72,11 +72,14 @@ bool BlockComponent::PerformRaycast()
 	{
 		if (hitInfo_Out.other == nullptr) return false;
 
-		dae::HealthComponent* healthComponent = hitInfo_Out.other->GetGameObject()->GetComponent<dae::HealthComponent>();
-		if (healthComponent != nullptr)
+		if (hitInfo_Out.other->GetLayer() == dae::Layer::snobee || hitInfo_Out.other->GetLayer() == dae::Layer::pengo)
 		{
-			healthComponent->TakeDamage(100.0f);
-			return false; // returns false because the block shouldn't stop when it hits a damageable object
+			dae::HealthComponent* healthComponent = hitInfo_Out.other->GetGameObject()->GetComponent<dae::HealthComponent>();
+			if (healthComponent != nullptr)
+			{
+				healthComponent->TakeDamage(100.0f);
+				return false; // returns false because the block shouldn't stop when it hits a damageable object
+			}
 		}
 		else
 		{

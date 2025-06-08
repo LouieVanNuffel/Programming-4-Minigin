@@ -4,8 +4,8 @@
 #include <iostream>
 #include "VelocityComponent.h"
 
-dae::BoxColliderComponent::BoxColliderComponent(float width, float height, ObjectType objectType, GameObject* gameObject)
-	:Component(gameObject), m_ObjectType{ objectType }
+dae::BoxColliderComponent::BoxColliderComponent(float width, float height, ObjectType objectType, GameObject* gameObject, Layer layer)
+	:Component(gameObject), m_ObjectType{ objectType }, m_Layer{ layer }
 {
 	m_BoxDimensions.width = width;
 	m_BoxDimensions.height = height;
@@ -58,6 +58,11 @@ const glm::vec3 dae::BoxColliderComponent::Velocity() const
 const dae::GameObject* dae::BoxColliderComponent::GetGameObject() const
 {
 	return m_gameObject;
+}
+
+const dae::Layer& dae::BoxColliderComponent::GetLayer() const
+{
+	return m_Layer;
 }
 
 void dae::BoxColliderComponent::UpdatePosition()

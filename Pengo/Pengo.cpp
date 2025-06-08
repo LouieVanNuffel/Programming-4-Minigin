@@ -172,7 +172,7 @@ void Load()
 	auto moveDownCommand = std::make_unique<MoveCommand>(characterObject1.get(), 0.f, 1.f, 50.f);
 	auto moveLeftCommand = std::make_unique<MoveCommand>(characterObject1.get(), -1.f, .0f, 50.f);
 	auto moveRightCommand = std::make_unique<MoveCommand>(characterObject1.get(), 1.f, 0.f, 50.f);
-	auto inflictDamage = std::make_unique<TakeDamageCommand>(characterObject1.get(), 50.f);
+	auto inflictDamage = std::make_unique<TakeDamageCommand>(characterObject1.get(), 100.f);
 	auto pickUpPoint = std::make_unique<PickUpPointCommand>(characterObject1.get(), 1);
 	auto pushCommand = std::make_unique<PushCommand>(characterObject1.get());
 
@@ -192,7 +192,7 @@ void Load()
 	moveDownCommand = std::make_unique<MoveCommand>(characterObject2.get(), 0.f, 1.f, 100.f);
 	moveLeftCommand = std::make_unique<MoveCommand>(characterObject2.get(), -1.f, .0f, 100.f);
 	moveRightCommand = std::make_unique<MoveCommand>(characterObject2.get(), 1.f, 0.f, 100.f);
-	inflictDamage = std::make_unique<TakeDamageCommand>(characterObject2.get(), 50.f);
+	inflictDamage = std::make_unique<TakeDamageCommand>(characterObject2.get(), 100.f);
 	pickUpPoint = std::make_unique<PickUpPointCommand>(characterObject2.get(), 1);
 	pushCommand = std::make_unique<PushCommand>(characterObject2.get());
 
