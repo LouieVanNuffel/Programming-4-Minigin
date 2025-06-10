@@ -33,7 +33,7 @@ namespace dae
 		BoxColliderComponent(float width, float height, ObjectType objectType, GameObject* gameObject, Layer layer = Layer::none);
 
 		//Destructor
-		virtual ~BoxColliderComponent() override = default;
+		virtual ~BoxColliderComponent() override;
 
 		//Rule of 5
 		BoxColliderComponent(const BoxColliderComponent& other) = delete;

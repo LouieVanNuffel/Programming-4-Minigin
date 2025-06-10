@@ -10,6 +10,7 @@ Animator::Animator(dae::GameObject* gameObject, const AnimationStateData& idleSt
 	:Component(gameObject), m_IdleStateData{ idleStateData }, m_MovingStateData{ movingStateData }, m_DeadStateData{ deadStateData }
 {
 	m_pAnimationState = std::make_unique<AnimationState>(this, idleStateData);
+	m_pAnimationState->OnEnter();
 }
 
 void Animator::Start()

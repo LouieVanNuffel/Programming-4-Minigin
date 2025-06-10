@@ -61,6 +61,9 @@ namespace dae
 		void UpdateWorldPosition();
 		void SetPositionDirty();
 
+		void Destroy();
+		bool ToBeDestroyed() const;
+
 		GameObject() = default;
 		~GameObject();
 		GameObject(const GameObject& other) = delete;
@@ -75,6 +78,7 @@ namespace dae
 		Transform m_transform{};
 		glm::vec3 m_worldPosition{};
 		bool m_positionIsDirty{ false };
+		bool m_ToBeDestroyed{ false };
 
 		std::vector<std::unique_ptr<Component>> m_components{};
 		std::vector<Component*> m_unregisteredComponents{};

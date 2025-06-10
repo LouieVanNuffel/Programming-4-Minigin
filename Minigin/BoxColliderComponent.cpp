@@ -13,6 +13,11 @@ dae::BoxColliderComponent::BoxColliderComponent(float width, float height, Objec
 	CollisionSystem::GetInstance().AddCollider(this);
 }
 
+dae::BoxColliderComponent::~BoxColliderComponent()
+{
+	CollisionSystem::GetInstance().RemoveCollider(this);
+}
+
 void dae::BoxColliderComponent::Start()
 {
 	UpdatePosition();

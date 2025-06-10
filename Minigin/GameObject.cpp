@@ -200,3 +200,13 @@ void dae::GameObject::SetPositionDirty()
 		child->SetPositionDirty();
 	}
 }
+
+void dae::GameObject::Destroy()
+{
+	m_ToBeDestroyed = true;
+}
+
+bool dae::GameObject::ToBeDestroyed() const
+{
+	return m_ToBeDestroyed;
+}

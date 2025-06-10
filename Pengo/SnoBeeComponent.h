@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "Observer.h"
 #include "glm.hpp"
 
 namespace dae
@@ -7,9 +8,10 @@ namespace dae
 	class VelocityComponent;
 	class BoxColliderComponent;
 	struct HitInfo;
+	struct Event;
 }
 
-class SnoBeeComponent final : public dae::Component
+class SnoBeeComponent final : public dae::Component, public dae::Observer
 {
 public:
 	//Constructor
@@ -30,6 +32,8 @@ public:
 	virtual void Render() const override {};
 	virtual void RenderUI() const override {};
 	virtual void OnCollisionEnter(const dae::BoxColliderComponent& other);
+
+	virtual void Notify(const dae::Event& event, const dae::GameObject* gameObject) override;
 	
 private:
 	enum class MoveDirection

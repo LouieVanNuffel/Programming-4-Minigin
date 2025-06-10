@@ -23,6 +23,7 @@ SnoBeeCharacter::SnoBeeCharacter(SnoBeeColor snoBeeColor)
 	auto boxColliderComponent = std::make_unique<BoxColliderComponent>(16 * 1.5f, 16 * 1.5f, ObjectType::movable, 
 																	   m_CharacterObject.get(), dae::Layer::snobee);
 	auto snoBeeComponent = std::make_unique<SnoBeeComponent>(m_CharacterObject.get(), 16 * 1.5f);
+	subjectComponent->AddObserver(snoBeeComponent.get());
 
 	m_CharacterObject->AddComponent(std::move(healthComponent));
 	m_CharacterObject->AddComponent(std::move(subjectComponent));

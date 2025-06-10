@@ -120,6 +120,7 @@ void dae::Minigin::Run(const std::function<void()>& Load)
 		collisionSystem.Update();
 		sceneManager.LateUpdate();
 		renderer.Render();
+		sceneManager.CleanUpDestroyed();
 		const auto sleep_time = current_time + std::chrono::milliseconds(m_MillisecondsPerFrame) - 
 																		std::chrono::high_resolution_clock::now();
 		std::this_thread::sleep_for(sleep_time);

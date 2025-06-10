@@ -17,7 +17,6 @@ void CollisionSystem::RemoveCollider(BoxColliderComponent* boxColliderComponent)
 {
 	auto it = std::find(m_BoxColliderComponents.begin(), m_BoxColliderComponents.end(), boxColliderComponent);
 
-	assert(it != m_BoxColliderComponents.end());
 	if (it == m_BoxColliderComponents.end()) return;
 
 	m_BoxColliderComponents.erase(it);

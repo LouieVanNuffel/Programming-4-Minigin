@@ -74,3 +74,24 @@ void dae::Scene::RenderUI() const
 	}
 }
 
+void dae::Scene::CleanUpDestroyed()
+{
+	std::vector<int> indicesToBeDestroyed{};
+	for (int index{}; index < m_objects.size(); ++index)
+	{
+		if (m_objects[index]->ToBeDestroyed())
+		{
+			indicesToBeDestroyed.emplace_back(index);
+		}
+	}
+
+	for (const int& index : indicesToBeDestroyed)
+	{
+		auto it = std::find(m_objects.begin(), m_objects.end(), m_objects[index]);
+		if (it != m_objects.end())
+		{
+			m_objects.erase(it);
+		}
+	}
+}
+

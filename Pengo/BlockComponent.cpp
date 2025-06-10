@@ -20,9 +20,9 @@ void BlockComponent::Start()
 
 void BlockComponent::Update()
 {
-	if (m_IsBroken && m_pRenderComponent != nullptr && !m_IsDead) UpdateBreakAnimation();
+	if (m_IsBroken && m_pRenderComponent != nullptr) UpdateBreakAnimation();
 
-	if (!m_IsMoving || m_IsDead) return;
+	if (!m_IsMoving) return;
 
 	if (PerformRaycast()) m_IsMoving = false;
 	else
@@ -125,10 +125,6 @@ void BlockComponent::UpdateBreakAnimation()
 
 	if (m_BreakAnimationSequence.Finished())
 	{
-		m_IsDead = true;
-		// Set render component to an empty piece of the spritesheet, so it is now invisible
-		m_pRenderComponent->AddSourceRectToStartPosition(32 * 8, 32 * 1);
-		// Remove collider from collision detection
-		dae::CollisionSystem::GetInstance().RemoveCollider(m_pBoxColliderComponent);
+		m_gameObject->Destroy();
 	}
 }

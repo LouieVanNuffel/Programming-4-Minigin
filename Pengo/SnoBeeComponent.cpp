@@ -4,6 +4,8 @@
 #include "EngineTime.h"
 #include "CollisionSystem.h"
 #include "BlockComponent.h"
+#include "MoveCommand.h"
+#include "Event.h"
 
 SnoBeeComponent::SnoBeeComponent(dae::GameObject* gameObject, float blockSize, float speed, float chaseRange)
 	:Component(gameObject), m_BlockSize{ blockSize }, m_Speed{ speed }, m_ChaseRange{ chaseRange }
@@ -19,10 +21,9 @@ void SnoBeeComponent::Start()
 
 void SnoBeeComponent::Update()
 {
-	// Move in current direction with set speed
-	float deltaTime = dae::Time::GetInstance().GetDeltaTime();
-	glm::vec3 currentPosition = m_gameObject->GetTransform().GetPosition();
-	m_gameObject->SetPosition(currentPosition.x + m_DirectionX * m_Speed * deltaTime, currentPosition.y + m_DirectionY * m_Speed * deltaTime);
+	// Move in current direction
+	MoveCommand moveCommand{ m_gameObject, static_cast<float>(m_DirectionX), static_cast<float>(m_DirectionY), m_Speed };
+	moveCommand.Execute();
 
 	switch (m_CurrentBehaviorState)
 	{
@@ -43,6 +44,14 @@ void SnoBeeComponent::OnCollisionEnter(const dae::BoxColliderComponent& other)
 		if (healthComponent == nullptr) return;
 
 		healthComponent->TakeDamage(100.0f);
+	}
+}
+
+void SnoBeeComponent::Notify(const dae::Event& event, const dae::GameObject*)
+{
+	if (event.id == dae::make_sdbm_hash("Died"))
+	{
+		m_gameObject->Destroy();
 	}
 }
 

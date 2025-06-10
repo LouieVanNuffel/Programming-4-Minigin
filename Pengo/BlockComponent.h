@@ -56,7 +56,6 @@ private:
 	int m_DirectionY{};
 	bool m_IsMoving{ false };
 	bool m_IsBroken{ false };
-	bool m_IsDead{ false };
 
 };
 
