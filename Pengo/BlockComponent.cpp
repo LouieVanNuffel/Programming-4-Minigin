@@ -5,10 +5,13 @@
 #include "EngineTime.h"
 #include "CollisionSystem.h"
 #include "RenderComponent.h"
+#include "SceneManager.h"
+#include "SnoBeeCharacter.h"
 
 BlockComponent::BlockComponent(BlockType blockType, int blockSize, dae::GameObject* gameObject)
 	:Component(gameObject), m_BlockType{ blockType }, m_BlockSize{ blockSize }
 {
+	Hatch();
 }
 
 void BlockComponent::Start()
@@ -52,6 +55,20 @@ void BlockComponent::Break()
 	if (m_BlockType == BlockType::diamond) return;
 
 	m_IsBroken = true;
+}
+
+void BlockComponent::Hatch()
+{
+	if (m_BlockType != BlockType::egg || m_IsHatched) return;
+	
+	m_IsHatched = true;
+
+	SnoBeeCharacter snoBeeCharacter{ SnoBeeColor::green };
+	const glm::vec3& currentPosition = m_gameObject->GetWorldPosition();
+	snoBeeCharacter.GetCharacterObject()->SetWorldPosition(currentPosition.x, currentPosition.y);
+
+	auto& sceneManager = dae::SceneManager::GetInstance();
+	sceneManager.AddGameObjectToScene(snoBeeCharacter.GetCharacterObject(), sceneManager.ActiveSceneIndex());
 }
 
 bool BlockComponent::PerformRaycast()

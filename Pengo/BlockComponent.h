@@ -36,6 +36,7 @@ public:
 
 	void Push(int directionX, int directionY);
 	void Break();
+	void Hatch();
 
 private:
 	bool PerformRaycast();
@@ -56,6 +57,7 @@ private:
 	int m_DirectionY{};
 	bool m_IsMoving{ false };
 	bool m_IsBroken{ false };
+	bool m_IsHatched{ false };
 
 };
 

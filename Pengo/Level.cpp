@@ -107,7 +107,7 @@ const std::vector<std::shared_ptr<dae::GameObject>>& Level::LoadLevelGameObjects
 	auto backgroundObject = std::make_shared<dae::GameObject>();
 	auto textureComponent = std::make_unique<dae::RenderComponent>(backgroundObject.get());
 	textureComponent->SetTexture("levels.png", SDL_Rect{ 0, 0, 224, 256 }, m_Scale);
-	backgroundObject->AddComponent(std::move(textureComponent));
+	//backgroundObject->AddComponent(std::move(textureComponent));
 	backgroundObject->SetPosition(static_cast<float>(m_OffsetX), static_cast<float>(m_OffsetY));
 	m_LevelGameObjects.emplace_back(backgroundObject);
 
