@@ -77,7 +77,7 @@ void dae::Scene::RenderUI() const
 void dae::Scene::CleanUpDestroyed()
 {
 	std::vector<int> indicesToBeDestroyed{};
-	for (int index{}; index < m_objects.size(); ++index)
+	for (uint32_t index{}; index < m_objects.size(); ++index)
 	{
 		if (m_objects[index]->ToBeDestroyed())
 		{
