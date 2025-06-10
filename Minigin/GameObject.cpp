@@ -20,6 +20,7 @@ void dae::GameObject::Start()
 
 void dae::GameObject::Update()
 {
+	if (!m_IsActive) return;
 	for (auto& component : m_components)
 	{
 		component->Update();
@@ -30,6 +31,8 @@ void dae::GameObject::FixedUpdate(){}
 
 void dae::GameObject::LateUpdate()
 {
+	if (!m_IsActive) return;
+
 	for (auto& component : m_components)
 	{
 		component->LateUpdate();
@@ -52,6 +55,8 @@ void dae::GameObject::LateUpdate()
 
 void dae::GameObject::Render() const
 {
+	if (!m_IsActive) return;
+
 	for (auto& component : m_components)
 	{
 		component->Render();
@@ -60,6 +65,8 @@ void dae::GameObject::Render() const
 
 void dae::GameObject::RenderUI() const
 {
+	if (!m_IsActive) return;
+
 	for (auto& component : m_components)
 	{
 		component->RenderUI();
@@ -68,6 +75,8 @@ void dae::GameObject::RenderUI() const
 
 void dae::GameObject::OnCollisionEnter(const BoxColliderComponent& other)
 {
+	if (!m_IsActive) return;
+
 	for (auto& component : m_components)
 	{
 		component->OnCollisionEnter(other);
@@ -209,4 +218,14 @@ void dae::GameObject::Destroy()
 bool dae::GameObject::ToBeDestroyed() const
 {
 	return m_ToBeDestroyed;
+}
+
+void dae::GameObject::SetActive(bool value)
+{
+	m_IsActive = value;
+}
+
+bool dae::GameObject::IsActive() const
+{
+	return m_IsActive;
 }

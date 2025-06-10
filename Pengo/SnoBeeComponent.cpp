@@ -6,11 +6,18 @@
 #include "BlockComponent.h"
 #include "MoveCommand.h"
 #include "Event.h"
+#include "LevelState.h"
 
-SnoBeeComponent::SnoBeeComponent(dae::GameObject* gameObject, float blockSize, float speed, float chaseRange)
-	:Component(gameObject), m_BlockSize{ blockSize }, m_Speed{ speed }, m_ChaseRange{ chaseRange }
+SnoBeeComponent::SnoBeeComponent(dae::GameObject* gameObject, float blockSize, float speed, float chaseRange, float spawnDelay)
+	:Component(gameObject), m_BlockSize{ blockSize }, m_Speed{ speed }, m_ChaseRange{ chaseRange }, m_SpawnTimer{ spawnDelay }
 {
 	SetRandomDirection();
+	LevelState::GetInstance().AddSnoBee();
+}
+
+SnoBeeComponent::~SnoBeeComponent()
+{
+	LevelState::GetInstance().RemoveSnoBee(m_gameObject->IsActive());
 }
 
 void SnoBeeComponent::Start()
@@ -21,6 +28,13 @@ void SnoBeeComponent::Start()
 
 void SnoBeeComponent::Update()
 {
+	if (!m_HasSpawned)
+	{
+		m_SpawnTimer -= dae::Time::GetInstance().GetDeltaTime();
+		if (m_SpawnTimer <= 0.0f) m_HasSpawned = true;
+		return;
+	}
+
 	// Move in current direction
 	MoveCommand moveCommand{ m_gameObject, static_cast<float>(m_DirectionX), static_cast<float>(m_DirectionY), m_Speed };
 	moveCommand.Execute();

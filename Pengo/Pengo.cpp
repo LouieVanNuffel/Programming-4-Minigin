@@ -38,6 +38,7 @@
 #include "CollisionSystem.h"
 #include "PushCommand.h"
 #include "SnoBeeCharacter.h"
+#include "LevelState.h"
 
 using namespace dae;
 
@@ -51,7 +52,7 @@ void Load()
 	auto& ss = ServiceLocator::get_sound_system();
 	ss.AddAudioClip(0, "../Data/CreditSound.wav");
 
-	auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
+	auto& scene = dae::SceneManager::GetInstance().CreateScene("Level1");
 
 	//Level
 	Level level{ "Level1", 16, 1.5f, 150, 50 };
@@ -60,11 +61,6 @@ void Load()
 	{
 		scene.Add(levelGameObjects[index]);
 	}
-
-	//SnoBee
-	SnoBeeCharacter snoBeeCharacter{ SnoBeeColor::red };
-	snoBeeCharacter.GetCharacterObject()->SetPosition(260, 180);
-	scene.Add(snoBeeCharacter.GetCharacterObject());
 
 	//Assignment Text
 	auto textObject = std::make_shared<dae::GameObject>();

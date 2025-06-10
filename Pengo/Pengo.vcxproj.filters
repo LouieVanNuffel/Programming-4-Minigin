@@ -54,6 +54,9 @@
     <ClCompile Include="SnoBeeComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LevelState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HealthComponent.h">
@@ -114,6 +117,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SnoBeeComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,5 +1,6 @@
 #include "CollisionSystem.h"
 #include "BoxColliderComponent.h"
+#include "GameObject.h"
 #include <cassert>
 
 using namespace dae;
@@ -26,6 +27,7 @@ bool dae::CollisionSystem::PerformRaycast(const Raycast& raycast, HitInfo& hitIn
 {
 	for (const BoxColliderComponent* boxColiderComponent : m_BoxColliderComponents)
 	{
+		if (boxColiderComponent->GetGameObject()->IsActive() == false) continue;
 		if (boxColiderComponent == colliderToIgnore) continue;
 
 		const BoxCollider& boxCollider = boxColiderComponent->BoxDimensions();
@@ -53,8 +55,10 @@ void CollisionSystem::Update()
 {
 	for (uint32_t index1{}; index1 < m_BoxColliderComponents.size(); ++index1)
 	{
+		if (m_BoxColliderComponents[index1]->GetGameObject()->IsActive() == false) continue;
 		for (uint32_t index2{index1 + 1}; index2 < m_BoxColliderComponents.size(); ++index2)
 		{
+			if (m_BoxColliderComponents[index2]->GetGameObject()->IsActive() == false) continue;
 			if (m_BoxColliderComponents[index1] == m_BoxColliderComponents[index2]) continue;
 			if (!MovedThisFrame(m_BoxColliderComponents[index1]) && !MovedThisFrame(m_BoxColliderComponents[index2])) continue;
 

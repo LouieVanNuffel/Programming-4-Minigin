@@ -15,10 +15,10 @@ class SnoBeeComponent final : public dae::Component, public dae::Observer
 {
 public:
 	//Constructor
-	SnoBeeComponent(dae::GameObject* gameObject, float blockSize, float speed = 50.0f, float chaseRange = 75.0f);
+	SnoBeeComponent(dae::GameObject* gameObject, float blockSize, float speed = 50.0f, float chaseRange = 75.0f, float spawnDelay = 2.0f);
 
 	//Destructor
-	virtual ~SnoBeeComponent() override = default;
+	virtual ~SnoBeeComponent() override;
 
 	//Rule of 5
 	SnoBeeComponent(const SnoBeeComponent& other) = delete;
@@ -64,6 +64,8 @@ private:
 	float m_BlockSize;
 	float m_Speed;
 	float m_ChaseRange;
+	float m_SpawnTimer;
+	bool m_HasSpawned{ false };
 
 };
 

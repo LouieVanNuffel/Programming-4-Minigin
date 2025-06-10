@@ -20,7 +20,7 @@ public:
 	BlockComponent(BlockType blockType, int blockSize, dae::GameObject* gameObject);
 
 	//Destructor
-	virtual ~BlockComponent() override = default;
+	virtual ~BlockComponent() override;
 
 	//Rule of 5
 	BlockComponent(const BlockComponent& other) = delete;
@@ -43,6 +43,9 @@ private:
 	void SetPositionNextToBlock(const dae::BoxColliderComponent* other);
 	void SetPositionNextToWall(float x, float y);
 	void UpdateBreakAnimation();
+	void InitializeSnoBeeCharacter();
+
+	std::shared_ptr<dae::GameObject> m_SnoBeeCharacter{ nullptr };
 
 	dae::BoxColliderComponent* m_pBoxColliderComponent{ nullptr };
 	
@@ -57,7 +60,6 @@ private:
 	int m_DirectionY{};
 	bool m_IsMoving{ false };
 	bool m_IsBroken{ false };
-	bool m_IsHatched{ false };
 
 };
 

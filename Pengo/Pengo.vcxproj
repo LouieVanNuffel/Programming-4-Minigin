@@ -164,6 +164,7 @@
     <ClCompile Include="BlockComponent.cpp" />
     <ClCompile Include="BlockObject.cpp" />
     <ClCompile Include="Level.cpp" />
+    <ClCompile Include="LevelState.cpp" />
     <ClCompile Include="LivesDisplayComponent.cpp" />
     <ClCompile Include="Pengo.cpp" />
     <ClCompile Include="PengoCharacter.cpp" />
@@ -180,6 +181,7 @@
     <ClInclude Include="BlockObject.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="Level.h" />
+    <ClInclude Include="LevelState.h" />
     <ClInclude Include="LivesDisplayComponent.h" />
     <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="PengoCharacter.h" />

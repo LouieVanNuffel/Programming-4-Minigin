@@ -64,6 +64,9 @@ namespace dae
 		void Destroy();
 		bool ToBeDestroyed() const;
 
+		void SetActive(bool value);
+		bool IsActive() const;
+
 		GameObject() = default;
 		~GameObject();
 		GameObject(const GameObject& other) = delete;
@@ -79,6 +82,7 @@ namespace dae
 		glm::vec3 m_worldPosition{};
 		bool m_positionIsDirty{ false };
 		bool m_ToBeDestroyed{ false };
+		bool m_IsActive{ true };
 
 		std::vector<std::unique_ptr<Component>> m_components{};
 		std::vector<Component*> m_unregisteredComponents{};

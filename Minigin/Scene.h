@@ -20,6 +20,9 @@ namespace dae
 		void RenderUI() const;
 		void CleanUpDestroyed();
 
+		const std::string& Name() const { return m_name; };
+		unsigned int ID() const { return m_idCounter; };
+
 		~Scene();
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;

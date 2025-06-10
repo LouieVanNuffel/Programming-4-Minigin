@@ -7,11 +7,21 @@
 #include "RenderComponent.h"
 #include "SceneManager.h"
 #include "SnoBeeCharacter.h"
+#include "LevelState.h"
 
 BlockComponent::BlockComponent(BlockType blockType, int blockSize, dae::GameObject* gameObject)
 	:Component(gameObject), m_BlockType{ blockType }, m_BlockSize{ blockSize }
 {
-	Hatch();
+	if (m_BlockType == BlockType::egg)
+	{
+		LevelState::GetInstance().RegisterEggBlock(this);
+		InitializeSnoBeeCharacter();
+	}
+}
+
+BlockComponent::~BlockComponent()
+{
+	if (m_BlockType == BlockType::egg) LevelState::GetInstance().UnregisterEggBlock(this);
 }
 
 void BlockComponent::Start()
@@ -59,16 +69,13 @@ void BlockComponent::Break()
 
 void BlockComponent::Hatch()
 {
-	if (m_BlockType != BlockType::egg || m_IsHatched) return;
-	
-	m_IsHatched = true;
+	if (m_BlockType != BlockType::egg) return;
 
-	SnoBeeCharacter snoBeeCharacter{ SnoBeeColor::green };
-	const glm::vec3& currentPosition = m_gameObject->GetWorldPosition();
-	snoBeeCharacter.GetCharacterObject()->SetWorldPosition(currentPosition.x, currentPosition.y);
+	// Activate SnobeeCharacter
+	m_SnoBeeCharacter->SetActive(true);
 
-	auto& sceneManager = dae::SceneManager::GetInstance();
-	sceneManager.AddGameObjectToScene(snoBeeCharacter.GetCharacterObject(), sceneManager.ActiveSceneIndex());
+	// Destroy block
+	m_gameObject->Destroy();
 }
 
 bool BlockComponent::PerformRaycast()
@@ -144,4 +151,18 @@ void BlockComponent::UpdateBreakAnimation()
 	{
 		m_gameObject->Destroy();
 	}
+}
+
+void BlockComponent::InitializeSnoBeeCharacter()
+{
+	// Initialize snobeecharacter
+	SnoBeeCharacter snoBeeCharacter{ SnoBeeColor::green };
+	const glm::vec3& currentPosition = m_gameObject->GetWorldPosition();
+	m_SnoBeeCharacter = snoBeeCharacter.GetCharacterObject();
+	m_SnoBeeCharacter->SetWorldPosition(currentPosition.x, currentPosition.y);
+	m_SnoBeeCharacter->SetActive(false);
+
+	// Spawn snobeecharacter
+	auto& sceneManager = dae::SceneManager::GetInstance();
+	sceneManager.AddGameObjectToScene(snoBeeCharacter.GetCharacterObject(), sceneManager.ActiveSceneIndex());
 }

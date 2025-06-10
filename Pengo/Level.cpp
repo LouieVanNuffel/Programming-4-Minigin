@@ -4,6 +4,7 @@
 #include "RenderComponent.h"
 #include "BoxColliderComponent.h"
 #include "BlockObject.h"
+#include "LevelState.h"
 #include <iostream>
 
 Level::Level(const std::string& levelName, int blockSize, float scale, int offsetX, int offsetY)
@@ -126,6 +127,9 @@ const std::vector<std::shared_ptr<dae::GameObject>>& Level::LoadLevelGameObjects
 		auto blockObject = BlockObject{ m_BlockTypesPerTile[index], m_BlockSize, positionX, positionY, m_Scale }.GetGameObject();
 		m_LevelGameObjects.emplace_back(blockObject);
 	}
+
+	// Hatch half of the eggs
+	LevelState::GetInstance().HatchHalfOfEggs();
 
 	return m_LevelGameObjects;
 }
