@@ -39,6 +39,7 @@
 #include "PushCommand.h"
 #include "SnoBeeCharacter.h"
 #include "LevelState.h"
+#include "LevelTimerComponent.h"
 
 using namespace dae;
 
@@ -80,16 +81,24 @@ void Load()
 	fpsObject->AddComponent(std::move(fpsComponent));
 	scene.Add(fpsObject);
 
+	//Level Timer
+	auto timerObject = std::make_shared<dae::GameObject>();
+	auto levelTimerComponent = std::make_unique<LevelTimerComponent>(timerObject.get());
+	timerObject->AddComponent(std::move(levelTimerComponent));
+	scene.Add(timerObject);
+
 	//Characters
 	PengoCharacter pengo1{ PengoColor::red };
 	auto characterObject1 = pengo1.GetCharacterObject();
 	characterObject1->SetPosition(200.0f, 180.0f);
 	scene.Add(characterObject1);
+	LevelState::GetInstance().AddPlayerObject(characterObject1.get());
 
 	PengoCharacter pengo2{ PengoColor::green };
 	auto characterObject2 = pengo2.GetCharacterObject();
 	characterObject2->SetPosition(160.0f, 180.0f);
 	scene.Add(characterObject2);
+	LevelState::GetInstance().AddPlayerObject(characterObject2.get());
 
 	// Display Controls
 	auto controllerControlsTextObject = std::make_shared<dae::GameObject>();

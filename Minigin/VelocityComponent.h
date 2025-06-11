@@ -34,6 +34,16 @@ namespace dae
 		void AddCollisionsOffset(float x, float y);
 
 	private:
+		void NotifyAboutDirection() const;
+
+		enum class Direction
+		{
+			up, down, left, right, none
+		};
+
+		Direction m_Direction{ Direction::none };
+		Direction m_DirectionLastFrame{ Direction::none };
+
 		glm::vec3 m_Velocity{};
 		glm::vec3 m_PositionLastFrame{};
 		glm::vec3 m_PositionThisFrame{};

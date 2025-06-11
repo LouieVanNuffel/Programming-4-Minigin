@@ -1,69 +1,56 @@
 #include "Animator.h"
 #include "AnimationState.h"
-#include "GameObject.h"
 #include "Event.h"
+#include "GameObject.h"
+#include <cassert>
 
-using namespace dae;
-
-Animator::Animator(dae::GameObject* gameObject, const AnimationStateData& idleStateData,
-	const AnimationStateData& movingStateData, const AnimationStateData& deadStateData)
-	:Component(gameObject), m_IdleStateData{ idleStateData }, m_MovingStateData{ movingStateData }, m_DeadStateData{ deadStateData }
+Animator::Animator(dae::GameObject* gameObject)
+	: Component(gameObject)
 {
-	m_pAnimationState = std::make_unique<AnimationState>(this, idleStateData);
-	m_pAnimationState->OnEnter();
 }
 
 void Animator::Start()
 {
 	m_pRenderComponent = m_gameObject->GetComponent<dae::RenderComponent>();
-
 	assert(m_pRenderComponent);
 }
 
 void Animator::Update()
 {
-	m_pAnimationState->Update();
-};
+	if (m_pCurrentState != nullptr) m_pCurrentState->Update();
+}
 
-void Animator::LateUpdate() {};
-void Animator::Render() const {};
-void Animator::RenderUI() const {};
-
-void Animator::Notify(const Event& event, const dae::GameObject* gameObject)
+void Animator::Notify(const dae::Event& event, const dae::GameObject* gameObject)
 {
-	m_pAnimationState->Notify(event, gameObject);
-	std::unique_ptr<AnimationState> newState = LoadNewStateFromEnum(m_pAnimationState->GetNewStateToTransitionTo());
-	if (newState != nullptr) EnterNewState(std::move(newState));
+	if (m_pCurrentState != nullptr) m_pCurrentState->Notify(event, gameObject);
 
-	if (event.id == dae::make_sdbm_hash("MovedLeft"))
-	{
-		m_Direction = Direction::left;
-	}
+	if (event.id == dae::make_sdbm_hash("MovedLeft")) m_Direction = Direction::left;
+	if (event.id == dae::make_sdbm_hash("MovedRight")) m_Direction = Direction::right;
+	if (event.id == dae::make_sdbm_hash("MovedUp")) m_Direction = Direction::up;
+	if (event.id == dae::make_sdbm_hash("MovedDown")) m_Direction = Direction::down;
+}
 
-	if (event.id == dae::make_sdbm_hash("MovedRight"))
-	{
-		m_Direction = Direction::right;
-	}
+void Animator::AddState(std::unique_ptr<AnimationState> state)
+{
+	AnimationStates animationType = state->GetStateType();
+	m_States[animationType] = std::move(state);
 
-	if (event.id == dae::make_sdbm_hash("MovedUp"))
+	if (m_pCurrentState == nullptr)
 	{
-		m_Direction = Direction::up;
-	}
-
-	if (event.id == dae::make_sdbm_hash("MovedDown"))
-	{
-		m_Direction = Direction::down;
+		m_CurrentStateEnum = animationType;
+		m_pCurrentState = m_States[animationType].get();
+		m_pCurrentState->OnEnter();
 	}
 }
 
-void Animator::SetTexture(std::shared_ptr<Texture2D> texture)
+void Animator::ChangeState(AnimationStates newState)
 {
-	if (m_pRenderComponent != nullptr) m_pRenderComponent->SetTexture(texture);
-}
+	if (newState == m_CurrentStateEnum || m_States.find(newState) == m_States.end()) return;
 
-void Animator::AddSourceRectPositionToStartPosition(int x, int y)
-{
-	if (m_pRenderComponent != nullptr) m_pRenderComponent->AddSourceRectToStartPosition(x, y);
+	m_pCurrentState->OnExit();
+	m_pCurrentState = m_States[newState].get();
+	m_CurrentStateEnum = newState;
+	m_pCurrentState->OnEnter();
 }
 
 const Direction& Animator::GetDirection() const
@@ -71,33 +58,16 @@ const Direction& Animator::GetDirection() const
 	return m_Direction;
 }
 
-void Animator::EnterNewState(std::unique_ptr<AnimationState> newState)
+void Animator::SetTexture(std::shared_ptr<dae::Texture2D> texture)
 {
-	m_pAnimationState->OnExit();
-	m_pAnimationState = std::move(newState);
-	m_pAnimationState->OnEnter();
+	if (m_pRenderComponent == nullptr) return;
+
+	m_pRenderComponent->SetTexture(texture);
 }
 
-std::unique_ptr<AnimationState> Animator::LoadNewStateFromEnum(const AnimationStates& animationStateToTransitionTo)
+void Animator::AddSourceRectPositionToStartPosition(int x, int y)
 {
-	if (m_CurrentAnimationStateEnum == animationStateToTransitionTo) return nullptr;
+	if (m_pRenderComponent == nullptr) return;
 
-	switch (animationStateToTransitionTo)
-	{
-	case AnimationStates::idle:
-		m_CurrentAnimationStateEnum = animationStateToTransitionTo;
-		return std::make_unique<AnimationState>(this, m_IdleStateData);
-		break;
-	case AnimationStates::dead:
-		m_CurrentAnimationStateEnum = animationStateToTransitionTo;
-		return std::make_unique<AnimationState>(this, m_DeadStateData);
-		break;
-	case AnimationStates::moving:
-		m_CurrentAnimationStateEnum = animationStateToTransitionTo;
-		return std::make_unique<AnimationState>(this, m_MovingStateData);
-		break;
-	default:
-		return nullptr;
-		break;
-	}
+	m_pRenderComponent->AddSourceRectToStartPosition(x, y);
 }

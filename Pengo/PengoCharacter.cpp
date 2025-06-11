@@ -6,6 +6,9 @@
 #include "VelocityComponent.h"
 #include "Animator.h"
 #include "BoxColliderComponent.h"
+#include "IdleState.h"
+#include "MovingState.h"
+#include "DeadState.h"
 
 using namespace dae;
 
@@ -16,8 +19,12 @@ PengoCharacter::PengoCharacter(PengoColor pengoColor)
 	auto pointComponent = std::make_unique<PointComponent>(m_CharacterObject.get());
 	auto subjectComponent = std::make_unique<Subject>(m_CharacterObject.get());
 	auto velocityComponent = std::make_unique<VelocityComponent>(m_CharacterObject.get());
-	auto animator = std::make_unique<Animator>(m_CharacterObject.get(), m_IdleStateData, m_MovingStateData, m_DeadStateData);
+	auto animator = std::make_unique<Animator>(m_CharacterObject.get());
 	subjectComponent->AddObserver(animator.get());
+	animator->AddState(std::make_unique<IdleState>(animator.get(), m_IdleStateData));
+	animator->AddState(std::make_unique<MovingState>(animator.get(), m_MovingStateData));
+	animator->AddState(std::make_unique<DeadState>(animator.get(), m_DeadStateData));
+
 	auto textureComponent = std::make_unique<dae::RenderComponent>(m_CharacterObject.get());
 	textureComponent->SetTexture("characterSprites.png", 
 								SDL_Rect{ GetTextureOffsetX(pengoColor), GetTextureOffsetY(pengoColor), 16, 16}, 1.5f);

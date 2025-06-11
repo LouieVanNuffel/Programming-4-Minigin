@@ -1,38 +1,32 @@
 #include "AnimationState.h"
 #include "Animator.h"
-#include "Event.h"
 
-void AnimationState::Update()
+AnimationState::AnimationState(Animator* animator, const AnimationStateData& data)
+    : m_pAnimator(animator),
+    m_pAnimationSequence{ std::make_unique<AnimationSequence>(data.animationSequenceData) },
+    m_SourceRectOffsetsX{ data.sourceRectOffsetsX },
+    m_SourceRectOffsetY{ data.sourceRectOffsetY },
+    m_StateType{ data.thisAnimationState }
 {
-	UpdateOffset();
 
-	m_pAnimationSequence->Update();
-	m_pAnimator->AddSourceRectPositionToStartPosition(m_SourceRectOffsetX + m_pAnimationSequence->GetOffsetX(),
-		m_SourceRectOffsetY + m_pAnimationSequence->GetOffsetY());
 }
 
-void AnimationState::Notify(const dae::Event& event, const dae::GameObject*)
+void AnimationState::Update() 
 {
-	if (m_StateToTransitionTo == AnimationStates::dead) return;
-
-	if (event.id == dae::make_sdbm_hash("Moved"))
-	{
-		m_StateToTransitionTo = AnimationStates::moving;
-	}
-
-	if (event.id == dae::make_sdbm_hash("DidNotMove"))
-	{
-		m_StateToTransitionTo = AnimationStates::idle;
-	}
-
-	if (event.id == dae::make_sdbm_hash("Died"))
-	{
-		m_StateToTransitionTo = AnimationStates::dead;
-	}
+    m_pAnimationSequence->Update();
+    UpdateOffsetAndRenderRect();
 }
 
-void AnimationState::UpdateOffset()
+void AnimationState::UpdateOffsetAndRenderRect() 
 {
-	// only works because order of direction enum class matches up with order of sourceRectOffsetsX
-	m_SourceRectOffsetX = m_SourceRectOffsetsX[static_cast<int>(m_pAnimator->GetDirection())];
+    int directionIndex = static_cast<int>(m_pAnimator->GetDirection());
+    int sourceRectOffsetX = m_SourceRectOffsetsX[directionIndex];
+
+    m_pAnimator->AddSourceRectPositionToStartPosition(sourceRectOffsetX + m_pAnimationSequence->GetOffsetX(),
+                                                      m_SourceRectOffsetY + m_pAnimationSequence->GetOffsetY());
+}
+
+AnimationStates AnimationState::GetStateType() const 
+{
+    return m_StateType;
 }

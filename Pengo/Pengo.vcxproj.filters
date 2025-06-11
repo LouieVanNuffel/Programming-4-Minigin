@@ -48,13 +48,16 @@
     <ClCompile Include="SnoBeeCharacter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AnimationState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SnoBeeComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LevelState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StunnedState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -120,6 +123,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LevelState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelTimerComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IdleState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MovingState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StunnedState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DeadState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -3,51 +3,45 @@
 #include "Observer.h"
 #include "RenderComponent.h"
 #include "AnimationState.h"
+#include <memory>
+#include <unordered_map>
 
 enum class Direction
 {
 	up, down, left, right
 };
 
-namespace dae
-{
+namespace dae 
+{ 
 	struct Event;
 }
 
-class AnimationState;
 class Animator final : public dae::Component, public dae::Observer
 {
 public:
-	Animator(dae::GameObject* gameObject, const AnimationStateData& idleStateData, 
-		const AnimationStateData& movingStateData, const AnimationStateData& deadStateData);
-	~Animator() = default;
+	Animator(dae::GameObject* gameObject);
+	~Animator() override = default;
 
-	virtual void Start() override;
+	void Start() override;
+	void Update() override;
+	void LateUpdate() override {}
+	void Render() const override {}
+	void RenderUI() const override {}
 
-	virtual void Update() override;
+	void Notify(const dae::Event& event, const dae::GameObject* gameObject) override;
 
-	virtual void LateUpdate() override;
-	virtual void Render() const override;
-	virtual void RenderUI() const override;
+	void AddState(std::unique_ptr<AnimationState> state);
+	void ChangeState(AnimationStates newState);
 
-	virtual void Notify(const dae::Event& event, const dae::GameObject* gameObject) override;
-
+	const Direction& GetDirection() const;
 	void SetTexture(std::shared_ptr<dae::Texture2D> texture);
 	void AddSourceRectPositionToStartPosition(int x, int y);
 
-	const Direction& GetDirection() const;
-
 private:
-	std::unique_ptr<AnimationState> m_pAnimationState{ nullptr };
-	AnimationStates m_CurrentAnimationStateEnum = AnimationStates::idle;
+	std::unordered_map<AnimationStates, std::unique_ptr<AnimationState>> m_States;
+	AnimationState* m_pCurrentState{ nullptr };
+	AnimationStates m_CurrentStateEnum = AnimationStates::idle;
+
+	Direction m_Direction{ Direction::down };
 	dae::RenderComponent* m_pRenderComponent{ nullptr };
-	
-	Direction m_Direction{ Direction::up };
-
-	AnimationStateData m_IdleStateData;
-	AnimationStateData m_MovingStateData;
-	AnimationStateData m_DeadStateData;
-
-	void EnterNewState(std::unique_ptr<AnimationState> newState);
-	std::unique_ptr<AnimationState> LoadNewStateFromEnum(const AnimationStates& animationStateToTransitionTo);
 };

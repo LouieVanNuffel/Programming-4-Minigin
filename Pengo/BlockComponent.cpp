@@ -21,7 +21,15 @@ BlockComponent::BlockComponent(BlockType blockType, int blockSize, dae::GameObje
 
 BlockComponent::~BlockComponent()
 {
-	if (m_BlockType == BlockType::egg) LevelState::GetInstance().UnregisterEggBlock(this);
+	if (m_BlockType == BlockType::egg)
+	{
+		LevelState::GetInstance().UnregisterEggBlock(this);
+		// Destroy the snoBeeCharacter as well if the egg hasn't hatched yet
+		if (m_SnoBeeCharacter->IsActive() == false)
+		{
+			m_SnoBeeCharacter->Destroy();
+		}
+	}
 }
 
 void BlockComponent::Start()
