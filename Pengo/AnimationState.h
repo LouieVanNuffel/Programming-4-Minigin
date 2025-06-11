@@ -13,7 +13,6 @@ struct AnimationStateData
 {
 	AnimationStates thisAnimationState;
 	AnimationSequenceData animationSequenceData;
-	int sourceRectOffsetX;
 	int sourceRectOffsetY;
 	std::vector<int> sourceRectOffsetsX; // Must match order of Direction enum class in Animator (up, down, left, right)
 };

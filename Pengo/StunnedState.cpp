@@ -8,11 +8,13 @@ StunnedState::StunnedState(Animator* animator, const AnimationStateData& data, f
 
 }
 
-void StunnedState::OnEnter() {
+void StunnedState::OnEnter() 
+{
     // Play stun sound
 }
 
-void StunnedState::Update() {
+void StunnedState::Update() 
+{
     AnimationState::Update();
 
     m_StunTimeRemaining -= dae::Time::GetInstance().GetDeltaTime();

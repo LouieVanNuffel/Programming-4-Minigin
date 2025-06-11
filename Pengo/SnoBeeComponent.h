@@ -5,6 +5,7 @@
 
 namespace dae
 {
+	class Subject;
 	class VelocityComponent;
 	class BoxColliderComponent;
 	struct HitInfo;
@@ -33,6 +34,8 @@ public:
 	virtual void RenderUI() const override {};
 	virtual void OnCollisionEnter(const dae::BoxColliderComponent& other);
 
+	void Stun();
+
 	virtual void Notify(const dae::Event& event, const dae::GameObject* gameObject) override;
 	
 private:
@@ -52,20 +55,26 @@ private:
 
 	void Patrol();
 	void Chase();
-	float DistanceToTargetSquared() const;
+	float DistanceToObjectSquared(dae::GameObject* gameObject) const;
 	glm::vec2 DirectionToTarget() const;
 
 	dae::GameObject* m_pTargetObject{ nullptr };
 	dae::BoxColliderComponent* m_pBoxColliderComponent{ nullptr };
+	dae::Subject* m_pSubjectComponent{ nullptr };
 	MoveDirection m_Direction{ MoveDirection::up };
 	BehaviorState m_CurrentBehaviorState{ BehaviorState::patrol };
+
 	int m_DirectionX{};
 	int m_DirectionY{};
 	float m_BlockSize;
 	float m_Speed;
 	float m_ChaseRange;
 	float m_SpawnTimer;
+	float m_StunTimer{};
+	float m_StunTime{ 5.0f };
+
 	bool m_HasSpawned{ false };
+	bool m_IsStunned{ false };
 
 };
 

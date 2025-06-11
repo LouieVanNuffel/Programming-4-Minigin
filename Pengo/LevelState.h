@@ -20,12 +20,13 @@ public:
 	~LevelState() = default;
 
 	//Rule of 5
-	LevelState(const LevelState& other) = default;
-	LevelState(LevelState&& other) = default;
-	LevelState& operator=(const LevelState& other) = default;
-	LevelState& operator=(LevelState&& other) = default;
+	LevelState(const LevelState& other) = delete;
+	LevelState(LevelState&& other) = delete;
+	LevelState& operator=(const LevelState& other) = delete;
+	LevelState& operator=(LevelState&& other) = delete;
 
 	void AddPlayerObject(dae::GameObject* gameObject);
+	const std::vector<dae::GameObject*>& GetPlayerObjects() const;
 
 	void AddSnoBee();
 	void RemoveSnoBee(bool hasHatched);

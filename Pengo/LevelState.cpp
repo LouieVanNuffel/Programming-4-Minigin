@@ -19,6 +19,11 @@ void LevelState::AddPlayerObject(dae::GameObject* gameObject)
 	m_PointComponents.emplace_back(pointComponent);
 }
 
+const std::vector<dae::GameObject*>& LevelState::GetPlayerObjects() const
+{
+	return m_PlayerObjects;
+}
+
 void LevelState::AddSnoBee()
 {
 	++m_SnoBeeCount;

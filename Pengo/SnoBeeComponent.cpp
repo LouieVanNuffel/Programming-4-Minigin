@@ -7,6 +7,7 @@
 #include "MoveCommand.h"
 #include "Event.h"
 #include "LevelState.h"
+#include "Subject.h"
 
 SnoBeeComponent::SnoBeeComponent(dae::GameObject* gameObject, float blockSize, float speed, float chaseRange, float spawnDelay)
 	:Component(gameObject), m_BlockSize{ blockSize }, m_Speed{ speed }, m_ChaseRange{ chaseRange }, m_SpawnTimer{ spawnDelay }
@@ -24,6 +25,8 @@ void SnoBeeComponent::Start()
 {
 	m_pBoxColliderComponent = m_gameObject->GetComponent<dae::BoxColliderComponent>();
 	assert(m_pBoxColliderComponent != nullptr);
+
+	m_pSubjectComponent = m_gameObject->GetComponent<dae::Subject>();
 }
 
 void SnoBeeComponent::Update()
@@ -32,7 +35,14 @@ void SnoBeeComponent::Update()
 	{
 		m_SpawnTimer -= dae::Time::GetInstance().GetDeltaTime();
 		if (m_SpawnTimer <= 0.0f) m_HasSpawned = true;
-		return;
+		else return;
+	}
+
+	if (m_IsStunned)
+	{
+		m_StunTimer -= dae::Time::GetInstance().GetDeltaTime();
+		if (m_StunTimer <= 0.0f) m_IsStunned = false;
+		else return;
 	}
 
 	// Move in current direction
@@ -59,6 +69,15 @@ void SnoBeeComponent::OnCollisionEnter(const dae::BoxColliderComponent& other)
 
 		healthComponent->TakeDamage(100.0f);
 	}
+}
+
+void SnoBeeComponent::Stun()
+{
+	m_IsStunned = true;
+	m_StunTimer = m_StunTime;
+
+	if (m_pSubjectComponent == nullptr) return;
+	m_pSubjectComponent->NotifyObservers(dae::Event{ dae::make_sdbm_hash("Stunned") });
 }
 
 void SnoBeeComponent::Notify(const dae::Event& event, const dae::GameObject*)
@@ -123,18 +142,50 @@ bool SnoBeeComponent::PerformRaycast(dae::HitInfo& hitInfo_Out) const
 
 void SnoBeeComponent::Patrol()
 {
+	// Check for blocks or walls
 	dae::HitInfo hitInfo_Out{};
 	if (PerformRaycast(hitInfo_Out))
 	{
 		if (hitInfo_Out.other == nullptr) return;
-		if (hitInfo_Out.other->GetLayer() == dae::Layer::pengo)
+
+		if (hitInfo_Out.other->GetLayer() == dae::Layer::block)
 		{
-			m_CurrentBehaviorState = BehaviorState::chase;
-			m_pTargetObject = hitInfo_Out.other->GetGameObject();
-			return;
+			srand(static_cast<int>(time(NULL)));
+			int randomNumber = rand() % 2;
+			if (randomNumber == 0)
+			{
+				SetRandomDirection();
+				return;
+			}
+			else
+			{
+				BlockComponent* blockComponent = hitInfo_Out.other->GetGameObject()->GetComponent<BlockComponent>();
+				if (blockComponent != nullptr)
+				{
+					blockComponent->Break();
+					return;
+				}
+			}
 		}
 
 		SetRandomDirection();
+	}
+
+	// Check if a player is close (if multiple are close go after the closest one)
+	for (const auto& playerObject : LevelState::GetInstance().GetPlayerObjects())
+	{
+		glm::vec3 playerPosition = playerObject->GetWorldPosition();
+		float distance = DistanceToObjectSquared(playerObject);
+		if (distance <= m_ChaseRange * m_ChaseRange)
+		{
+			if (m_pTargetObject != nullptr)
+			{
+				if (distance < DistanceToObjectSquared(m_pTargetObject)) m_pTargetObject = playerObject;
+			}
+			else m_pTargetObject = playerObject;
+
+			m_CurrentBehaviorState = BehaviorState::chase;
+		}
 	}
 }
 
@@ -147,7 +198,7 @@ void SnoBeeComponent::Chase()
 	}
 
 	// Check if target still within range
-	if (DistanceToTargetSquared() >= m_ChaseRange * m_ChaseRange)
+	if (DistanceToObjectSquared(m_pTargetObject) >= m_ChaseRange * m_ChaseRange)
 	{
 		m_pTargetObject = nullptr;
 		return;
@@ -172,11 +223,11 @@ void SnoBeeComponent::Chase()
 	}
 }
 
-float SnoBeeComponent::DistanceToTargetSquared() const
+float SnoBeeComponent::DistanceToObjectSquared(dae::GameObject* gameObject) const
 {
-	if (m_pTargetObject == nullptr) return 0.0f;
+	if (gameObject == nullptr) return 0.0f;
 
-	glm::vec3 targetPosition = m_pTargetObject->GetWorldPosition();
+	glm::vec3 targetPosition = gameObject->GetWorldPosition();
 	glm::vec3 currentPosition = m_gameObject->GetWorldPosition();
 	float distanceX = fabsf(targetPosition.x - currentPosition.x);
 	float distanceY = fabsf(targetPosition.y - currentPosition.y);

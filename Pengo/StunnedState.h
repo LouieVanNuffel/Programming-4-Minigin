@@ -1,7 +1,8 @@
 #pragma once
 #include "AnimationState.h"
 
-class StunnedState final : public AnimationState {
+class StunnedState final : public AnimationState 
+{
 public:
     StunnedState(Animator* animator, const AnimationStateData& data, float stunDuration);
 

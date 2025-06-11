@@ -9,6 +9,7 @@
 #include "IdleState.h"
 #include "MovingState.h"
 #include "DeadState.h"
+#include "StunnedState.h"
 
 using namespace dae;
 
@@ -23,6 +24,7 @@ SnoBeeCharacter::SnoBeeCharacter(SnoBeeColor snoBeeColor)
 	animator->AddState(std::make_unique<IdleState>(animator.get(), m_IdleStateData));
 	animator->AddState(std::make_unique<MovingState>(animator.get(), m_MovingStateData));
 	animator->AddState(std::make_unique<DeadState>(animator.get(), m_DeadStateData));
+	animator->AddState(std::make_unique<StunnedState>(animator.get(), m_StunStateData, 5.0f));
 
 	auto textureComponent = std::make_unique<dae::RenderComponent>(m_CharacterObject.get());
 	textureComponent->SetTexture("characterSprites.png",
