@@ -12,6 +12,7 @@ namespace dae
 	struct Event;
 }
 
+class AIControllerComponent;
 class SnoBeeComponent final : public dae::Component, public dae::Observer
 {
 public:
@@ -49,6 +50,8 @@ private:
 	{
 		patrol, chase
 	};
+
+	AIControllerComponent* m_pAIControllerComponent{ nullptr };
 
 	void SetDirection(MoveDirection direction);
 	void SetRandomDirection();

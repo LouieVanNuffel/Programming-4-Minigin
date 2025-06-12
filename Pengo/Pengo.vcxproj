@@ -163,6 +163,8 @@
     <ClCompile Include="Animator.cpp" />
     <ClCompile Include="BlockComponent.cpp" />
     <ClCompile Include="BlockObject.cpp" />
+    <ClCompile Include="GamepadControllerComponent.cpp" />
+    <ClCompile Include="KeyboardControllerComponent.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LevelState.cpp" />
     <ClCompile Include="LivesDisplayComponent.cpp" />
@@ -176,13 +178,17 @@
     <ClCompile Include="ThrashTheCacheComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AIControllerComponent.h" />
     <ClInclude Include="AnimationSequence.h" />
     <ClInclude Include="Animator.h" />
     <ClInclude Include="BlockComponent.h" />
     <ClInclude Include="BlockObject.h" />
+    <ClInclude Include="BreakCommand.h" />
     <ClInclude Include="DeadState.h" />
+    <ClInclude Include="GamepadControllerComponent.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="IdleState.h" />
+    <ClInclude Include="KeyboardControllerComponent.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="LevelState.h" />
     <ClInclude Include="LevelTimerComponent.h" />

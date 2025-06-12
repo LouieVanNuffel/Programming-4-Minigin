@@ -8,6 +8,7 @@
 #include "Event.h"
 #include "LevelState.h"
 #include "Subject.h"
+#include "AIControllerComponent.h"
 
 SnoBeeComponent::SnoBeeComponent(dae::GameObject* gameObject, float blockSize, float speed, float chaseRange, float spawnDelay)
 	:Component(gameObject), m_BlockSize{ blockSize }, m_Speed{ speed }, m_ChaseRange{ chaseRange }, m_SpawnTimer{ spawnDelay }
@@ -25,6 +26,9 @@ void SnoBeeComponent::Start()
 {
 	m_pBoxColliderComponent = m_gameObject->GetComponent<dae::BoxColliderComponent>();
 	assert(m_pBoxColliderComponent != nullptr);
+
+	m_pAIControllerComponent = m_gameObject->GetComponent<AIControllerComponent>();
+	assert(m_pAIControllerComponent != nullptr);
 
 	m_pSubjectComponent = m_gameObject->GetComponent<dae::Subject>();
 }
@@ -45,9 +49,8 @@ void SnoBeeComponent::Update()
 		else return;
 	}
 
-	// Move in current direction
-	MoveCommand moveCommand{ m_gameObject, static_cast<float>(m_DirectionX), static_cast<float>(m_DirectionY), m_Speed };
-	moveCommand.Execute();
+	// Move in current direction (order of direction and action matches up)
+	m_pAIControllerComponent->ExecuteAction(static_cast<dae::Action>(m_Direction));
 
 	switch (m_CurrentBehaviorState)
 	{

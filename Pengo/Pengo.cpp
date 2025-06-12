@@ -40,6 +40,8 @@
 #include "SnoBeeCharacter.h"
 #include "LevelState.h"
 #include "LevelTimerComponent.h"
+#include "KeyboardControllerComponent.h"
+#include "GamepadControllerComponent.h"
 
 using namespace dae;
 
@@ -165,52 +167,35 @@ void Load()
 	pointsDisplayObject2->AddComponent(std::move(pointsDisplayComponent));
 	scene.Add(pointsDisplayObject2);
 
-
-	////Thrash The Cache
-	//auto thrashTheCacheObject = std::make_shared<dae::GameObject>();
-	//auto thrashTheCacheComponent = std::make_unique<dae::ThrashTheCacheComponent>(thrashTheCacheObject.get());
-	//thrashTheCacheObject->AddComponent(std::move(thrashTheCacheComponent));
-	//scene.Add(thrashTheCacheObject);
-
 	//Commands (input)
+
 	auto moveUpCommand = std::make_unique<MoveCommand>(characterObject1.get(), 0.f, -1.f, 50.f);
 	auto moveDownCommand = std::make_unique<MoveCommand>(characterObject1.get(), 0.f, 1.f, 50.f);
 	auto moveLeftCommand = std::make_unique<MoveCommand>(characterObject1.get(), -1.f, .0f, 50.f);
 	auto moveRightCommand = std::make_unique<MoveCommand>(characterObject1.get(), 1.f, 0.f, 50.f);
-	auto inflictDamage = std::make_unique<TakeDamageCommand>(characterObject1.get(), 100.f);
-	auto pickUpPoint = std::make_unique<PickUpPointCommand>(characterObject1.get(), 1);
 	auto pushCommand = std::make_unique<PushCommand>(characterObject1.get());
 
-	//Commands (sound)
-	auto creditSoundCommand = std::make_unique<PlaySoundCommand>(SoundId{ 0 }, 100.0f);
-
-	InputManager::GetInstance().BindCommandToKeyboard(std::move(moveUpCommand), SDL_SCANCODE_W);
-	InputManager::GetInstance().BindCommandToKeyboard(std::move(moveDownCommand), SDL_SCANCODE_S);
-	InputManager::GetInstance().BindCommandToKeyboard(std::move(moveLeftCommand), SDL_SCANCODE_A);
-	InputManager::GetInstance().BindCommandToKeyboard(std::move(moveRightCommand), SDL_SCANCODE_D);
-	InputManager::GetInstance().BindCommandToKeyboard(std::move(inflictDamage), SDL_SCANCODE_C);
-	InputManager::GetInstance().BindCommandToKeyboard(std::move(pickUpPoint), SDL_SCANCODE_Z);
-	InputManager::GetInstance().BindCommandToKeyboard(std::move(creditSoundCommand), SDL_SCANCODE_Z);
-	InputManager::GetInstance().BindCommandToKeyboard(std::move(pushCommand), SDL_SCANCODE_SPACE);
+	auto keyboardControllerComponent = std::make_unique<KeyboardControllerComponent>(characterObject1.get());
+	keyboardControllerComponent->BindCommandToAction(std::move(moveUpCommand), Action::up);
+	keyboardControllerComponent->BindCommandToAction(std::move(moveDownCommand), Action::down);
+	keyboardControllerComponent->BindCommandToAction(std::move(moveLeftCommand), Action::left);
+	keyboardControllerComponent->BindCommandToAction(std::move(moveRightCommand), Action::right);
+	keyboardControllerComponent->BindCommandToAction(std::move(pushCommand), Action::push);
+	characterObject1->AddComponent(std::move(keyboardControllerComponent));
 
 	moveUpCommand = std::make_unique<MoveCommand>(characterObject2.get(), 0.f, -1.f, 100.f);
 	moveDownCommand = std::make_unique<MoveCommand>(characterObject2.get(), 0.f, 1.f, 100.f);
 	moveLeftCommand = std::make_unique<MoveCommand>(characterObject2.get(), -1.f, .0f, 100.f);
 	moveRightCommand = std::make_unique<MoveCommand>(characterObject2.get(), 1.f, 0.f, 100.f);
-	inflictDamage = std::make_unique<TakeDamageCommand>(characterObject2.get(), 100.f);
-	pickUpPoint = std::make_unique<PickUpPointCommand>(characterObject2.get(), 1);
 	pushCommand = std::make_unique<PushCommand>(characterObject2.get());
 
-	creditSoundCommand = std::make_unique<PlaySoundCommand>(SoundId{0}, 100.0f);
-
-	InputManager::GetInstance().BindCommandToController(std::move(moveUpCommand), XINPUT_GAMEPAD_DPAD_UP, PollType::IsPressed, 0);
-	InputManager::GetInstance().BindCommandToController(std::move(moveDownCommand), XINPUT_GAMEPAD_DPAD_DOWN, PollType::IsPressed, 0);
-	InputManager::GetInstance().BindCommandToController(std::move(moveLeftCommand), XINPUT_GAMEPAD_DPAD_LEFT, PollType::IsPressed, 0);
-	InputManager::GetInstance().BindCommandToController(std::move(moveRightCommand), XINPUT_GAMEPAD_DPAD_RIGHT, PollType::IsPressed, 0);
-	InputManager::GetInstance().BindCommandToController(std::move(inflictDamage), XINPUT_GAMEPAD_X, PollType::IsPressed, 0);
-	InputManager::GetInstance().BindCommandToController(std::move(pickUpPoint), XINPUT_GAMEPAD_A, PollType::IsPressed, 0);
-	InputManager::GetInstance().BindCommandToController(std::move(creditSoundCommand), XINPUT_GAMEPAD_A, PollType::IsPressed, 0);
-	InputManager::GetInstance().BindCommandToController(std::move(pushCommand), XINPUT_GAMEPAD_B, PollType::IsPressed, 0);
+	auto gamepadControllerComponent = std::make_unique<GamepadControllerComponent>(characterObject2.get(), 0);
+	gamepadControllerComponent->BindCommandToAction(std::move(moveUpCommand), Action::up);
+	gamepadControllerComponent->BindCommandToAction(std::move(moveDownCommand), Action::down);
+	gamepadControllerComponent->BindCommandToAction(std::move(moveLeftCommand), Action::left);
+	gamepadControllerComponent->BindCommandToAction(std::move(moveRightCommand), Action::right);
+	gamepadControllerComponent->BindCommandToAction(std::move(pushCommand), Action::push);
+	characterObject1->AddComponent(std::move(gamepadControllerComponent));
 }
 
 int main(int, char* []) {

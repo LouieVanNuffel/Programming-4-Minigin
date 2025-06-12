@@ -10,6 +10,9 @@
 #include "MovingState.h"
 #include "DeadState.h"
 #include "StunnedState.h"
+#include "AIControllerComponent.h"
+#include "MoveCommand.h"
+#include "BreakCommand.h"
 
 using namespace dae;
 
@@ -41,6 +44,23 @@ SnoBeeCharacter::SnoBeeCharacter(SnoBeeColor snoBeeColor)
 	m_CharacterObject->AddComponent(std::move(animator));
 	m_CharacterObject->AddComponent(std::move(boxColliderComponent));
 	m_CharacterObject->AddComponent(std::move(snoBeeComponent));
+
+
+	// Actions
+	auto moveUpCommand = std::make_unique<MoveCommand>(m_CharacterObject.get(), 0.f, -1.f, 50.f);
+	auto moveDownCommand = std::make_unique<MoveCommand>(m_CharacterObject.get(), 0.f, 1.f, 50.f);
+	auto moveLeftCommand = std::make_unique<MoveCommand>(m_CharacterObject.get(), -1.f, .0f, 50.f);
+	auto moveRightCommand = std::make_unique<MoveCommand>(m_CharacterObject.get(), 1.f, 0.f, 50.f);
+	auto breakCommand = std::make_unique<BreakCommand>(m_CharacterObject.get());
+
+	auto aiControllerComponent = std::make_unique<AIControllerComponent>(m_CharacterObject.get());
+	aiControllerComponent->BindCommandToAction(std::move(moveUpCommand), Action::up);
+	aiControllerComponent->BindCommandToAction(std::move(moveDownCommand), Action::down);
+	aiControllerComponent->BindCommandToAction(std::move(moveLeftCommand), Action::left);
+	aiControllerComponent->BindCommandToAction(std::move(moveRightCommand), Action::right);
+	aiControllerComponent->BindCommandToAction(std::move(breakCommand), Action::breakBlock);
+
+	m_CharacterObject->AddComponent(std::move(aiControllerComponent));
 }
 
 std::shared_ptr<dae::GameObject> SnoBeeCharacter::GetCharacterObject()

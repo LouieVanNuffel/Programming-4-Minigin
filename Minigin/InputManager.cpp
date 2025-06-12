@@ -23,17 +23,18 @@ bool dae::InputManager::ProcessInput()
 		ImGui_ImplSDL2_ProcessEvent(&e);
 	}
 
-	const Uint8* keystate = SDL_GetKeyboardState(nullptr);
+	m_Keystate = SDL_GetKeyboardState(nullptr);
+
 	for (const auto& commandBinding : m_CommandBindingsKeyboard)
 	{
-		if (keystate[std::get<1>(commandBinding)])
+		if (m_Keystate[std::get<1>(commandBinding)])
 		{
 			std::get<0>(commandBinding)->Execute();
 		}
 	}
 
 	Controller::GetInstance().Update();
-	for (const auto& commandBinding : m_CommandBindingsController)
+	for (const auto& commandBinding : m_CommandActionBindings)
 	{
 		switch (std::get<2>(commandBinding))
 		{
@@ -63,7 +64,7 @@ bool dae::InputManager::ProcessInput()
 
 void dae::InputManager::BindCommandToController(std::unique_ptr<Command> command, unsigned int button, PollType pollType, int controllerIndex)
 {
-	m_CommandBindingsController.emplace_back(std::make_tuple(std::move(command), button, pollType, controllerIndex));
+	m_CommandActionBindings.emplace_back(std::make_tuple(std::move(command), button, pollType, controllerIndex));
 }
 
 void dae::InputManager::BindCommandToKeyboard(std::unique_ptr<Command> command, SDL_Scancode scanCode)
@@ -74,10 +75,10 @@ void dae::InputManager::BindCommandToKeyboard(std::unique_ptr<Command> command, 
 void dae::InputManager::UnbindCommandFromController(std::unique_ptr<Command> command, unsigned int button, PollType pollType, int controllerIndex)
 {
 	auto it = std::find(
-		std::begin(m_CommandBindingsController), 
-		std::end(m_CommandBindingsController),
+		std::begin(m_CommandActionBindings), 
+		std::end(m_CommandActionBindings),
 		std::make_tuple(std::move(command), button, pollType, controllerIndex));
-	m_CommandBindingsController.erase(it);
+	m_CommandActionBindings.erase(it);
 }
 
 void dae::InputManager::UnbindCommandFromKeyboard(std::unique_ptr<Command> command, SDL_Scancode scanCode)
@@ -87,4 +88,14 @@ void dae::InputManager::UnbindCommandFromKeyboard(std::unique_ptr<Command> comma
 		std::end(m_CommandBindingsKeyboard),
 		std::make_tuple(std::move(command), scanCode));
 	m_CommandBindingsKeyboard.erase(it);
+}
+
+bool dae::InputManager::IsKeyDown(SDL_Scancode scanCode) const
+{
+	if (m_Keystate[scanCode])
+	{
+		return true;
+	}
+
+	return false;
 }
