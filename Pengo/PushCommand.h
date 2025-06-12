@@ -4,6 +4,7 @@
 #include "CollisionSystem.h"
 #include "BoxColliderComponent.h"
 #include "BlockComponent.h"
+#include "WallComponent.h"
 #include "Animator.h"
 #include <iostream>
 
@@ -29,10 +30,21 @@ public:
 		if (!dae::CollisionSystem::GetInstance().PerformRaycast(raycast, hitInfo_Out, m_pBoxColliderComponent)) return;
 		if (hitInfo_Out.other == nullptr) return;
 
-		BlockComponent* blockComponent = hitInfo_Out.other->GetGameObject()->GetComponent<BlockComponent>();
-		if (blockComponent == nullptr) return;
+		if (hitInfo_Out.other->GetLayer() == dae::Layer::block)
+		{
+			BlockComponent* blockComponent = hitInfo_Out.other->GetGameObject()->GetComponent<BlockComponent>();
+			if (blockComponent == nullptr) return;
 
-		blockComponent->Push(raycast.directionX, raycast.directionY);
+			blockComponent->Push(raycast.directionX, raycast.directionY);
+		}
+
+		if (hitInfo_Out.other->GetLayer() == dae::Layer::wall)
+		{
+			WallComponent* wallComponent = hitInfo_Out.other->GetGameObject()->GetComponent<WallComponent>();
+			if (wallComponent == nullptr) return;
+
+			wallComponent->Push();
+		}
 	}
 
 private:

@@ -176,6 +176,7 @@
     <ClCompile Include="SnoBeeComponent.cpp" />
     <ClCompile Include="StunnedState.cpp" />
     <ClCompile Include="ThrashTheCacheComponent.cpp" />
+    <ClCompile Include="WallComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AIControllerComponent.h" />
@@ -208,6 +209,7 @@
     <ClInclude Include="StunnedState.h" />
     <ClInclude Include="TakeDamageCommand.h" />
     <ClInclude Include="ThrashTheCacheComponent.h" />
+    <ClInclude Include="WallComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

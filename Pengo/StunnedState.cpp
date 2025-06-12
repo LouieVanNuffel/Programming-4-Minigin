@@ -10,7 +10,7 @@ StunnedState::StunnedState(Animator* animator, const AnimationStateData& data, f
 
 void StunnedState::OnEnter() 
 {
-    // Play stun sound
+    m_StunTimeRemaining = m_TotalStunTime;
 }
 
 void StunnedState::Update() 

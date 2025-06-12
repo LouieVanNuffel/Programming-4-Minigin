@@ -76,6 +76,8 @@ void SnoBeeComponent::OnCollisionEnter(const dae::BoxColliderComponent& other)
 
 void SnoBeeComponent::Stun()
 {
+	if (m_IsStunned) return;
+
 	m_IsStunned = true;
 	m_StunTimer = m_StunTime;
 

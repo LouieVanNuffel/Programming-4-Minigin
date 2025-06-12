@@ -5,6 +5,7 @@
 #include "BoxColliderComponent.h"
 #include "BlockObject.h"
 #include "LevelState.h"
+#include "WallComponent.h"
 #include <iostream>
 
 Level::Level(const std::string& levelName, int blockSize, float scale, int offsetX, int offsetY)
@@ -168,8 +169,12 @@ void Level::AddBorderColliders()
 		if (index < 2) width = horizontalBorder.first, height = horizontalBorder.second;
 		else width = verticalBorder.first, height = verticalBorder.second;
 
-		auto boxColliderComponent = std::make_unique<dae::BoxColliderComponent>(width, height, dae::ObjectType::immovable, object.get());
+		auto boxColliderComponent = std::make_unique<dae::BoxColliderComponent>(width, height, dae::ObjectType::immovable, 
+			object.get(), dae::Layer::wall);
+		auto wallComponent = std::make_unique<WallComponent>(object.get());
+
 		object->AddComponent(std::move(boxColliderComponent));
+		object->AddComponent(std::move(wallComponent));
 		m_LevelGameObjects.emplace_back(object);
 	}
 }

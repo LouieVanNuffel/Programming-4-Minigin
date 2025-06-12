@@ -21,7 +21,7 @@ namespace dae
 
 	enum class Layer
 	{
-		none, pengo, snobee, block
+		none, pengo, snobee, block, wall
 	};
 
 	class VelocityComponent;
