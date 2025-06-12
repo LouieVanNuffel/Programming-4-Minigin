@@ -14,6 +14,7 @@ namespace dae
 		virtual void Render() const = 0;
 		virtual void RenderUI() const = 0;
 		virtual void OnCollisionEnter(const BoxColliderComponent&) {};
+		virtual void OnDestroy() {};
 
 		explicit Component(GameObject* gameObject)
 			:m_gameObject{ gameObject }

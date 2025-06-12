@@ -20,7 +20,7 @@ public:
 	BlockComponent(BlockType blockType, int blockSize, dae::GameObject* gameObject);
 
 	//Destructor
-	virtual ~BlockComponent() override;
+	virtual ~BlockComponent() override = default;
 
 	//Rule of 5
 	BlockComponent(const BlockComponent& other) = delete;
@@ -33,6 +33,7 @@ public:
 	virtual void LateUpdate() override {};
 	virtual void Render() const override {};
 	virtual void RenderUI() const override {};
+	virtual void OnDestroy() override;
 
 	void Push(int directionX, int directionY);
 	void Break();

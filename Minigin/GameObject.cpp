@@ -83,6 +83,14 @@ void dae::GameObject::OnCollisionEnter(const BoxColliderComponent& other)
 	}
 }
 
+void dae::GameObject::OnDestroy()
+{
+	for (auto& component : m_components)
+	{
+		component->OnDestroy();
+	}
+}
+
 void dae::GameObject::SetPosition(float x, float y)
 {
 	SetLocalPosition(glm::vec3{ x, y , 0.0f });

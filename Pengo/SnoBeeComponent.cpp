@@ -16,7 +16,7 @@ SnoBeeComponent::SnoBeeComponent(dae::GameObject* gameObject, float blockSize, f
 	LevelState::GetInstance().AddSnoBee();
 }
 
-SnoBeeComponent::~SnoBeeComponent()
+void SnoBeeComponent::OnDestroy()
 {
 	LevelState::GetInstance().RemoveSnoBee(m_gameObject->IsActive());
 }

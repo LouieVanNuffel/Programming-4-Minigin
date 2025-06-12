@@ -81,6 +81,7 @@ void dae::Scene::CleanUpDestroyed()
 	{
 		if (m_objects[index]->ToBeDestroyed())
 		{
+			m_objects[index]->OnDestroy();
 			indicesToBeDestroyed.emplace_back(index);
 		}
 	}

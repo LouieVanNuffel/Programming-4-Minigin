@@ -19,7 +19,7 @@ public:
 	SnoBeeComponent(dae::GameObject* gameObject, float blockSize, float speed = 50.0f, float chaseRange = 75.0f, float spawnDelay = 2.0f);
 
 	//Destructor
-	virtual ~SnoBeeComponent() override;
+	virtual ~SnoBeeComponent() override = default;
 
 	//Rule of 5
 	SnoBeeComponent(const SnoBeeComponent& other) = delete;
@@ -33,6 +33,7 @@ public:
 	virtual void Render() const override {};
 	virtual void RenderUI() const override {};
 	virtual void OnCollisionEnter(const dae::BoxColliderComponent& other);
+	virtual void OnDestroy() override;
 
 	void Stun();
 

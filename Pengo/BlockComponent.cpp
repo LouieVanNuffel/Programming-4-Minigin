@@ -19,7 +19,7 @@ BlockComponent::BlockComponent(BlockType blockType, int blockSize, dae::GameObje
 	}
 }
 
-BlockComponent::~BlockComponent()
+void BlockComponent::OnDestroy()
 {
 	if (m_BlockType == BlockType::egg)
 	{
@@ -57,6 +57,7 @@ void BlockComponent::Update()
 
 void BlockComponent::Push(int directionX, int directionY)
 {
+	if (m_IsBroken) return;
 	if (directionX == 0 && directionY == 0) return;
 
 	m_DirectionX = directionX;

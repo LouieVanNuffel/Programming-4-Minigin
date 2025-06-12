@@ -20,6 +20,7 @@ namespace dae
 		virtual void Render() const;
 		virtual void RenderUI() const;
 		virtual void OnCollisionEnter(const BoxColliderComponent& other);
+		virtual void OnDestroy(); // NOT a destructor
 
 		void SetPosition(float x, float y);
 		void SetWorldPosition(float x, float y);
