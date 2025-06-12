@@ -9,6 +9,7 @@
 #include "LevelState.h"
 #include "Subject.h"
 #include "AIControllerComponent.h"
+#include "Layers.h"
 
 SnoBeeComponent::SnoBeeComponent(dae::GameObject* gameObject, float blockSize, float speed, float chaseRange, float spawnDelay)
 	:Component(gameObject), m_BlockSize{ blockSize }, m_Speed{ speed }, m_ChaseRange{ chaseRange }, m_SpawnTimer{ spawnDelay }
@@ -50,7 +51,7 @@ void SnoBeeComponent::Update()
 	}
 
 	// Move in current direction (order of direction and action matches up)
-	m_pAIControllerComponent->ExecuteAction(static_cast<dae::Action>(m_Direction));
+	m_pAIControllerComponent->ExecuteAction(static_cast<uint32_t>(m_Direction));
 
 	switch (m_CurrentBehaviorState)
 	{
@@ -65,7 +66,7 @@ void SnoBeeComponent::Update()
 
 void SnoBeeComponent::OnCollisionEnter(const dae::BoxColliderComponent& other)
 {
-	if (other.GetLayer() == dae::Layer::pengo)
+	if (other.GetLayer() == static_cast<uint32_t>(Layer::pengo))
 	{
 		dae::HealthComponent* healthComponent = other.GetGameObject()->GetComponent<dae::HealthComponent>();
 		if (healthComponent == nullptr) return;
@@ -153,7 +154,7 @@ void SnoBeeComponent::Patrol()
 	{
 		if (hitInfo_Out.other == nullptr) return;
 
-		if (hitInfo_Out.other->GetLayer() == dae::Layer::block)
+		if (hitInfo_Out.other->GetLayer() == static_cast<uint32_t>(Layer::block))
 		{
 			srand(static_cast<int>(time(NULL)));
 			int randomNumber = rand() % 2;
@@ -210,16 +211,14 @@ void SnoBeeComponent::Chase()
 	}
 
 	// Set direction to target
-	glm::vec2 direction = DirectionToTarget();
-	m_DirectionX = static_cast<int>(direction.x);
-	m_DirectionY = static_cast<int>(direction.y);
+	SetDirection(DirectionToTarget());
 
 	// Destroy blocks in path
 	dae::HitInfo hitInfo_Out{};
 	if (PerformRaycast(hitInfo_Out))
 	{
 		if (hitInfo_Out.other == nullptr) return;
-		if (hitInfo_Out.other->GetLayer() == dae::Layer::block)
+		if (hitInfo_Out.other->GetLayer() == static_cast<uint32_t>(Layer::block))
 		{
 			BlockComponent* blockComponent = hitInfo_Out.other->GetGameObject()->GetComponent<BlockComponent>();
 			if (blockComponent == nullptr) return;
@@ -240,19 +239,25 @@ float SnoBeeComponent::DistanceToObjectSquared(dae::GameObject* gameObject) cons
 	return totalDistanceSquared;
 }
 
-glm::vec2 SnoBeeComponent::DirectionToTarget() const
+SnoBeeComponent::MoveDirection SnoBeeComponent::DirectionToTarget() const
 {
 	float toTargetX = m_pTargetObject->GetWorldPosition().x - m_gameObject->GetWorldPosition().x;
 	float toTargetY = m_pTargetObject->GetWorldPosition().y - m_gameObject->GetWorldPosition().y;
 
-	glm::vec2 directionToTarget{};
-
 	// Avoid division by zero
-	if (toTargetX == 0.0f && toTargetY == 0.0f) return glm::vec2{};
+	if (toTargetX == 0.0f && toTargetY == 0.0f) return m_Direction;
 
 	// returns in the direction where the target is still the furthest away
-	if (fabsf(toTargetX) >= fabsf(toTargetY)) directionToTarget = glm::vec2{ fabsf(toTargetX) / toTargetX, 0.0f };
-	else directionToTarget = glm::vec2{ 0.0f, fabsf(toTargetY) / toTargetY };
-
-	return directionToTarget;
+	if (fabsf(toTargetX) >= fabsf(toTargetY))
+	{
+		float directionToTarget = fabsf(toTargetX) / toTargetX;
+		if (directionToTarget <= 0.0f) return MoveDirection::left;
+		else return MoveDirection::right;
+	}
+	else
+	{
+		float directionToTarget = fabsf(toTargetY) / toTargetY;
+		if (directionToTarget <= 0.0f) return MoveDirection::up;
+		else return MoveDirection::down;
+	}
 }

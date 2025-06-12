@@ -12,7 +12,7 @@ public:
 
 private:
 	// Doesn't check for input, on AI just call execute action directly
-	virtual bool ActionHappened(dae::Action) override 
+	virtual bool ActionHappened(uint32_t) override 
 	{
 		return false;
 	};

@@ -1,6 +1,7 @@
 #pragma once
 #include "ControllerComponent.h"
 #include "InputManager.h"
+#include "Actions.h"
 
 class KeyboardControllerComponent final : public dae::ControllerComponent
 {
@@ -12,25 +13,26 @@ public:
 	}
 
 private:
-	virtual bool ActionHappened(dae::Action action) override
+	virtual bool ActionHappened(uint32_t action) override
 	{
 		auto& inputManager = dae::InputManager::GetInstance();
+		Action actionEnum = static_cast<Action>(action);
 
-		switch (action)
+		switch (actionEnum)
 		{
-		case dae::Action::up:
+		case Action::up:
 			return inputManager.IsKeyDown(SDL_SCANCODE_W);
 			break;
-		case dae::Action::down:
+		case Action::down:
 			return inputManager.IsKeyDown(SDL_SCANCODE_S);
 			break;
-		case dae::Action::left:
+		case Action::left:
 			return inputManager.IsKeyDown(SDL_SCANCODE_A);
 			break;
-		case dae::Action::right:
+		case Action::right:
 			return inputManager.IsKeyDown(SDL_SCANCODE_D);
 			break;
-		case dae::Action::push:
+		case Action::push:
 			return inputManager.IsKeyDown(SDL_SCANCODE_SPACE);
 			break;
 		}

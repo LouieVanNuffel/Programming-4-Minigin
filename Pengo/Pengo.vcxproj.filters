@@ -164,5 +164,11 @@
     <ClInclude Include="WallComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Actions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Layers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

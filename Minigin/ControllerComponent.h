@@ -5,12 +5,6 @@
 
 namespace dae
 {
-	enum class Action
-	{
-		up, down, left, right, push, breakBlock, stun, takeDamage
-	};
-
-	
 	class ControllerComponent : public Component
 	{
 	public:
@@ -26,13 +20,13 @@ namespace dae
 		virtual void Render() const {};
 		virtual void RenderUI() const {};
 
-		void BindCommandToAction(std::unique_ptr<Command> command, Action action);
-		void ExecuteAction(Action action);
+		void BindCommandToAction(std::unique_ptr<Command> command, uint32_t action);
+		void ExecuteAction(uint32_t action);
 
 	protected:
-		virtual bool ActionHappened(Action action) = 0;
+		virtual bool ActionHappened(uint32_t action) = 0;
 
 	private:
-		std::unordered_map<Action, std::unique_ptr<Command>> m_CommandActionBindings;
+		std::unordered_map<uint32_t, std::unique_ptr<Command>> m_CommandActionBindings;
 	};
 }

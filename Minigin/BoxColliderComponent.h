@@ -19,18 +19,13 @@ namespace dae
 		immovable, movable
 	};
 
-	enum class Layer
-	{
-		none, pengo, snobee, block, wall
-	};
-
 	class VelocityComponent;
 	class GameObject;
 	class BoxColliderComponent final : public Component
 	{
 	public:
 		//Constructor
-		BoxColliderComponent(float width, float height, ObjectType objectType, GameObject* gameObject, Layer layer = Layer::none);
+		BoxColliderComponent(float width, float height, ObjectType objectType, GameObject* gameObject, uint32_t layer = 0);
 
 		//Destructor
 		virtual ~BoxColliderComponent() override;
@@ -53,7 +48,7 @@ namespace dae
 		const ObjectType& GetObjectType() const;
 		const glm::vec3 Velocity() const;
 		GameObject* GetGameObject() const;
-		const Layer& GetLayer() const;
+		uint32_t GetLayer() const;
 
 	private:
 		void UpdatePosition();
@@ -61,7 +56,7 @@ namespace dae
 		BoxCollider m_BoxDimensions{};
 		ObjectType m_ObjectType;
 		VelocityComponent* m_pVelocityComponent{ nullptr };
-		Layer m_Layer;
+		uint32_t m_Layer;
 
 	};
 }

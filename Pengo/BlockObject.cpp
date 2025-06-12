@@ -4,6 +4,7 @@
 #include "RenderComponent.h"
 #include "BlockComponent.h"
 #include "VelocityComponent.h"
+#include "Layers.h"
 
 BlockObject::BlockObject(BlockType blockType, int blockSize, float positionX, float positionY, float scale)
 	:m_BlockType{ blockType }
@@ -31,7 +32,7 @@ BlockObject::BlockObject(BlockType blockType, int blockSize, float positionX, fl
 	textureComponent->SetTexture("blocks.png", sourceRect, scale * 0.5f);
 
 	auto boxColliderComponent = std::make_unique<dae::BoxColliderComponent>(static_cast<float>(blockSize), static_cast<float>(blockSize),
-		dae::ObjectType::immovable, m_GameObject.get(), dae::Layer::block);
+		dae::ObjectType::immovable, m_GameObject.get(), static_cast<uint32_t>(Layer::block));
 
 	auto blockComponent = std::make_unique<BlockComponent>(m_BlockType, blockSize, m_GameObject.get());
 	auto velocityComponent = std::make_unique<dae::VelocityComponent>(m_GameObject.get());

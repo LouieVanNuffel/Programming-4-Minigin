@@ -13,6 +13,8 @@
 #include "AIControllerComponent.h"
 #include "MoveCommand.h"
 #include "BreakCommand.h"
+#include "Actions.h"
+#include "Layers.h"
 
 using namespace dae;
 
@@ -33,7 +35,7 @@ SnoBeeCharacter::SnoBeeCharacter(SnoBeeColor snoBeeColor)
 	textureComponent->SetTexture("characterSprites.png",
 		SDL_Rect{ GetTextureOffsetX(snoBeeColor), GetTextureOffsetY(snoBeeColor), 16, 16 }, 1.5f);
 	auto boxColliderComponent = std::make_unique<BoxColliderComponent>(16 * 1.5f, 16 * 1.5f, ObjectType::movable, 
-																	   m_CharacterObject.get(), dae::Layer::snobee);
+																	   m_CharacterObject.get(), static_cast<uint32_t>(Layer::snobee));
 	auto snoBeeComponent = std::make_unique<SnoBeeComponent>(m_CharacterObject.get(), 16 * 1.5f);
 	subjectComponent->AddObserver(snoBeeComponent.get());
 
@@ -54,11 +56,11 @@ SnoBeeCharacter::SnoBeeCharacter(SnoBeeColor snoBeeColor)
 	auto breakCommand = std::make_unique<BreakCommand>(m_CharacterObject.get());
 
 	auto aiControllerComponent = std::make_unique<AIControllerComponent>(m_CharacterObject.get());
-	aiControllerComponent->BindCommandToAction(std::move(moveUpCommand), Action::up);
-	aiControllerComponent->BindCommandToAction(std::move(moveDownCommand), Action::down);
-	aiControllerComponent->BindCommandToAction(std::move(moveLeftCommand), Action::left);
-	aiControllerComponent->BindCommandToAction(std::move(moveRightCommand), Action::right);
-	aiControllerComponent->BindCommandToAction(std::move(breakCommand), Action::breakBlock);
+	aiControllerComponent->BindCommandToAction(std::move(moveUpCommand), static_cast<uint32_t>(Action::up));
+	aiControllerComponent->BindCommandToAction(std::move(moveDownCommand), static_cast<uint32_t>(Action::down));
+	aiControllerComponent->BindCommandToAction(std::move(moveLeftCommand), static_cast<uint32_t>(Action::left));
+	aiControllerComponent->BindCommandToAction(std::move(moveRightCommand), static_cast<uint32_t>(Action::right));
+	aiControllerComponent->BindCommandToAction(std::move(breakCommand), static_cast<uint32_t>(Action::breakBlock));
 
 	m_CharacterObject->AddComponent(std::move(aiControllerComponent));
 }

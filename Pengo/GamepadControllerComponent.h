@@ -1,6 +1,7 @@
 #pragma once
 #include "ControllerComponent.h"
 #include "Controller.h"
+#include "Actions.h"
 
 class GamepadControllerComponent final : public dae::ControllerComponent
 {
@@ -14,25 +15,26 @@ public:
 private:
 	int m_ControllerIndex;
 
-	virtual bool ActionHappened(dae::Action action) override
+	virtual bool ActionHappened(uint32_t action) override
 	{
 		auto& controller = dae::Controller::GetInstance();
+		Action actionEnum = static_cast<Action>(action);
 
-		switch (action)
+		switch (actionEnum)
 		{
-		case dae::Action::up:
+		case Action::up:
 			return controller.IsPressed(XINPUT_GAMEPAD_DPAD_UP, m_ControllerIndex);
 			break;
-		case dae::Action::down:
+		case Action::down:
 			return controller.IsPressed(XINPUT_GAMEPAD_DPAD_DOWN, m_ControllerIndex);
 			break;
-		case dae::Action::left:
+		case Action::left:
 			return controller.IsPressed(XINPUT_GAMEPAD_DPAD_LEFT, m_ControllerIndex);
 			break;
-		case dae::Action::right:
+		case Action::right:
 			return controller.IsPressed(XINPUT_GAMEPAD_DPAD_RIGHT, m_ControllerIndex);
 			break;
-		case dae::Action::push:
+		case Action::push:
 			return controller.IsPressed(XINPUT_GAMEPAD_B, m_ControllerIndex);
 			break;
 		}

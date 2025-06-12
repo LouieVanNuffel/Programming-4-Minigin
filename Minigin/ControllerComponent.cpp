@@ -11,12 +11,12 @@ void dae::ControllerComponent::Update()
 	}
 }
 
-void dae::ControllerComponent::BindCommandToAction(std::unique_ptr<Command> command, Action action)
+void dae::ControllerComponent::BindCommandToAction(std::unique_ptr<Command> command, uint32_t action)
 {
 	m_CommandActionBindings.emplace(action, std::move(command));
 }
 
-void dae::ControllerComponent::ExecuteAction(Action action)
+void dae::ControllerComponent::ExecuteAction(uint32_t action)
 {
 	m_CommandActionBindings[action]->Execute();
 }

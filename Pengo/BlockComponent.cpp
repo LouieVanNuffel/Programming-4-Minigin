@@ -8,6 +8,7 @@
 #include "SceneManager.h"
 #include "SnoBeeCharacter.h"
 #include "LevelState.h"
+#include "Layers.h"
 
 BlockComponent::BlockComponent(BlockType blockType, int blockSize, dae::GameObject* gameObject)
 	:Component(gameObject), m_BlockType{ blockType }, m_BlockSize{ blockSize }
@@ -105,7 +106,8 @@ bool BlockComponent::PerformRaycast()
 	{
 		if (hitInfo_Out.other == nullptr) return false;
 
-		if (hitInfo_Out.other->GetLayer() == dae::Layer::snobee || hitInfo_Out.other->GetLayer() == dae::Layer::pengo)
+		if (hitInfo_Out.other->GetLayer() == static_cast<uint32_t>(Layer::snobee) 
+			|| hitInfo_Out.other->GetLayer() == static_cast<uint32_t>(Layer::pengo))
 		{
 			dae::HealthComponent* healthComponent = hitInfo_Out.other->GetGameObject()->GetComponent<dae::HealthComponent>();
 			if (healthComponent != nullptr)

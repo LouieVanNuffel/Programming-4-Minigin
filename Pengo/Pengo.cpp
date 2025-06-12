@@ -42,6 +42,7 @@
 #include "LevelTimerComponent.h"
 #include "KeyboardControllerComponent.h"
 #include "GamepadControllerComponent.h"
+#include "Actions.h"
 
 using namespace dae;
 
@@ -176,11 +177,11 @@ void Load()
 	auto pushCommand = std::make_unique<PushCommand>(characterObject1.get());
 
 	auto keyboardControllerComponent = std::make_unique<KeyboardControllerComponent>(characterObject1.get());
-	keyboardControllerComponent->BindCommandToAction(std::move(moveUpCommand), Action::up);
-	keyboardControllerComponent->BindCommandToAction(std::move(moveDownCommand), Action::down);
-	keyboardControllerComponent->BindCommandToAction(std::move(moveLeftCommand), Action::left);
-	keyboardControllerComponent->BindCommandToAction(std::move(moveRightCommand), Action::right);
-	keyboardControllerComponent->BindCommandToAction(std::move(pushCommand), Action::push);
+	keyboardControllerComponent->BindCommandToAction(std::move(moveUpCommand), static_cast<uint32_t>(Action::up));
+	keyboardControllerComponent->BindCommandToAction(std::move(moveDownCommand), static_cast<uint32_t>(Action::down));
+	keyboardControllerComponent->BindCommandToAction(std::move(moveLeftCommand), static_cast<uint32_t>(Action::left));
+	keyboardControllerComponent->BindCommandToAction(std::move(moveRightCommand), static_cast<uint32_t>(Action::right));
+	keyboardControllerComponent->BindCommandToAction(std::move(pushCommand), static_cast<uint32_t>(Action::push));
 	characterObject1->AddComponent(std::move(keyboardControllerComponent));
 
 	moveUpCommand = std::make_unique<MoveCommand>(characterObject2.get(), 0.f, -1.f, 100.f);
@@ -190,11 +191,11 @@ void Load()
 	pushCommand = std::make_unique<PushCommand>(characterObject2.get());
 
 	auto gamepadControllerComponent = std::make_unique<GamepadControllerComponent>(characterObject2.get(), 0);
-	gamepadControllerComponent->BindCommandToAction(std::move(moveUpCommand), Action::up);
-	gamepadControllerComponent->BindCommandToAction(std::move(moveDownCommand), Action::down);
-	gamepadControllerComponent->BindCommandToAction(std::move(moveLeftCommand), Action::left);
-	gamepadControllerComponent->BindCommandToAction(std::move(moveRightCommand), Action::right);
-	gamepadControllerComponent->BindCommandToAction(std::move(pushCommand), Action::push);
+	gamepadControllerComponent->BindCommandToAction(std::move(moveUpCommand), static_cast<uint32_t>(Action::up));
+	gamepadControllerComponent->BindCommandToAction(std::move(moveDownCommand), static_cast<uint32_t>(Action::down));
+	gamepadControllerComponent->BindCommandToAction(std::move(moveLeftCommand), static_cast<uint32_t>(Action::left));
+	gamepadControllerComponent->BindCommandToAction(std::move(moveRightCommand), static_cast<uint32_t>(Action::right));
+	gamepadControllerComponent->BindCommandToAction(std::move(pushCommand), static_cast<uint32_t>(Action::push));
 	characterObject1->AddComponent(std::move(gamepadControllerComponent));
 }
 

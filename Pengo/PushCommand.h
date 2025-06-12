@@ -6,6 +6,7 @@
 #include "BlockComponent.h"
 #include "WallComponent.h"
 #include "Animator.h"
+#include "Layers.h"
 #include <iostream>
 
 class PushCommand : public dae::GameObjectCommand
@@ -30,7 +31,7 @@ public:
 		if (!dae::CollisionSystem::GetInstance().PerformRaycast(raycast, hitInfo_Out, m_pBoxColliderComponent)) return;
 		if (hitInfo_Out.other == nullptr) return;
 
-		if (hitInfo_Out.other->GetLayer() == dae::Layer::block)
+		if (hitInfo_Out.other->GetLayer() == static_cast<uint32_t>(Layer::block))
 		{
 			BlockComponent* blockComponent = hitInfo_Out.other->GetGameObject()->GetComponent<BlockComponent>();
 			if (blockComponent == nullptr) return;
@@ -38,7 +39,7 @@ public:
 			blockComponent->Push(raycast.directionX, raycast.directionY);
 		}
 
-		if (hitInfo_Out.other->GetLayer() == dae::Layer::wall)
+		if (hitInfo_Out.other->GetLayer() == static_cast<uint32_t>(Layer::wall))
 		{
 			WallComponent* wallComponent = hitInfo_Out.other->GetGameObject()->GetComponent<WallComponent>();
 			if (wallComponent == nullptr) return;

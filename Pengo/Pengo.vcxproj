@@ -179,6 +179,7 @@
     <ClCompile Include="WallComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Actions.h" />
     <ClInclude Include="AIControllerComponent.h" />
     <ClInclude Include="AnimationSequence.h" />
     <ClInclude Include="Animator.h" />
@@ -190,6 +191,7 @@
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="IdleState.h" />
     <ClInclude Include="KeyboardControllerComponent.h" />
+    <ClInclude Include="Layers.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="LevelState.h" />
     <ClInclude Include="LevelTimerComponent.h" />
