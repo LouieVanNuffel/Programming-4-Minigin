@@ -7,7 +7,7 @@ class TileMovementComponent final : public dae::Component
 public:
 	TileMovementComponent(dae::GameObject* gameObject, float speed);
 
-	virtual void Start() override {};
+	virtual void Start() override;
 	virtual void Update() override;
 	virtual void LateUpdate() override {};
 	virtual void Render() const override {};

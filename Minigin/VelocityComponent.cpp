@@ -48,13 +48,12 @@ void dae::VelocityComponent::LateUpdate()
 	}
 
 	// If moved set correct direction
-	if (fabsf(m_Velocity.x) > FLT_EPSILON)
+	if (fabsf(m_Velocity.x) >= fabsf(m_Velocity.y))
 	{
 		if (m_Velocity.x < 0) m_Direction = Direction::left;
 		else m_Direction = Direction::right;
 	}
-	
-	if (fabsf(m_Velocity.y) > FLT_EPSILON)
+	else
 	{
 		if (m_Velocity.y < 0) m_Direction = Direction::up;
 		else m_Direction = Direction::down;

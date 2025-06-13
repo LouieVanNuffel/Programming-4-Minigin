@@ -10,17 +10,32 @@ TileMovementComponent::TileMovementComponent(dae::GameObject* gameObject, float 
 
 }
 
+void TileMovementComponent::Start()
+{
+	glm::vec3 currentPosition = m_gameObject->GetWorldPosition();
+	glm::vec3 targetPosition = LevelState::GetInstance().GetClosestTilePositionToPosition(currentPosition);
+	m_gameObject->SetWorldPosition(targetPosition.x, targetPosition.y);
+	m_HasArrived = true;
+}
+
 void TileMovementComponent::Update()
 {
 	if (m_HasArrived) return;
 
 	glm::vec3 currentPosition = m_gameObject->GetWorldPosition();
 	glm::vec3 directionVector = m_TargetPosition - currentPosition;
+	float distance = glm::length(directionVector);
 	float deltaTime = dae::Time::GetInstance().GetDeltaTime();
+	float step = m_Speed * deltaTime;
 
-	Normalize(directionVector);
-	m_gameObject->SetWorldPosition(currentPosition.x + directionVector.x * m_Speed * deltaTime,
-								   currentPosition.y + directionVector.y * m_Speed * deltaTime);
+	if (distance <= step) {
+		m_gameObject->SetWorldPosition(m_TargetPosition.x, m_TargetPosition.y);
+		m_HasArrived = true;
+		return;
+	}
+
+	directionVector = glm::normalize(directionVector);
+	m_gameObject->SetWorldPosition(currentPosition.x + directionVector.x * step, currentPosition.y + directionVector.y * step);
 }
 
 void TileMovementComponent::SetDirection(float directionX, float directionY)

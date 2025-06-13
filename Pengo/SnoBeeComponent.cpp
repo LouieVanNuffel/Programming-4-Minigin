@@ -10,6 +10,7 @@
 #include "Subject.h"
 #include "AIControllerComponent.h"
 #include "Layers.h"
+#include <random>
 
 SnoBeeComponent::SnoBeeComponent(dae::GameObject* gameObject, float blockSize, float speed, float chaseRange, float spawnDelay)
 	:Component(gameObject), m_BlockSize{ blockSize }, m_Speed{ speed }, m_ChaseRange{ chaseRange }, m_SpawnTimer{ spawnDelay }
@@ -164,8 +165,9 @@ void SnoBeeComponent::Patrol()
 
 		if (hitInfo_Out.other->GetLayer() == static_cast<uint32_t>(Layer::block))
 		{
-			srand(static_cast<int>(time(NULL)));
-			int randomNumber = rand() % 2;
+			std::mt19937 rng{ std::random_device{}() };
+			std::uniform_int_distribution<int> dist(0, 1);
+			int randomNumber = dist(rng);
 			if (randomNumber == 0)
 			{
 				SetRandomDirection();

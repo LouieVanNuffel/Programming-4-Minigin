@@ -15,6 +15,8 @@
 #include "BreakCommand.h"
 #include "Actions.h"
 #include "Layers.h"
+#include "TileMovementComponent.h"
+#include "TilebasedMoveCommand.h"
 
 using namespace dae;
 
@@ -38,6 +40,7 @@ SnoBeeCharacter::SnoBeeCharacter(SnoBeeColor snoBeeColor)
 																	   m_CharacterObject.get(), static_cast<uint32_t>(Layer::snobee));
 	auto snoBeeComponent = std::make_unique<SnoBeeComponent>(m_CharacterObject.get(), 16 * 1.5f);
 	subjectComponent->AddObserver(snoBeeComponent.get());
+	auto tileMovementComponent = std::make_unique<TileMovementComponent>(m_CharacterObject.get(), 50.0f);
 
 	m_CharacterObject->AddComponent(std::move(healthComponent));
 	m_CharacterObject->AddComponent(std::move(subjectComponent));
@@ -46,13 +49,14 @@ SnoBeeCharacter::SnoBeeCharacter(SnoBeeColor snoBeeColor)
 	m_CharacterObject->AddComponent(std::move(animator));
 	m_CharacterObject->AddComponent(std::move(boxColliderComponent));
 	m_CharacterObject->AddComponent(std::move(snoBeeComponent));
+	m_CharacterObject->AddComponent(std::move(tileMovementComponent));
 
 
 	// Actions
-	auto moveUpCommand = std::make_unique<MoveCommand>(m_CharacterObject.get(), 0.f, -1.f, 50.f);
-	auto moveDownCommand = std::make_unique<MoveCommand>(m_CharacterObject.get(), 0.f, 1.f, 50.f);
-	auto moveLeftCommand = std::make_unique<MoveCommand>(m_CharacterObject.get(), -1.f, .0f, 50.f);
-	auto moveRightCommand = std::make_unique<MoveCommand>(m_CharacterObject.get(), 1.f, 0.f, 50.f);
+	auto moveUpCommand = std::make_unique<TileBasedMoveCommand>(m_CharacterObject.get(), 0.f, -1.f);
+	auto moveDownCommand = std::make_unique<TileBasedMoveCommand>(m_CharacterObject.get(), 0.f, 1.f);
+	auto moveLeftCommand = std::make_unique<TileBasedMoveCommand>(m_CharacterObject.get(), -1.f, .0f);
+	auto moveRightCommand = std::make_unique<TileBasedMoveCommand>(m_CharacterObject.get(), 1.f, 0.f);
 	auto breakCommand = std::make_unique<BreakCommand>(m_CharacterObject.get());
 
 	auto aiControllerComponent = std::make_unique<AIControllerComponent>(m_CharacterObject.get());

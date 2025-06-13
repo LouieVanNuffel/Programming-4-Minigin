@@ -172,10 +172,10 @@ void Load()
 
 	//Commands (input)
 
-	auto moveUpCommand = std::make_unique<TileBasedMoveCommand>(characterObject1.get(), 0.f, -1.f);
-	auto moveDownCommand = std::make_unique<TileBasedMoveCommand>(characterObject1.get(), 0.f, 1.f);
-	auto moveLeftCommand = std::make_unique<TileBasedMoveCommand>(characterObject1.get(), -1.f, .0f);
-	auto moveRightCommand = std::make_unique<TileBasedMoveCommand>(characterObject1.get(), 1.f, 0.f);
+	auto moveUpCommand = std::make_unique<MoveCommand>(characterObject1.get(), 0.f, -1.f, 50.f);
+	auto moveDownCommand = std::make_unique<MoveCommand>(characterObject1.get(), 0.f, 1.f, 50.f);
+	auto moveLeftCommand = std::make_unique<MoveCommand>(characterObject1.get(), -1.f, .0f, 50.f);
+	auto moveRightCommand = std::make_unique<MoveCommand>(characterObject1.get(), 1.f, 0.f, 50.f);
 	auto pushCommand = std::make_unique<PushCommand>(characterObject1.get());
 
 	auto keyboardControllerComponent = std::make_unique<KeyboardControllerComponent>(characterObject1.get());
@@ -186,7 +186,7 @@ void Load()
 	keyboardControllerComponent->BindCommandToAction(std::move(pushCommand), static_cast<uint32_t>(Action::push));
 	characterObject1->AddComponent(std::move(keyboardControllerComponent));
 
-	/*moveUpCommand = std::make_unique<MoveCommand>(characterObject2.get(), 0.f, -1.f, 100.f);
+	moveUpCommand = std::make_unique<MoveCommand>(characterObject2.get(), 0.f, -1.f, 100.f);
 	moveDownCommand = std::make_unique<MoveCommand>(characterObject2.get(), 0.f, 1.f, 100.f);
 	moveLeftCommand = std::make_unique<MoveCommand>(characterObject2.get(), -1.f, .0f, 100.f);
 	moveRightCommand = std::make_unique<MoveCommand>(characterObject2.get(), 1.f, 0.f, 100.f);
@@ -198,7 +198,7 @@ void Load()
 	gamepadControllerComponent->BindCommandToAction(std::move(moveLeftCommand), static_cast<uint32_t>(Action::left));
 	gamepadControllerComponent->BindCommandToAction(std::move(moveRightCommand), static_cast<uint32_t>(Action::right));
 	gamepadControllerComponent->BindCommandToAction(std::move(pushCommand), static_cast<uint32_t>(Action::push));
-	characterObject1->AddComponent(std::move(gamepadControllerComponent));*/
+	characterObject1->AddComponent(std::move(gamepadControllerComponent));
 }
 
 int main(int, char* []) {

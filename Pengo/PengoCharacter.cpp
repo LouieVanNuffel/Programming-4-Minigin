@@ -11,7 +11,6 @@
 #include "DeadState.h"
 #include "Layers.h"
 #include "RespawnComponent.h"
-#include "TileMovementComponent.h"
 
 using namespace dae;
 
@@ -35,7 +34,6 @@ PengoCharacter::PengoCharacter(PengoColor pengoColor)
 																	   m_CharacterObject.get(), static_cast<uint32_t>(Layer::pengo));
 	auto respawnComponent = std::make_unique<RespawnComponent>(m_CharacterObject.get());
 	subjectComponent->AddObserver(respawnComponent.get());
-	auto tileMovementComponent = std::make_unique<TileMovementComponent>(m_CharacterObject.get(), 50.0f);
 
 	m_CharacterObject->AddComponent(std::move(healthComponent));
 	m_CharacterObject->AddComponent(std::move(pointComponent));
@@ -45,7 +43,6 @@ PengoCharacter::PengoCharacter(PengoColor pengoColor)
 	m_CharacterObject->AddComponent(std::move(animator));
 	m_CharacterObject->AddComponent(std::move(boxColliderComponent));
 	m_CharacterObject->AddComponent(std::move(respawnComponent));
-	m_CharacterObject->AddComponent(std::move(tileMovementComponent));
 }
 
 std::shared_ptr<dae::GameObject> PengoCharacter::GetCharacterObject()
