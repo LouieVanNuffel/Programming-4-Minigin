@@ -16,12 +16,12 @@ SnoBeeComponent::SnoBeeComponent(dae::GameObject* gameObject, float blockSize, f
 	:Component(gameObject), m_BlockSize{ blockSize }, m_Speed{ speed }, m_ChaseRange{ chaseRange }, m_SpawnTimer{ spawnDelay }
 {
 	SetRandomDirection();
-	LevelState::GetInstance().AddSnoBee();
+	LevelState::GetInstance().AddSnoBee(this);
 }
 
 void SnoBeeComponent::OnDestroy()
 {
-	LevelState::GetInstance().RemoveSnoBee(m_gameObject->IsActive());
+	LevelState::GetInstance().RemoveSnoBee(this);
 }
 
 void SnoBeeComponent::Start()
@@ -95,11 +95,21 @@ void SnoBeeComponent::Stun()
 	m_pSubjectComponent->NotifyObservers(dae::Event{ dae::make_sdbm_hash("Stunned") });
 }
 
+bool SnoBeeComponent::Hatched() const
+{
+	return m_gameObject->IsActive();
+}
+
 void SnoBeeComponent::Notify(const dae::Event& event, const dae::GameObject*)
 {
 	if (event.id == dae::make_sdbm_hash("Died"))
 	{
 		m_gameObject->Destroy();
+	}
+
+	if (event.id == dae::make_sdbm_hash("Respawn"))
+	{
+		Respawn();
 	}
 }
 
@@ -235,6 +245,12 @@ void SnoBeeComponent::Chase()
 			blockComponent->Break();
 		}
 	}
+}
+
+void SnoBeeComponent::Respawn()
+{
+	glm::vec3 randomCorner = LevelState::GetInstance().GetRandomCornerTilePosition();
+	m_gameObject->SetWorldPosition(randomCorner.x, randomCorner.y);
 }
 
 float SnoBeeComponent::DistanceToObjectSquared(dae::GameObject* gameObject) const

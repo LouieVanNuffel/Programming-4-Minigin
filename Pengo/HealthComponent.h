@@ -52,7 +52,11 @@ namespace dae
 			{
 				m_Health = 100.f;
 				--m_Lives;
-				if (m_Subject != nullptr && m_Lives <= 0) m_Subject->NotifyObservers(Event{ make_sdbm_hash("Died") });
+				if (m_Subject != nullptr && m_Lives <= 0)
+				{
+					m_Subject->NotifyObservers(Event{ make_sdbm_hash("Died") });
+					m_gameObject->Destroy();
+				}
 			}
 
 			if (m_Subject != nullptr) m_Subject->NotifyObservers(Event{ make_sdbm_hash("TookDamage") });

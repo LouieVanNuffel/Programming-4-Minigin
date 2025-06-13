@@ -2,6 +2,7 @@
 #include "BlockComponent.h"
 #include "GameObject.h"
 #include "PointComponent.h"
+#include "SnoBeeComponent.h"
 #include <algorithm>
 #include <iostream>
 #include <cassert>
@@ -11,12 +12,35 @@ LevelState::LevelState()
 {
 }
 
+void LevelState::CompleteLevel()
+{
+	AwardBonusPoints();
+}
+
+void LevelState::GameOver()
+{
+	std::cout << "game over" << std::endl;
+}
+
 void LevelState::AddPlayerObject(dae::GameObject* gameObject)
 {
+	if (gameObject == nullptr) return;
+
 	m_PlayerObjects.emplace_back(gameObject);
 	PointComponent* pointComponent = gameObject->GetComponent<PointComponent>();
 	if (pointComponent == nullptr) return;
 	m_PointComponents.emplace_back(pointComponent);
+}
+
+void LevelState::RemovePlayerObject(dae::GameObject* gameObject)
+{
+	if (gameObject == nullptr) return;
+
+	auto it = std::find(m_PlayerObjects.begin(), m_PlayerObjects.end(), gameObject);
+	if (it == m_PlayerObjects.end()) return;
+	m_PlayerObjects.erase(it);
+
+	if (m_PlayerObjects.empty()) GameOver();
 }
 
 const std::vector<dae::GameObject*>& LevelState::GetPlayerObjects() const
@@ -30,28 +54,29 @@ void LevelState::RegisterTiles(const std::vector<TileInfo>& tileInfoVector)
 	m_TilesInfo = tileInfoVector;
 }
 
-void LevelState::AddSnoBee()
+void LevelState::AddSnoBee(SnoBeeComponent* snobee)
 {
-	++m_SnoBeeCount;
+	if (snobee == nullptr) return;
+	m_SnoBeeComponents.emplace_back(snobee);
 }
 
-void LevelState::RemoveSnoBee(bool hasHatched)
+void LevelState::RemoveSnoBee(SnoBeeComponent* snobee)
 {
-	--m_SnoBeeCount;
-	std::cout << m_SnoBeeCount << std::endl;
-	std::cout << std::boolalpha << hasHatched << std::endl;
+	if (snobee == nullptr) return;
 
-	if (hasHatched == false)
+	auto it = std::find(m_SnoBeeComponents.begin(), m_SnoBeeComponents.end(), snobee);
+	if (it == m_SnoBeeComponents.end()) return;
+
+	if (snobee->Hatched() == false)
 	{
 		AddScore(m_PointsForCrushedEgg);
 		return;
 	}
 	else AddScore(m_PointsForSnoBeeCrushed);
 
-	if (!HatchOneRemainingEgg() && m_SnoBeeCount <= 0)
+	if (!HatchOneRemainingEgg() && m_SnoBeeComponents.size() <= 0)
 	{
-		AwardBonusPoints();
-		// Do something to win the level
+		CompleteLevel();
 		std::cout << "Level completed" << std::endl;
 	}
 }
@@ -112,6 +137,14 @@ void LevelState::AddTime(float amount)
 	m_Timer += amount;
 }
 
+void LevelState::Respawn()
+{
+	for (SnoBeeComponent* snobee : m_SnoBeeComponents)
+	{
+		snobee->Respawn();
+	}
+}
+
 glm::vec3 LevelState::GetPlayerSpawnPosition() const
 {
 	// Return middle tile position
@@ -139,6 +172,33 @@ glm::vec3 LevelState::GetClosestTilePositionToPosition(const glm::vec3 position)
 		return DistanceSquared(position, glm::vec3{ a.x, a.y, 0.0f }) < DistanceSquared(position, glm::vec3{ b.x, b.y, 0.0f });
 		});
 	return glm::vec3{ it->x, it->y, 0.0f };
+}
+
+glm::vec3 LevelState::GetRandomCornerTilePosition() const
+{
+	std::mt19937 rng{ std::random_device{}() };
+	std::uniform_int_distribution<int> dist(0, 3);
+	int randomNumber = dist(rng);
+
+	switch (randomNumber)
+	{
+	case 0:
+		return glm::vec3{ m_TilesInfo.front().x, m_TilesInfo.front().y, 0.0f };
+		break;
+	case 1:
+		return glm::vec3{ m_TilesInfo[13].x, m_TilesInfo[13].y, 0.0f};
+		break;
+	case 2:
+		return glm::vec3{ m_TilesInfo[183].x, m_TilesInfo[183].y, 0.0f };
+		break;
+	case 3:
+		return glm::vec3{ m_TilesInfo.back().x, m_TilesInfo.back().y, 0.0f };
+		break;
+	default:
+		return glm::vec3{ m_TilesInfo.front().x, m_TilesInfo.front().y, 0.0f };
+		break;
+	}
+	return glm::vec3();
 }
 
 void LevelState::AwardBonusPoints()

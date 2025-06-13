@@ -203,6 +203,7 @@
     <ClInclude Include="PengoCharacter.h" />
     <ClInclude Include="PickUpPointCommand.h" />
     <ClInclude Include="AnimationState.h" />
+    <ClInclude Include="PlayerTrackingComponent.h" />
     <ClInclude Include="PlaySoundCommand.h" />
     <ClInclude Include="PointComponent.h" />
     <ClInclude Include="PointsDisplayComponent.h" />

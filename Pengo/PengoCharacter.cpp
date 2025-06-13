@@ -11,6 +11,7 @@
 #include "DeadState.h"
 #include "Layers.h"
 #include "RespawnComponent.h"
+#include "PlayerTrackingComponent.h"
 
 using namespace dae;
 
@@ -34,6 +35,7 @@ PengoCharacter::PengoCharacter(PengoColor pengoColor)
 																	   m_CharacterObject.get(), static_cast<uint32_t>(Layer::pengo));
 	auto respawnComponent = std::make_unique<RespawnComponent>(m_CharacterObject.get());
 	subjectComponent->AddObserver(respawnComponent.get());
+	auto playerTrackingComponent = std::make_unique<PlayerTrackingComponent>(m_CharacterObject.get());
 
 	m_CharacterObject->AddComponent(std::move(healthComponent));
 	m_CharacterObject->AddComponent(std::move(pointComponent));
@@ -43,6 +45,7 @@ PengoCharacter::PengoCharacter(PengoColor pengoColor)
 	m_CharacterObject->AddComponent(std::move(animator));
 	m_CharacterObject->AddComponent(std::move(boxColliderComponent));
 	m_CharacterObject->AddComponent(std::move(respawnComponent));
+	m_CharacterObject->AddComponent(std::move(playerTrackingComponent));
 }
 
 std::shared_ptr<dae::GameObject> PengoCharacter::GetCharacterObject()

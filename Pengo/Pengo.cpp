@@ -60,7 +60,7 @@ void Load()
 	auto& scene = dae::SceneManager::GetInstance().CreateScene("Level1");
 
 	//Level
-	Level level{ "Level1", 16, 1.5f, 150, 50 };
+	Level level{ "Level3", 16, 1.5f, 150, 50 };
 	const std::vector<std::shared_ptr<GameObject>>& levelGameObjects = level.LoadLevelGameObjects();
 	for (uint32_t index{}; index < levelGameObjects.size(); ++index)
 	{
@@ -97,13 +97,11 @@ void Load()
 	glm::vec3 spawnPosition = LevelState::GetInstance().GetPlayerSpawnPosition();
 	characterObject1->SetPosition(spawnPosition.x, spawnPosition.y);
 	scene.Add(characterObject1);
-	LevelState::GetInstance().AddPlayerObject(characterObject1.get());
 
 	PengoCharacter pengo2{ PengoColor::green };
 	auto characterObject2 = pengo2.GetCharacterObject();
 	characterObject2->SetPosition(spawnPosition.x, spawnPosition.y);
 	scene.Add(characterObject2);
-	LevelState::GetInstance().AddPlayerObject(characterObject2.get());
 
 	// Display Controls
 	auto controllerControlsTextObject = std::make_shared<dae::GameObject>();

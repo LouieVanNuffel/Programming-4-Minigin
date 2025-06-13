@@ -25,6 +25,7 @@ private:
 	{
 		if (event.id == dae::make_sdbm_hash("TookDamage"))
 		{
+			LevelState::GetInstance().Respawn(); // Tells the other objects to respawn (snobees)
 			glm::vec3 respawnPosition = LevelState::GetInstance().GetPlayerSpawnPosition();
 			m_gameObject->SetWorldPosition(respawnPosition.x, respawnPosition.y);
 		}

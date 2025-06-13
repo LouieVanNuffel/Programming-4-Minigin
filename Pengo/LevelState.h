@@ -12,6 +12,7 @@ namespace dae
 
 class PointComponent;
 class BlockComponent;
+class SnoBeeComponent;
 class LevelState final : public dae::Singleton<LevelState>
 {
 public:
@@ -28,12 +29,13 @@ public:
 	LevelState& operator=(LevelState&& other) = delete;
 
 	void AddPlayerObject(dae::GameObject* gameObject);
+	void RemovePlayerObject(dae::GameObject* gameObject);
 	const std::vector<dae::GameObject*>& GetPlayerObjects() const;
 
 	void RegisterTiles(const std::vector<TileInfo>& tileInfoVector);
 
-	void AddSnoBee();
-	void RemoveSnoBee(bool hasHatched);
+	void AddSnoBee(SnoBeeComponent* snobee);
+	void RemoveSnoBee(SnoBeeComponent* snobee);
 
 	void RegisterEggBlock(BlockComponent* blockComponent);
 	void UnregisterEggBlock(BlockComponent* blockComponent);
@@ -46,20 +48,26 @@ public:
 
 	void AddTime(float amount);
 
+	void Respawn();
+
 	glm::vec3 GetPlayerSpawnPosition() const;
 	glm::vec3 GetClosestTilePositionInDirection(const glm::vec3 currentPosition, float directionX, float directionY) const;
 	glm::vec3 GetClosestTilePositionToPosition(const glm::vec3 position) const;
+	glm::vec3 GetRandomCornerTilePosition() const;
 
 private:
 	void AwardBonusPoints();
 	static float DistanceSquared(const glm::vec3& posA, const glm::vec3& posB);
 
+	void CompleteLevel();
+	void GameOver();
+
 	float m_Timer{};
 	int m_Score{};
-	uint32_t m_SnoBeeCount{};
 	std::vector<BlockComponent*> m_BlockComponents{};
 	std::vector<dae::GameObject*> m_PlayerObjects{};
 	std::vector<PointComponent*> m_PointComponents{};
+	std::vector<SnoBeeComponent*> m_SnoBeeComponents{};
 	std::vector<TileInfo> m_TilesInfo{};
 
 	// Points to award for snobees
