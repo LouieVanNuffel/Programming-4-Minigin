@@ -67,6 +67,8 @@ void LevelState::RemoveSnoBee(SnoBeeComponent* snobee)
 	auto it = std::find(m_SnoBeeComponents.begin(), m_SnoBeeComponents.end(), snobee);
 	if (it == m_SnoBeeComponents.end()) return;
 
+	m_SnoBeeComponents.erase(it);
+
 	if (snobee->Hatched() == false)
 	{
 		AddScore(m_PointsForCrushedEgg);
@@ -198,7 +200,6 @@ glm::vec3 LevelState::GetRandomCornerTilePosition() const
 		return glm::vec3{ m_TilesInfo.front().x, m_TilesInfo.front().y, 0.0f };
 		break;
 	}
-	return glm::vec3();
 }
 
 void LevelState::AwardBonusPoints()

@@ -36,6 +36,7 @@ PengoCharacter::PengoCharacter(PengoColor pengoColor)
 	auto respawnComponent = std::make_unique<RespawnComponent>(m_CharacterObject.get());
 	subjectComponent->AddObserver(respawnComponent.get());
 	auto playerTrackingComponent = std::make_unique<PlayerTrackingComponent>(m_CharacterObject.get());
+	subjectComponent->AddObserver(playerTrackingComponent.get());
 
 	m_CharacterObject->AddComponent(std::move(healthComponent));
 	m_CharacterObject->AddComponent(std::move(pointComponent));
