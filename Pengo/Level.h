@@ -9,6 +9,15 @@ namespace dae
 	class GameObject;
 }
 
+struct TileInfo
+{
+	float x;
+	float y;
+	float centerX;
+	float centerY;
+	BlockType blockType;
+};
+
 class Level final
 {
 public:
@@ -31,6 +40,8 @@ private:
 	void LoadInBlockTypesPerTileBinary(const std::string& filePath);
 	void SaveLevelToFile(const std::string& filePath);
 
+	void InitializeTilesInfo();
+
 	int GetRowIndexFromVectorIndex(int index) const;
 	int GetColumnIndexFromVectorIndex(int index) const;
 
@@ -44,5 +55,6 @@ private:
 	int m_OffsetY;
 	std::vector<BlockType> m_BlockTypesPerTile{};
 	std::vector<std::shared_ptr<dae::GameObject>> m_LevelGameObjects{};
+	std::vector<TileInfo> m_TilesInfo{};
 
 };

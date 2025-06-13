@@ -61,6 +61,7 @@ private:
 	void Chase();
 	float DistanceToObjectSquared(dae::GameObject* gameObject) const;
 	MoveDirection DirectionToTarget() const;
+	MoveDirection DirectionToPosition(const glm::vec3& position) const;
 
 	dae::GameObject* m_pTargetObject{ nullptr };
 	dae::BoxColliderComponent* m_pBoxColliderComponent{ nullptr };

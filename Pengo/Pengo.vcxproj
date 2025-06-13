@@ -176,6 +176,8 @@
     <ClCompile Include="SnoBeeComponent.cpp" />
     <ClCompile Include="StunnedState.cpp" />
     <ClCompile Include="ThrashTheCacheComponent.cpp" />
+    <ClCompile Include="TilebasedMoveCommand.h" />
+    <ClCompile Include="TileMovementComponent.cpp" />
     <ClCompile Include="WallComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -205,12 +207,14 @@
     <ClInclude Include="PointComponent.h" />
     <ClInclude Include="PointsDisplayComponent.h" />
     <ClInclude Include="PushCommand.h" />
+    <ClInclude Include="RespawnComponent.h" />
     <ClInclude Include="RotationComponent.h" />
     <ClInclude Include="SnoBeeCharacter.h" />
     <ClInclude Include="SnoBeeComponent.h" />
     <ClInclude Include="StunnedState.h" />
     <ClInclude Include="TakeDamageCommand.h" />
     <ClInclude Include="ThrashTheCacheComponent.h" />
+    <ClInclude Include="TileMovementComponent.h" />
     <ClInclude Include="WallComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

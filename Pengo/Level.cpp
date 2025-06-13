@@ -18,6 +18,8 @@ Level::Level(const std::string& levelName, int blockSize, float scale, int offse
 #else
 	LoadInBlockTypesPerTileBinary("../Data/Levels/" + levelName + ".pengo");
 #endif
+
+	InitializeTilesInfo();
 }
 
 void Level::LoadInBlockTypesPerTileText(const std::string& filePath)
@@ -101,6 +103,22 @@ void Level::SaveLevelToFile(const std::string& filePath)
 	std::cout << "Level data saved to " + filePath << std::endl;
 }
 
+void Level::InitializeTilesInfo()
+{
+	for (uint32_t index{}; index < m_BlockTypesPerTile.size(); ++index)
+	{
+		// Position adds half a block size as extra offset for the background border
+		float positionX = static_cast<float>(m_OffsetX + m_BlockSize * 0.5f + GetColumnIndexFromVectorIndex(index) * m_BlockSize);
+		float positionY = static_cast<float>(m_OffsetY + m_BlockSize * 0.5f + GetRowIndexFromVectorIndex(index) * m_BlockSize);
+
+		m_TilesInfo.emplace_back(TileInfo{ positionX, positionY,
+											  positionX + m_BlockSize * 0.5f, positionX + m_BlockSize * 0.5f,
+												m_BlockTypesPerTile[index] });
+	}
+
+	LevelState::GetInstance().RegisterTiles(m_TilesInfo);
+}
+
 const std::vector<std::shared_ptr<dae::GameObject>>& Level::LoadLevelGameObjects()
 {
 	m_LevelGameObjects.clear();
@@ -118,15 +136,11 @@ const std::vector<std::shared_ptr<dae::GameObject>>& Level::LoadLevelGameObjects
 	AddBorderColliders();
 
 	// Add Blocks
-	for (uint32_t index{}; index < m_BlockTypesPerTile.size(); ++index)
+	for (const TileInfo& tile : m_TilesInfo)
 	{
-		if (m_BlockTypesPerTile[index] == BlockType::none) continue;
+		if (tile.blockType == BlockType::none) continue;
 
-		// Position adds half a block size as extra offset for the background border
-		float positionX = static_cast<float>(m_OffsetX + m_BlockSize * 0.5f + GetColumnIndexFromVectorIndex(index) * m_BlockSize);
-		float positionY = static_cast<float>(m_OffsetY + m_BlockSize * 0.5f + GetRowIndexFromVectorIndex(index) * m_BlockSize);
-
-		auto blockObject = BlockObject{ m_BlockTypesPerTile[index], m_BlockSize, positionX, positionY, m_Scale }.GetGameObject();
+		auto blockObject = BlockObject{ tile.blockType, m_BlockSize, tile.x, tile.y, m_Scale }.GetGameObject();
 		m_LevelGameObjects.emplace_back(blockObject);
 	}
 

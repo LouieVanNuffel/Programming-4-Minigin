@@ -1,7 +1,9 @@
 #pragma once
 #include "Singleton.h"
+#include "Level.h"
 #include <vector>
 #include <map>
+#include <glm.hpp>
 
 namespace dae
 {
@@ -28,6 +30,8 @@ public:
 	void AddPlayerObject(dae::GameObject* gameObject);
 	const std::vector<dae::GameObject*>& GetPlayerObjects() const;
 
+	void RegisterTiles(const std::vector<TileInfo>& tileInfoVector);
+
 	void AddSnoBee();
 	void RemoveSnoBee(bool hasHatched);
 
@@ -42,8 +46,13 @@ public:
 
 	void AddTime(float amount);
 
+	glm::vec3 GetPlayerSpawnPosition() const;
+	glm::vec3 GetClosestTilePositionInDirection(const glm::vec3 currentPosition, float directionX, float directionY) const;
+	glm::vec3 GetClosestTilePositionToPosition(const glm::vec3 position) const;
+
 private:
 	void AwardBonusPoints();
+	static float DistanceSquared(const glm::vec3& posA, const glm::vec3& posB);
 
 	float m_Timer{};
 	int m_Score{};
@@ -51,6 +60,7 @@ private:
 	std::vector<BlockComponent*> m_BlockComponents{};
 	std::vector<dae::GameObject*> m_PlayerObjects{};
 	std::vector<PointComponent*> m_PointComponents{};
+	std::vector<TileInfo> m_TilesInfo{};
 
 	// Points to award for snobees
 	int m_PointsForSnoBeeCrushed{ 400 };

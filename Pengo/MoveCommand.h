@@ -2,7 +2,6 @@
 #include "GameObjectCommand.h"
 #include "EngineTime.h"
 #include "HealthComponent.h"
-#include "Event.h"
 
 class MoveCommand : public dae::GameObjectCommand
 {

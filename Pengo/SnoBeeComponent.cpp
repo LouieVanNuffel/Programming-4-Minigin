@@ -68,10 +68,18 @@ void SnoBeeComponent::OnCollisionEnter(const dae::BoxColliderComponent& other)
 {
 	if (other.GetLayer() == static_cast<uint32_t>(Layer::pengo))
 	{
-		dae::HealthComponent* healthComponent = other.GetGameObject()->GetComponent<dae::HealthComponent>();
-		if (healthComponent == nullptr) return;
+		if (!m_IsStunned)
+		{
+			dae::HealthComponent* healthComponent = other.GetGameObject()->GetComponent<dae::HealthComponent>();
+			if (healthComponent == nullptr) return;
 
-		healthComponent->TakeDamage(100.0f);
+			healthComponent->TakeDamage(100.0f);
+		}
+		else
+		{
+			// Die
+			m_gameObject->Destroy();
+		}
 	}
 }
 
@@ -241,22 +249,27 @@ float SnoBeeComponent::DistanceToObjectSquared(dae::GameObject* gameObject) cons
 
 SnoBeeComponent::MoveDirection SnoBeeComponent::DirectionToTarget() const
 {
-	float toTargetX = m_pTargetObject->GetWorldPosition().x - m_gameObject->GetWorldPosition().x;
-	float toTargetY = m_pTargetObject->GetWorldPosition().y - m_gameObject->GetWorldPosition().y;
+	return DirectionToPosition(m_pTargetObject->GetWorldPosition());
+}
+
+SnoBeeComponent::MoveDirection SnoBeeComponent::DirectionToPosition(const glm::vec3& position) const
+{
+	float toPositionX = position.x - m_gameObject->GetWorldPosition().x;
+	float toPositionY = position.y - m_gameObject->GetWorldPosition().y;
 
 	// Avoid division by zero
-	if (toTargetX == 0.0f && toTargetY == 0.0f) return m_Direction;
+	if (toPositionX == 0.0f && toPositionY == 0.0f) return m_Direction;
 
 	// returns in the direction where the target is still the furthest away
-	if (fabsf(toTargetX) >= fabsf(toTargetY))
+	if (fabsf(toPositionX) >= fabsf(toPositionY))
 	{
-		float directionToTarget = fabsf(toTargetX) / toTargetX;
+		float directionToTarget = fabsf(toPositionX) / toPositionX;
 		if (directionToTarget <= 0.0f) return MoveDirection::left;
 		else return MoveDirection::right;
 	}
 	else
 	{
-		float directionToTarget = fabsf(toTargetY) / toTargetY;
+		float directionToTarget = fabsf(toPositionY) / toPositionY;
 		if (directionToTarget <= 0.0f) return MoveDirection::up;
 		else return MoveDirection::down;
 	}

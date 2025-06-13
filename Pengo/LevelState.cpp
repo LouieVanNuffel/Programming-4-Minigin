@@ -24,6 +24,12 @@ const std::vector<dae::GameObject*>& LevelState::GetPlayerObjects() const
 	return m_PlayerObjects;
 }
 
+void LevelState::RegisterTiles(const std::vector<TileInfo>& tileInfoVector)
+{
+	m_TilesInfo.clear();
+	m_TilesInfo = tileInfoVector;
+}
+
 void LevelState::AddSnoBee()
 {
 	++m_SnoBeeCount;
@@ -106,6 +112,35 @@ void LevelState::AddTime(float amount)
 	m_Timer += amount;
 }
 
+glm::vec3 LevelState::GetPlayerSpawnPosition() const
+{
+	// Return middle tile position
+	size_t index = m_TilesInfo.size() / 2;
+	float positionX = m_TilesInfo[index].x;
+	float positionY = m_TilesInfo[index].y;
+	return glm::vec3{ positionX, positionY, 0.0f };
+}
+
+glm::vec3 LevelState::GetClosestTilePositionInDirection(const glm::vec3 currentPosition, float directionX, float directionY) const
+{
+	if (m_TilesInfo.empty()) return glm::vec3{};
+
+	glm::vec3 currentTilePosition = GetClosestTilePositionToPosition(currentPosition);
+	glm::vec3 tilePositionInDirection = glm::vec3{ currentTilePosition.x + directionX * 24.f, 
+												   currentTilePosition.y + directionY * 24.f, 0.0f };
+	return tilePositionInDirection;
+}
+
+glm::vec3 LevelState::GetClosestTilePositionToPosition(const glm::vec3 position) const
+{
+	if (m_TilesInfo.empty()) return glm::vec3{};
+
+	auto it = std::min_element(m_TilesInfo.begin(), m_TilesInfo.end(), [position](const TileInfo& a, const TileInfo& b) {
+		return DistanceSquared(position, glm::vec3{ a.x, a.y, 0.0f }) < DistanceSquared(position, glm::vec3{ b.x, b.y, 0.0f });
+		});
+	return glm::vec3{ it->x, it->y, 0.0f };
+}
+
 void LevelState::AwardBonusPoints()
 {
 	// Round time to closest 10fold under value
@@ -114,4 +149,11 @@ void LevelState::AwardBonusPoints()
 
 	int bonusPoints = m_TimeBonusPoints[amountOfTimeRounded];
 	AddScore(bonusPoints);
+}
+
+float LevelState::DistanceSquared(const glm::vec3& posA, const glm::vec3& posB)
+{
+	float distanceX = posB.x - posA.x;
+	float distanceY = posB.y - posA.y;
+	return (powf(distanceX, 2.0f) + powf(distanceY, 2.0f));
 }
