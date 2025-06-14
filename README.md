@@ -1,6 +1,8 @@
 # Pengo
 Minigin based engine + pengo game project
 
+Repo link: [GitHub](https://github.com/LouieVanNuffel/Programming-4-Minigin.git)
+
 Student: Louie Van Nuffel - 2DAE10
 
 ## Engine Patterns:
