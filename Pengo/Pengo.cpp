@@ -204,6 +204,16 @@ void LoadLevelScene(const std::string levelName)
 	keyboardControllerComponent->BindCommandToAction(std::move(nextSceneCommand), static_cast<uint32_t>(Action::nextScene));
 	generalControlObject->AddComponent(std::move(keyboardControllerComponent));
 	scene.Add(generalControlObject);
+
+	gamepadControllerComponent = std::make_unique<GamepadControllerComponent>(generalControlObject.get(), 0);
+	nextSceneCommand = std::make_unique<NextSceneCommand>();
+	gamepadControllerComponent->BindCommandToAction(std::move(nextSceneCommand), static_cast<uint32_t>(Action::nextScene));
+	generalControlObject->AddComponent(std::move(gamepadControllerComponent));
+
+	auto gamepadControllerComponent2 = std::make_unique<GamepadControllerComponent>(generalControlObject.get(), 1);
+	nextSceneCommand = std::make_unique<NextSceneCommand>();
+	gamepadControllerComponent2->BindCommandToAction(std::move(nextSceneCommand), static_cast<uint32_t>(Action::nextScene));
+	generalControlObject->AddComponent(std::move(gamepadControllerComponent2));
 }
 
 void LoadStartScene()
