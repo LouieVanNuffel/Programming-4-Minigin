@@ -237,19 +237,35 @@ void LoadStartScene()
 	// Display Start Key
 	auto startKeyTextObject = std::make_shared<dae::GameObject>();
 	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 16);
-	textComponent = std::make_unique<dae::TextComponent>("Press f1 to start", std::move(font), startKeyTextObject.get());
+	textComponent = std::make_unique<dae::TextComponent>("Press f1 or start/options button to start", std::move(font), startKeyTextObject.get());
 	startKeyTextObject->SetPosition(50, 125);
 	startKeyTextObject->AddComponent(std::move(textComponent));
 	scene.Add(startKeyTextObject);
 
 	// Key bindings
 	auto generalControlObject = std::make_shared<dae::GameObject>();
+	
 	auto keyboardControllerComponent = std::make_unique<KeyboardControllerComponent>(generalControlObject.get());
 	auto nextSceneCommand = std::make_unique<NextSceneCommand>();
 	auto switchPlayerCountCommand = std::make_unique<SwitchPlayerCountCommand>();
 	keyboardControllerComponent->BindCommandToAction(std::move(nextSceneCommand), static_cast<uint32_t>(Action::nextScene));
 	keyboardControllerComponent->BindCommandToAction(std::move(switchPlayerCountCommand), static_cast<uint32_t>(Action::switchPlayerCount));
 	generalControlObject->AddComponent(std::move(keyboardControllerComponent));
+
+	auto gamepadControllerComponent = std::make_unique<GamepadControllerComponent>(generalControlObject.get(), 0);
+	nextSceneCommand = std::make_unique<NextSceneCommand>();
+	switchPlayerCountCommand = std::make_unique<SwitchPlayerCountCommand>();
+	gamepadControllerComponent->BindCommandToAction(std::move(nextSceneCommand), static_cast<uint32_t>(Action::nextScene));
+	gamepadControllerComponent->BindCommandToAction(std::move(switchPlayerCountCommand), static_cast<uint32_t>(Action::switchPlayerCount));
+	generalControlObject->AddComponent(std::move(gamepadControllerComponent));
+
+	auto gamepadControllerComponent2 = std::make_unique<GamepadControllerComponent>(generalControlObject.get(), 1);
+	nextSceneCommand = std::make_unique<NextSceneCommand>();
+	switchPlayerCountCommand = std::make_unique<SwitchPlayerCountCommand>();
+	gamepadControllerComponent2->BindCommandToAction(std::move(nextSceneCommand), static_cast<uint32_t>(Action::nextScene));
+	gamepadControllerComponent2->BindCommandToAction(std::move(switchPlayerCountCommand), static_cast<uint32_t>(Action::switchPlayerCount));
+	generalControlObject->AddComponent(std::move(gamepadControllerComponent2));
+
 	scene.Add(generalControlObject);
 }
 

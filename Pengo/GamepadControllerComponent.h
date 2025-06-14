@@ -37,6 +37,13 @@ private:
 		case Action::push:
 			return controller.IsPressed(XINPUT_GAMEPAD_B, m_ControllerIndex);
 			break;
+		case Action::nextScene:
+			return controller.IsPressed(XINPUT_GAMEPAD_START, m_ControllerIndex);
+			break;
+		case Action::switchPlayerCount:
+			return controller.IsPressed(XINPUT_GAMEPAD_DPAD_LEFT, m_ControllerIndex)
+				|| controller.IsPressed(XINPUT_GAMEPAD_DPAD_RIGHT, m_ControllerIndex);
+			break;
 		}
 
 		return false;
