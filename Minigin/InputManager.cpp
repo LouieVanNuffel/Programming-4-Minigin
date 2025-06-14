@@ -92,6 +92,8 @@ void dae::InputManager::UnbindCommandFromKeyboard(std::unique_ptr<Command> comma
 
 bool dae::InputManager::IsKeyDown(SDL_Scancode scanCode) const
 {
+	if (m_Keystate == nullptr) return false;
+
 	if (m_Keystate[scanCode])
 	{
 		return true;

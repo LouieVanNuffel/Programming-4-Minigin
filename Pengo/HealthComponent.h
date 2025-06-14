@@ -55,7 +55,6 @@ namespace dae
 				if (m_Subject != nullptr && m_Lives <= 0)
 				{
 					m_Subject->NotifyObservers(Event{ make_sdbm_hash("Died") });
-					m_gameObject->SetActive(false);
 				}
 			}
 

@@ -44,6 +44,8 @@ void dae::TextComponent::LateUpdate(){}
 
 void TextComponent::Render() const
 {
+	if (m_textTexture == nullptr) return;
+
 	if (auto gameObject = m_gameObject)
 	{
 		const auto& pos = gameObject->GetTransform().GetPosition();

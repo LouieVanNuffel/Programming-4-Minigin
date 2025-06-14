@@ -185,5 +185,8 @@
     <ClInclude Include="PlayerTrackingComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="NextSceneCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -96,3 +96,12 @@ void dae::Scene::CleanUpDestroyed()
 	}
 }
 
+void dae::Scene::OnActivate()
+{
+	// Go through loop once without rendering
+	Start();
+	Update();
+	FixedUpdate();
+	LateUpdate();
+}
+

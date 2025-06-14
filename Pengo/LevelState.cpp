@@ -7,6 +7,7 @@
 #include <iostream>
 #include <cassert>
 #include <random>
+#include "SceneManager.h"
 
 LevelState::LevelState(dae::GameObject* gameObject)
 	:dae::Component(gameObject)
@@ -16,10 +17,12 @@ LevelState::LevelState(dae::GameObject* gameObject)
 void LevelState::CompleteLevel()
 {
 	AwardBonusPoints();
+	dae::SceneManager::GetInstance().LoadNextScene();
 }
 
 void LevelState::GameOver()
 {
+	dae::SceneManager::GetInstance().SetActiveScene(0);
 	std::cout << "game over" << std::endl;
 }
 

@@ -44,6 +44,7 @@
 #include "GamepadControllerComponent.h"
 #include "Actions.h"
 #include "TilebasedMoveCommand.h"
+#include "NextSceneCommand.h"
 
 using namespace dae;
 
@@ -202,6 +203,13 @@ void LoadLevelScene(const std::string levelName)
 	gamepadControllerComponent->BindCommandToAction(std::move(moveRightCommand), static_cast<uint32_t>(Action::right));
 	gamepadControllerComponent->BindCommandToAction(std::move(pushCommand), static_cast<uint32_t>(Action::push));
 	characterObject1->AddComponent(std::move(gamepadControllerComponent));
+
+	auto generalControlObject = std::make_shared<dae::GameObject>();
+	keyboardControllerComponent = std::make_unique<KeyboardControllerComponent>(generalControlObject.get());
+	auto nextSceneCommand = std::make_unique<NextSceneCommand>();
+	keyboardControllerComponent->BindCommandToAction(std::move(nextSceneCommand), static_cast<uint32_t>(Action::nextScene));
+	generalControlObject->AddComponent(std::move(keyboardControllerComponent));
+	scene.Add(generalControlObject);
 }
 
 void Load()

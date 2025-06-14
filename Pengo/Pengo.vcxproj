@@ -200,6 +200,7 @@
     <ClInclude Include="LivesDisplayComponent.h" />
     <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="MovingState.h" />
+    <ClInclude Include="NextSceneCommand.h" />
     <ClInclude Include="PengoCharacter.h" />
     <ClInclude Include="PickUpPointCommand.h" />
     <ClInclude Include="AnimationState.h" />

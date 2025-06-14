@@ -53,12 +53,24 @@ dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
 
 void dae::SceneManager::SetActiveScene(uint32_t sceneIndex)
 {
-	if (sceneIndex >= 0 && sceneIndex < m_scenes.size()) m_ActiveSceneIndex = sceneIndex;
+	if (!m_CanSwitch) return;
+	m_CanSwitch = false;
+
+	if (sceneIndex >= 0 && sceneIndex < m_scenes.size())
+	{
+		m_ActiveSceneIndex = sceneIndex;
+		m_scenes[m_ActiveSceneIndex]->OnActivate();
+		m_CanSwitch = false;
+	}
 	else std::cerr << "scene index given is invalid! scene index was: " << sceneIndex << std::endl;
+
+	m_CanSwitch = true;
 }
 
 void dae::SceneManager::SetActiveScene(const std::string& name)
 {
+	if (!m_CanSwitch) return;
+
 	auto it = std::find_if(m_scenes.begin(), m_scenes.end(), [name](const auto& scene) 
 		{
 			return scene->Name() == name;
@@ -71,7 +83,16 @@ void dae::SceneManager::SetActiveScene(const std::string& name)
 	}
 	
 	uint32_t index = static_cast<uint32_t>(std::distance(m_scenes.begin(), it));
-	m_ActiveSceneIndex = index;
+	SetActiveScene(index);
+}
+
+void dae::SceneManager::LoadNextScene()
+{
+	if (!m_CanSwitch) return;
+
+	uint32_t nextIndex = m_ActiveSceneIndex + 1;
+	nextIndex %= (m_scenes.size() - 1); // keep within bounds (loop around)
+	SetActiveScene(nextIndex);
 }
 
 uint32_t dae::SceneManager::ActiveSceneIndex() const

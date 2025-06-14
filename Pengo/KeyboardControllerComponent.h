@@ -16,6 +16,7 @@ private:
 	virtual bool ActionHappened(uint32_t action) override
 	{
 		auto& inputManager = dae::InputManager::GetInstance();
+		if (&inputManager == nullptr) return false;
 		Action actionEnum = static_cast<Action>(action);
 
 		switch (actionEnum)
@@ -34,6 +35,9 @@ private:
 			break;
 		case Action::push:
 			return inputManager.IsKeyDown(SDL_SCANCODE_SPACE);
+			break;
+		case Action::nextScene:
+			return inputManager.IsKeyDown(SDL_SCANCODE_F1);
 			break;
 		}
 

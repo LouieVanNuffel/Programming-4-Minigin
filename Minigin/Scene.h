@@ -21,6 +21,8 @@ namespace dae
 		void RenderUI() const;
 		void CleanUpDestroyed();
 
+		void OnActivate();
+
 		LevelState* levelState{ nullptr };
 
 		const std::string& Name() const { return m_name; };
