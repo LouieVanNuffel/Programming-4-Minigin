@@ -12,6 +12,8 @@
 #include "Layers.h"
 #include "RespawnComponent.h"
 #include "PlayerTrackingComponent.h"
+#include "TileMovementComponent.h"
+#include "TilebasedMoveCommand.h"
 
 using namespace dae;
 
@@ -37,6 +39,7 @@ PengoCharacter::PengoCharacter(PengoColor pengoColor)
 	subjectComponent->AddObserver(respawnComponent.get());
 	auto playerTrackingComponent = std::make_unique<PlayerTrackingComponent>(m_CharacterObject.get());
 	subjectComponent->AddObserver(playerTrackingComponent.get());
+	auto tileMovementComponent = std::make_unique<TileMovementComponent>(m_CharacterObject.get(), 50.0f);
 
 	m_CharacterObject->AddComponent(std::move(healthComponent));
 	m_CharacterObject->AddComponent(std::move(pointComponent));
@@ -47,6 +50,7 @@ PengoCharacter::PengoCharacter(PengoColor pengoColor)
 	m_CharacterObject->AddComponent(std::move(boxColliderComponent));
 	m_CharacterObject->AddComponent(std::move(respawnComponent));
 	m_CharacterObject->AddComponent(std::move(playerTrackingComponent));
+	m_CharacterObject->AddComponent(std::move(tileMovementComponent));
 }
 
 std::shared_ptr<dae::GameObject> PengoCharacter::GetCharacterObject()
