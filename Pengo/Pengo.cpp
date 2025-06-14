@@ -47,6 +47,7 @@
 #include "NextSceneCommand.h"
 #include "SwitchPlayerCountCommand.h"
 #include "DisplayPlayerCountComponent.h"
+#include "InactiveWhenSoloPlayerComponent.h"
 
 using namespace dae;
 
@@ -95,6 +96,8 @@ void LoadLevelScene(const std::string levelName)
 
 	PengoCharacter pengo2{ PengoColor::green };
 	auto characterObject2 = pengo2.GetCharacterObject();
+	auto inactiveWhenSoloPlayerComponent = std::make_unique<InactiveWhenSoloPlayerComponent>(characterObject2.get());
+	characterObject2->AddComponent(std::move(inactiveWhenSoloPlayerComponent));
 	characterObject2->SetPosition(spawnPosition.x, spawnPosition.y);
 	scene.Add(characterObject2);
 
@@ -121,6 +124,8 @@ void LoadLevelScene(const std::string levelName)
 	characterObject2->GetComponent<Subject>()->AddObserver(livesDisplayComponent.get());
 
 	livesDisplayObject2->AddComponent(std::move(livesDisplayComponent));
+	inactiveWhenSoloPlayerComponent = std::make_unique<InactiveWhenSoloPlayerComponent>(livesDisplayObject2.get());
+	livesDisplayObject2->AddComponent(std::move(inactiveWhenSoloPlayerComponent));
 	scene.Add(livesDisplayObject2);
 
 	// Display Points
@@ -146,6 +151,8 @@ void LoadLevelScene(const std::string levelName)
 	characterObject2->GetComponent<Subject>()->AddObserver(pointsDisplayComponent.get());
 
 	pointsDisplayObject2->AddComponent(std::move(pointsDisplayComponent));
+	inactiveWhenSoloPlayerComponent = std::make_unique<InactiveWhenSoloPlayerComponent>(pointsDisplayObject2.get());
+	pointsDisplayObject2->AddComponent(std::move(inactiveWhenSoloPlayerComponent));
 	scene.Add(pointsDisplayObject2);
 
 	//Commands (input)
@@ -235,6 +242,7 @@ void LoadStartScene()
 	startKeyTextObject->AddComponent(std::move(textComponent));
 	scene.Add(startKeyTextObject);
 
+	// Key bindings
 	auto generalControlObject = std::make_shared<dae::GameObject>();
 	auto keyboardControllerComponent = std::make_unique<KeyboardControllerComponent>(generalControlObject.get());
 	auto nextSceneCommand = std::make_unique<NextSceneCommand>();

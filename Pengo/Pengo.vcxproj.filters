@@ -200,5 +200,8 @@
     <ClInclude Include="DisplayPlayerCountComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="InactiveWhenSoloPlayerComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

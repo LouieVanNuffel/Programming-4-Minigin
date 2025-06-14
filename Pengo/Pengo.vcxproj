@@ -195,6 +195,7 @@
     <ClInclude Include="GameState.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="IdleState.h" />
+    <ClInclude Include="InactiveWhenSoloPlayerComponent.h" />
     <ClInclude Include="KeyboardControllerComponent.h" />
     <ClInclude Include="Layers.h" />
     <ClInclude Include="Level.h" />

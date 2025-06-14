@@ -100,8 +100,9 @@ void dae::SceneManager::LoadNextScene()
 	if (!m_CanSwitch) return;
 
 	uint32_t nextIndex = m_ActiveSceneIndex + 1;
-	nextIndex %= (m_scenes.size() - 1); // keep within bounds (loop around)
+	nextIndex %= m_scenes.size(); // keep within bounds (loop around)
 	SetActiveScene(nextIndex);
+	std::cout << "loaded scene " << nextIndex << std::endl;
 }
 
 uint32_t dae::SceneManager::ActiveSceneIndex() const
