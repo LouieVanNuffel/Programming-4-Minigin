@@ -3,9 +3,10 @@
 #include "CollisionSystem.h"
 #include <iostream>
 #include "VelocityComponent.h"
+#include "SceneManager.h"
 
 dae::BoxColliderComponent::BoxColliderComponent(float width, float height, ObjectType objectType, GameObject* gameObject, uint32_t layer)
-	:Component(gameObject), m_ObjectType{ objectType }, m_Layer{ layer }
+	:Component(gameObject), m_ObjectType{ objectType }, m_Layer{ layer }, m_SceneIndex{ dae::SceneManager::GetInstance().ActiveSceneIndex() }
 {
 	m_BoxDimensions.width = width;
 	m_BoxDimensions.height = height;
@@ -63,6 +64,11 @@ const glm::vec3 dae::BoxColliderComponent::Velocity() const
 dae::GameObject* dae::BoxColliderComponent::GetGameObject() const
 {
 	return m_gameObject;
+}
+
+uint32_t dae::BoxColliderComponent::SceneIndex() const
+{
+	return m_SceneIndex;
 }
 
 uint32_t dae::BoxColliderComponent::GetLayer() const

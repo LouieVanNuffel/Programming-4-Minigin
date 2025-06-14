@@ -1,6 +1,7 @@
 #include "SceneManager.h"
 #include "Scene.h"
 #include <iostream>
+#include "EngineTime.h"
 
 void dae::SceneManager::Start()
 {
@@ -10,6 +11,12 @@ void dae::SceneManager::Start()
 
 void dae::SceneManager::Update()
 {
+	if (!m_CanSwitch)
+	{
+		m_SwitchCooldownTimer -= dae::Time::GetInstance().GetDeltaTime();
+		if (m_SwitchCooldownTimer <= 0.0f) m_CanSwitch = true;
+	}
+
 	if (m_scenes.empty()) return;
 	m_scenes[m_ActiveSceneIndex]->Update();
 }
@@ -55,6 +62,7 @@ void dae::SceneManager::SetActiveScene(uint32_t sceneIndex)
 {
 	if (!m_CanSwitch) return;
 	m_CanSwitch = false;
+	m_SwitchCooldownTimer = m_SwitchCooldown;
 
 	if (sceneIndex >= 0 && sceneIndex < m_scenes.size())
 	{
@@ -63,13 +71,12 @@ void dae::SceneManager::SetActiveScene(uint32_t sceneIndex)
 		m_CanSwitch = false;
 	}
 	else std::cerr << "scene index given is invalid! scene index was: " << sceneIndex << std::endl;
-
-	m_CanSwitch = true;
 }
 
 void dae::SceneManager::SetActiveScene(const std::string& name)
 {
 	if (!m_CanSwitch) return;
+	m_CanSwitch = false;
 
 	auto it = std::find_if(m_scenes.begin(), m_scenes.end(), [name](const auto& scene) 
 		{
@@ -83,7 +90,9 @@ void dae::SceneManager::SetActiveScene(const std::string& name)
 	}
 	
 	uint32_t index = static_cast<uint32_t>(std::distance(m_scenes.begin(), it));
-	SetActiveScene(index);
+	m_ActiveSceneIndex = index;
+	m_scenes[m_ActiveSceneIndex]->OnActivate();
+	m_CanSwitch = true;
 }
 
 void dae::SceneManager::LoadNextScene()

@@ -34,5 +34,7 @@ namespace dae
 		uint32_t m_ActiveSceneIndex{ 0 };
 
 		bool m_CanSwitch{ true };
+		float m_SwitchCooldown{ 1.0f };
+		float m_SwitchCooldownTimer{};
 	};
 }

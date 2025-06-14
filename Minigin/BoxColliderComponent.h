@@ -48,6 +48,7 @@ namespace dae
 		const ObjectType& GetObjectType() const;
 		const glm::vec3 Velocity() const;
 		GameObject* GetGameObject() const;
+		uint32_t SceneIndex() const;
 		uint32_t GetLayer() const;
 
 	private:
@@ -56,6 +57,7 @@ namespace dae
 		BoxCollider m_BoxDimensions{};
 		ObjectType m_ObjectType;
 		VelocityComponent* m_pVelocityComponent{ nullptr };
+		uint32_t m_SceneIndex;
 		uint32_t m_Layer;
 
 	};

@@ -82,7 +82,6 @@ void BlockComponent::Break()
 void BlockComponent::Hatch()
 {
 	if (m_BlockType != BlockType::egg) return;
-
 	// Activate SnobeeCharacter
 	m_SnoBeeCharacter->SetActive(true);
 

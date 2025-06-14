@@ -17,7 +17,7 @@ class SnoBeeComponent final : public dae::Component, public dae::Observer
 {
 public:
 	//Constructor
-	SnoBeeComponent(dae::GameObject* gameObject, float blockSize, float speed = 50.0f, float chaseRange = 100.0f, float spawnDelay = 2.0f);
+	SnoBeeComponent(dae::GameObject* gameObject, float blockSize, float speed = 50.0f, float chaseRange = 75.0f, float spawnDelay = 2.0f);
 
 	//Destructor
 	virtual ~SnoBeeComponent() override = default;

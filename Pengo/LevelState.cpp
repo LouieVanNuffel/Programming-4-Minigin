@@ -155,6 +155,7 @@ glm::vec3 LevelState::GetPlayerSpawnPosition() const
 {
 	// Return middle tile position
 	size_t index = m_TilesInfo.size() / 2;
+	index -= 13; // one row up
 	float positionX = m_TilesInfo[index].x;
 	float positionY = m_TilesInfo[index].y;
 	return glm::vec3{ positionX, positionY, 0.0f };
