@@ -1,6 +1,7 @@
 #pragma once
 #include "SceneManager.h"
 
+class LevelState;
 namespace dae
 {
 	class GameObject;
@@ -19,6 +20,8 @@ namespace dae
 		void Render() const;
 		void RenderUI() const;
 		void CleanUpDestroyed();
+
+		LevelState* levelState{ nullptr };
 
 		const std::string& Name() const { return m_name; };
 		unsigned int ID() const { return m_idCounter; };

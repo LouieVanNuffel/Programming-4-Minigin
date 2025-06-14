@@ -2,6 +2,8 @@
 #include "Component.h"
 #include "LevelState.h"
 #include "EngineTime.h"
+#include "SceneManager.h"
+#include "Scene.h"
 
 class LevelTimerComponent final : public dae::Component
 {
@@ -16,7 +18,7 @@ public:
 	virtual void Start() {};
 	virtual void Update() 
 	{
-		LevelState::GetInstance().AddTime(dae::Time::GetInstance().GetDeltaTime());
+		dae::SceneManager::GetInstance().ActiveScene().levelState->AddTime(dae::Time::GetInstance().GetDeltaTime());
 	};
 	virtual void LateUpdate() {};
 	virtual void Render() const {};

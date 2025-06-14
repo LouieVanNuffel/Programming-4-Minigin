@@ -8,6 +8,8 @@
 #include "SceneManager.h"
 #include "SnoBeeCharacter.h"
 #include "LevelState.h"
+#include "SceneManager.h"
+#include "Scene.h"
 #include "Layers.h"
 
 BlockComponent::BlockComponent(BlockType blockType, int blockSize, dae::GameObject* gameObject)
@@ -15,7 +17,7 @@ BlockComponent::BlockComponent(BlockType blockType, int blockSize, dae::GameObje
 {
 	if (m_BlockType == BlockType::egg)
 	{
-		LevelState::GetInstance().RegisterEggBlock(this);
+		dae::SceneManager::GetInstance().ActiveScene().levelState->RegisterEggBlock(this);
 		InitializeSnoBeeCharacter();
 	}
 }
@@ -24,7 +26,7 @@ void BlockComponent::OnDestroy()
 {
 	if (m_BlockType == BlockType::egg)
 	{
-		LevelState::GetInstance().UnregisterEggBlock(this);
+		dae::SceneManager::GetInstance().ActiveScene().levelState->UnregisterEggBlock(this);
 		// Destroy the snoBeeCharacter as well if the egg hasn't hatched yet
 		if (m_SnoBeeCharacter->IsActive() == false)
 		{

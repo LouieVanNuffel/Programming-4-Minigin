@@ -47,37 +47,29 @@
 
 using namespace dae;
 
-void Load()
+void LoadLevelScene(const std::string levelName)
 {
-#if _DEBUG
-	ServiceLocator::register_sound_system(std::make_unique<LoggingSoundSystem>(std::make_unique<QueuedSoundSystem>()));
-#else
-	ServiceLocator::register_sound_system(std::make_unique<QueuedSoundSystem>());
-#endif
-	auto& ss = ServiceLocator::get_sound_system();
-	ss.AddAudioClip(0, "../Data/CreditSound.wav");
+	auto& scene = dae::SceneManager::GetInstance().CreateScene(levelName);
+	dae::SceneManager::GetInstance().SetActiveScene(levelName);
 
-	auto& scene = dae::SceneManager::GetInstance().CreateScene("Level1");
+	//Level State
+	auto levelStateObject = std::make_shared<GameObject>();
+	auto levelState = std::make_unique<LevelState>(levelStateObject.get());
+	scene.levelState = levelState.get();
+	levelStateObject->AddComponent(std::move(levelState));
+	scene.Add(levelStateObject);
 
 	//Level
-	Level level{ "Level3", 16, 1.5f, 150, 50 };
+	Level level{ levelName, 16, 1.5f, 150, 50 };
 	const std::vector<std::shared_ptr<GameObject>>& levelGameObjects = level.LoadLevelGameObjects();
 	for (uint32_t index{}; index < levelGameObjects.size(); ++index)
 	{
 		scene.Add(levelGameObjects[index]);
 	}
 
-	//Assignment Text
-	auto textObject = std::make_shared<dae::GameObject>();
-	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	auto textComponent = std::make_unique<dae::TextComponent>("Programming 4 Assignment", std::move(font), textObject.get());
-	textObject->SetPosition(160, 2);
-	textObject->AddComponent(std::move(textComponent));
-	scene.Add(textObject);
-
 	//FPS Counter
 	auto fpsObject = std::make_shared<dae::GameObject>();
-	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 	auto fpsTextComponent = std::make_unique<dae::TextComponent>("FPS: ", font, fpsObject.get());
 	auto fpsComponent = std::make_unique<dae::FpsComponent>(fpsObject.get());
 	fpsObject->SetPosition(2, 2);
@@ -94,7 +86,7 @@ void Load()
 	//Characters
 	PengoCharacter pengo1{ PengoColor::red };
 	auto characterObject1 = pengo1.GetCharacterObject();
-	glm::vec3 spawnPosition = LevelState::GetInstance().GetPlayerSpawnPosition();
+	glm::vec3 spawnPosition = scene.levelState->GetPlayerSpawnPosition();
 	characterObject1->SetPosition(spawnPosition.x, spawnPosition.y);
 	scene.Add(characterObject1);
 
@@ -106,7 +98,7 @@ void Load()
 	// Display Controls
 	auto controllerControlsTextObject = std::make_shared<dae::GameObject>();
 	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 16);
-	textComponent = std::make_unique<dae::TextComponent>("Use the D-Pad to move green pengo, X to inflict damage, A to pick up points (sound)", std::move(font), controllerControlsTextObject.get());
+	auto textComponent = std::make_unique<dae::TextComponent>("Use the D-Pad to move green pengo, X to inflict damage, A to pick up points (sound)", std::move(font), controllerControlsTextObject.get());
 	controllerControlsTextObject->SetPosition(0, 50);
 	controllerControlsTextObject->AddComponent(std::move(textComponent));
 	scene.Add(controllerControlsTextObject);
@@ -169,7 +161,6 @@ void Load()
 	scene.Add(pointsDisplayObject2);
 
 	//Commands (input)
-
 	auto moveUpCommand = std::make_unique<TileBasedMoveCommand>(characterObject1.get(), 0.f, -1.f);
 	auto moveDownCommand = std::make_unique<TileBasedMoveCommand>(characterObject1.get(), 0.f, 1.f);
 	auto moveLeftCommand = std::make_unique<TileBasedMoveCommand>(characterObject1.get(), -1.f, .0f);
@@ -211,6 +202,22 @@ void Load()
 	gamepadControllerComponent->BindCommandToAction(std::move(moveRightCommand), static_cast<uint32_t>(Action::right));
 	gamepadControllerComponent->BindCommandToAction(std::move(pushCommand), static_cast<uint32_t>(Action::push));
 	characterObject1->AddComponent(std::move(gamepadControllerComponent));
+}
+
+void Load()
+{
+#if _DEBUG
+	ServiceLocator::register_sound_system(std::make_unique<LoggingSoundSystem>(std::make_unique<QueuedSoundSystem>()));
+#else
+	ServiceLocator::register_sound_system(std::make_unique<QueuedSoundSystem>());
+#endif
+	auto& ss = ServiceLocator::get_sound_system();
+	ss.AddAudioClip(0, "../Data/CreditSound.wav");
+
+	LoadLevelScene("Level1");
+	LoadLevelScene("Level2");
+	LoadLevelScene("Level3");
+	SceneManager::GetInstance().SetActiveScene(0);
 }
 
 int main(int, char* []) {

@@ -1,5 +1,4 @@
 #pragma once
-#include "Singleton.h"
 #include "Level.h"
 #include <vector>
 #include <map>
@@ -13,20 +12,17 @@ namespace dae
 class PointComponent;
 class BlockComponent;
 class SnoBeeComponent;
-class LevelState final : public dae::Singleton<LevelState>
+class LevelState final : public dae::Component
 {
 public:
 	//Constructor
-	LevelState();
+	LevelState(dae::GameObject* gameObject);
 
-	//Destructor
-	~LevelState() = default;
-
-	//Rule of 5
-	LevelState(const LevelState& other) = delete;
-	LevelState(LevelState&& other) = delete;
-	LevelState& operator=(const LevelState& other) = delete;
-	LevelState& operator=(LevelState&& other) = delete;
+	virtual void Start() {};
+	virtual void Update() {};
+	virtual void LateUpdate() {};
+	virtual void Render() const {};
+	virtual void RenderUI() const {};
 
 	void AddPlayerObject(dae::GameObject* gameObject);
 	void RemovePlayerObject(dae::GameObject* gameObject);

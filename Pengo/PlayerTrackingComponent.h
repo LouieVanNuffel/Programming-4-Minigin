@@ -2,6 +2,8 @@
 #include "Component.h"
 #include "LevelState.h"
 #include "Event.h"
+#include "SceneManager.h"
+#include "Scene.h"
 
 class PlayerTrackingComponent final : public dae::Component, public dae::Observer
 {
@@ -14,7 +16,7 @@ public:
 
 	virtual void Start() 
 	{
-		LevelState::GetInstance().AddPlayerObject(m_gameObject);
+		dae::SceneManager::GetInstance().ActiveScene().levelState->AddPlayerObject(m_gameObject);
 	};
 	virtual void Update() {};
 	virtual void LateUpdate() {};
@@ -25,7 +27,7 @@ public:
 	{
 		if (event.id == dae::make_sdbm_hash("Died"))
 		{
-			LevelState::GetInstance().RemovePlayerObject(m_gameObject);
+			dae::SceneManager::GetInstance().ActiveScene().levelState->RemovePlayerObject(m_gameObject);
 		}
 	};
 };

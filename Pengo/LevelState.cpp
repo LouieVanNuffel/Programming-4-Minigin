@@ -8,7 +8,8 @@
 #include <cassert>
 #include <random>
 
-LevelState::LevelState()
+LevelState::LevelState(dae::GameObject* gameObject)
+	:dae::Component(gameObject)
 {
 }
 

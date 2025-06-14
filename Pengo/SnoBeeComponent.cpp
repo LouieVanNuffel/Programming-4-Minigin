@@ -10,18 +10,20 @@
 #include "Subject.h"
 #include "AIControllerComponent.h"
 #include "Layers.h"
+#include "SceneManager.h"
+#include "Scene.h"
 #include <random>
 
 SnoBeeComponent::SnoBeeComponent(dae::GameObject* gameObject, float blockSize, float speed, float chaseRange, float spawnDelay)
 	:Component(gameObject), m_BlockSize{ blockSize }, m_Speed{ speed }, m_ChaseRange{ chaseRange }, m_SpawnTimer{ spawnDelay }
 {
 	SetRandomDirection();
-	LevelState::GetInstance().AddSnoBee(this);
+	dae::SceneManager::GetInstance().ActiveScene().levelState->AddSnoBee(this);
 }
 
 void SnoBeeComponent::OnDestroy()
 {
-	LevelState::GetInstance().RemoveSnoBee(this);
+	dae::SceneManager::GetInstance().ActiveScene().levelState->RemoveSnoBee(this);
 }
 
 void SnoBeeComponent::Start()
@@ -198,7 +200,7 @@ void SnoBeeComponent::Patrol()
 	}
 
 	// Check if a player is close (if multiple are close go after the closest one)
-	for (const auto& playerObject : LevelState::GetInstance().GetPlayerObjects())
+	for (const auto& playerObject : dae::SceneManager::GetInstance().ActiveScene().levelState->GetPlayerObjects())
 	{
 		glm::vec3 playerPosition = playerObject->GetWorldPosition();
 		float distance = DistanceToObjectSquared(playerObject);
@@ -249,7 +251,7 @@ void SnoBeeComponent::Chase()
 
 void SnoBeeComponent::Respawn()
 {
-	glm::vec3 randomCorner = LevelState::GetInstance().GetRandomCornerTilePosition();
+	glm::vec3 randomCorner = dae::SceneManager::GetInstance().ActiveScene().levelState->GetRandomCornerTilePosition();
 	m_gameObject->SetWorldPosition(randomCorner.x, randomCorner.y);
 }
 

@@ -57,6 +57,23 @@ void dae::SceneManager::SetActiveScene(uint32_t sceneIndex)
 	else std::cerr << "scene index given is invalid! scene index was: " << sceneIndex << std::endl;
 }
 
+void dae::SceneManager::SetActiveScene(const std::string& name)
+{
+	auto it = std::find_if(m_scenes.begin(), m_scenes.end(), [name](const auto& scene) 
+		{
+			return scene->Name() == name;
+		});
+
+	if (it == m_scenes.end())
+	{
+		std::cerr << "scene name given is invalid! scene name was: " << name << std::endl;
+		return;
+	}
+	
+	uint32_t index = static_cast<uint32_t>(std::distance(m_scenes.begin(), it));
+	m_ActiveSceneIndex = index;
+}
+
 uint32_t dae::SceneManager::ActiveSceneIndex() const
 {
 	return m_ActiveSceneIndex;
@@ -69,4 +86,9 @@ void dae::SceneManager::AddGameObjectToScene(std::shared_ptr<GameObject> gameObj
 		m_scenes[sceneIndex]->Add(std::move(gameObject));
 	}
 	else std::cerr << "scene index given is invalid! scene index was: " << sceneIndex << std::endl;
+}
+
+dae::Scene& dae::SceneManager::ActiveScene()
+{
+	return *m_scenes[m_ActiveSceneIndex];
 }

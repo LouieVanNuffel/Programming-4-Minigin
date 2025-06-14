@@ -7,6 +7,8 @@
 #include "LevelState.h"
 #include "WallComponent.h"
 #include "Layers.h"
+#include "SceneManager.h"
+#include "Scene.h"
 #include <iostream>
 
 Level::Level(const std::string& levelName, int blockSize, float scale, int offsetX, int offsetY)
@@ -116,7 +118,7 @@ void Level::InitializeTilesInfo()
 												m_BlockTypesPerTile[index] });
 	}
 
-	LevelState::GetInstance().RegisterTiles(m_TilesInfo);
+	dae::SceneManager::GetInstance().ActiveScene().levelState->RegisterTiles(m_TilesInfo);
 }
 
 const std::vector<std::shared_ptr<dae::GameObject>>& Level::LoadLevelGameObjects()
@@ -145,7 +147,7 @@ const std::vector<std::shared_ptr<dae::GameObject>>& Level::LoadLevelGameObjects
 	}
 
 	// Hatch half of the eggs
-	LevelState::GetInstance().HatchHalfOfEggs();
+	dae::SceneManager::GetInstance().ActiveScene().levelState->HatchHalfOfEggs();
 
 	return m_LevelGameObjects;
 }

@@ -14,6 +14,7 @@ public:
 	virtual void RenderUI() const override {};
 
 	void SetDirection(float directionX, float directionY);
+	void Reset();
 
 private:
 	void Normalize(glm::vec3& vector);

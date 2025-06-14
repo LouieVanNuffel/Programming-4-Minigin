@@ -2,6 +2,8 @@
 #include "LevelState.h"
 #include "GameObject.h"
 #include "EngineTime.h"
+#include "SceneManager.h"
+#include "Scene.h"
 #include <iostream>
 
 TileMovementComponent::TileMovementComponent(dae::GameObject* gameObject, float speed)
@@ -13,7 +15,7 @@ TileMovementComponent::TileMovementComponent(dae::GameObject* gameObject, float 
 void TileMovementComponent::Start()
 {
 	glm::vec3 currentPosition = m_gameObject->GetWorldPosition();
-	glm::vec3 targetPosition = LevelState::GetInstance().GetClosestTilePositionToPosition(currentPosition);
+	glm::vec3 targetPosition = dae::SceneManager::GetInstance().ActiveScene().levelState->GetClosestTilePositionToPosition(currentPosition);
 	m_gameObject->SetWorldPosition(targetPosition.x, targetPosition.y);
 	m_HasArrived = true;
 }
@@ -42,8 +44,14 @@ void TileMovementComponent::SetDirection(float directionX, float directionY)
 {
 	m_HasArrived = false;
 	glm::vec3 currentPosition = m_gameObject->GetWorldPosition();
-	m_TargetPosition = LevelState::GetInstance().GetClosestTilePositionInDirection(
+	m_TargetPosition = dae::SceneManager::GetInstance().ActiveScene().levelState->GetClosestTilePositionInDirection(
 		currentPosition, directionX, directionY);
+}
+
+void TileMovementComponent::Reset()
+{
+	glm::vec3 currentPosition = m_gameObject->GetWorldPosition();
+	m_TargetPosition = dae::SceneManager::GetInstance().ActiveScene().levelState->GetClosestTilePositionToPosition(currentPosition);
 }
 
 void TileMovementComponent::Normalize(glm::vec3& vector)

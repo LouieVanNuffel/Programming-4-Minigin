@@ -13,8 +13,10 @@ namespace dae
 	public:
 		Scene& CreateScene(const std::string& name);
 		void SetActiveScene(uint32_t sceneIndex);
+		void SetActiveScene(const std::string& name);
 		uint32_t ActiveSceneIndex() const;
 		void AddGameObjectToScene(std::shared_ptr<GameObject> gameObject, uint32_t sceneIndex);
+		Scene& ActiveScene();
 
 		void Start();
 		void Update();
