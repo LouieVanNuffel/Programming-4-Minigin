@@ -3,6 +3,7 @@
 #include "Event.h"
 #include "GameObject.h"
 #include "Subject.h"
+#include "GameState.h"
 
 class PointComponent : public dae::Component
 {
@@ -21,6 +22,8 @@ public:
 	virtual void Start() override
 	{
 		m_Subject = m_gameObject->GetComponent<dae::Subject>();
+		m_Points = 0;
+		PickUpPoints(GameState::GetInstance().Score());
 	}
 
 	virtual void Update() override {};
@@ -32,6 +35,12 @@ public:
 	void PickUpPoints(int amountOfPoints)
 	{
 		m_Points += amountOfPoints;
+		if (m_Subject != nullptr) m_Subject->NotifyObservers(dae::Event{ dae::make_sdbm_hash("PlayerScored") });
+	}
+
+	void SetPoints(int amountOfPoints)
+	{
+		m_Points = amountOfPoints;
 		if (m_Subject != nullptr) m_Subject->NotifyObservers(dae::Event{ dae::make_sdbm_hash("PlayerScored") });
 	}
 

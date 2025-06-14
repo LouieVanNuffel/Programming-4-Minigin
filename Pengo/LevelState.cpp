@@ -8,10 +8,16 @@
 #include <cassert>
 #include <random>
 #include "SceneManager.h"
+#include "GameState.h"
 
 LevelState::LevelState(dae::GameObject* gameObject)
 	:dae::Component(gameObject)
 {
+}
+
+void LevelState::Update()
+{
+	GameState::GetInstance().Update();
 }
 
 void LevelState::CompleteLevel()
@@ -125,17 +131,11 @@ bool LevelState::HatchOneRemainingEgg()
 
 void LevelState::AddScore(int amount)
 {
+	GameState::GetInstance().AddScore(amount);
 	for (PointComponent* playerPointComponent : m_PointComponents)
 	{
-		playerPointComponent->PickUpPoints(amount);
+		playerPointComponent->SetPoints(GameState::GetInstance().Score());
 	}
-
-	m_Score += amount;
-}
-
-int LevelState::Score() const
-{
-	return m_Score;
 }
 
 void LevelState::AddTime(float amount)

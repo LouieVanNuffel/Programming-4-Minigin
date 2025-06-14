@@ -18,11 +18,11 @@ public:
 	//Constructor
 	LevelState(dae::GameObject* gameObject);
 
-	virtual void Start() {};
-	virtual void Update() {};
-	virtual void LateUpdate() {};
-	virtual void Render() const {};
-	virtual void RenderUI() const {};
+	virtual void Start() override {};
+	virtual void Update() override;
+	virtual void LateUpdate() override {};
+	virtual void Render() const override {};
+	virtual void RenderUI() const override {};
 
 	void AddPlayerObject(dae::GameObject* gameObject);
 	void RemovePlayerObject(dae::GameObject* gameObject);
@@ -59,7 +59,6 @@ private:
 	void GameOver();
 
 	float m_Timer{};
-	int m_Score{};
 	std::vector<BlockComponent*> m_BlockComponents{};
 	std::vector<dae::GameObject*> m_PlayerObjects{};
 	std::vector<PointComponent*> m_PointComponents{};

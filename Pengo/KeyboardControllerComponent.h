@@ -39,6 +39,9 @@ private:
 		case Action::nextScene:
 			return inputManager.IsKeyDown(SDL_SCANCODE_F1);
 			break;
+		case Action::switchPlayerCount:
+			return (inputManager.IsKeyDown(SDL_SCANCODE_LEFT) || inputManager.IsKeyDown(SDL_SCANCODE_RIGHT));
+			break;
 		}
 
 		return false;

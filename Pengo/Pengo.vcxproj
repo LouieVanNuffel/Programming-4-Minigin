@@ -164,6 +164,7 @@
     <ClCompile Include="BlockComponent.cpp" />
     <ClCompile Include="BlockObject.cpp" />
     <ClCompile Include="GamepadControllerComponent.cpp" />
+    <ClCompile Include="GameState.cpp" />
     <ClCompile Include="KeyboardControllerComponent.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LevelState.cpp" />
@@ -189,7 +190,9 @@
     <ClInclude Include="BlockObject.h" />
     <ClInclude Include="BreakCommand.h" />
     <ClInclude Include="DeadState.h" />
+    <ClInclude Include="DisplayPlayerCountComponent.h" />
     <ClInclude Include="GamepadControllerComponent.h" />
+    <ClInclude Include="GameState.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="IdleState.h" />
     <ClInclude Include="KeyboardControllerComponent.h" />
@@ -214,6 +217,7 @@
     <ClInclude Include="SnoBeeCharacter.h" />
     <ClInclude Include="SnoBeeComponent.h" />
     <ClInclude Include="StunnedState.h" />
+    <ClInclude Include="SwitchPlayerCountCommand.h" />
     <ClInclude Include="TakeDamageCommand.h" />
     <ClInclude Include="ThrashTheCacheComponent.h" />
     <ClInclude Include="TileMovementComponent.h" />

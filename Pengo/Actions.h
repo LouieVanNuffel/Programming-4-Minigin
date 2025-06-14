@@ -2,5 +2,5 @@
 
 enum class Action
 {
-	up, down, left, right, push, breakBlock, stun, takeDamage, nextScene
+	up, down, left, right, push, breakBlock, stun, takeDamage, nextScene, switchPlayerCount
 };

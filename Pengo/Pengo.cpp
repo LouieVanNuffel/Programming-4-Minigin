@@ -45,6 +45,8 @@
 #include "Actions.h"
 #include "TilebasedMoveCommand.h"
 #include "NextSceneCommand.h"
+#include "SwitchPlayerCountCommand.h"
+#include "DisplayPlayerCountComponent.h"
 
 using namespace dae;
 
@@ -95,21 +97,6 @@ void LoadLevelScene(const std::string levelName)
 	auto characterObject2 = pengo2.GetCharacterObject();
 	characterObject2->SetPosition(spawnPosition.x, spawnPosition.y);
 	scene.Add(characterObject2);
-
-	// Display Controls
-	auto controllerControlsTextObject = std::make_shared<dae::GameObject>();
-	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 16);
-	auto textComponent = std::make_unique<dae::TextComponent>("Use the D-Pad to move green pengo, X to inflict damage, A to pick up points (sound)", std::move(font), controllerControlsTextObject.get());
-	controllerControlsTextObject->SetPosition(0, 50);
-	controllerControlsTextObject->AddComponent(std::move(textComponent));
-	scene.Add(controllerControlsTextObject);
-
-	auto keyboardControlsTextObject = std::make_shared<dae::GameObject>();
-	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 16);
-	textComponent = std::make_unique<dae::TextComponent>("Use WASD to move red pengo, C to inflict damage, Z to pick up points (sound)", std::move(font), keyboardControlsTextObject.get());
-	keyboardControlsTextObject->SetPosition(0, 70);
-	keyboardControlsTextObject->AddComponent(std::move(textComponent));
-	scene.Add(keyboardControlsTextObject);
 
 	// Display Lives
 	// Character 1
@@ -212,6 +199,52 @@ void LoadLevelScene(const std::string levelName)
 	scene.Add(generalControlObject);
 }
 
+void LoadStartScene()
+{
+	auto& scene = dae::SceneManager::GetInstance().CreateScene("start");
+	dae::SceneManager::GetInstance().SetActiveScene("start");
+
+	//Level State
+	auto levelStateObject = std::make_shared<GameObject>();
+	auto levelState = std::make_unique<LevelState>(levelStateObject.get());
+	scene.levelState = levelState.get();
+	levelStateObject->AddComponent(std::move(levelState));
+	scene.Add(levelStateObject);
+
+	// Display Title
+	auto titleTextObject = std::make_shared<dae::GameObject>();
+	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 32);
+	auto textComponent = std::make_unique<dae::TextComponent>("PENGO", std::move(font), titleTextObject.get());
+	titleTextObject->SetPosition(50, 50);
+	titleTextObject->AddComponent(std::move(textComponent));
+	scene.Add(titleTextObject);
+
+	// Display Player Count
+	auto playerCountTextObject = std::make_shared<dae::GameObject>();
+	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 16);
+	textComponent = std::make_unique<DisplayPlayerCountComponent>("2 Players", std::move(font), playerCountTextObject.get());
+	playerCountTextObject->SetPosition(50, 100);
+	playerCountTextObject->AddComponent(std::move(textComponent));
+	scene.Add(playerCountTextObject);
+
+	// Display Start Key
+	auto startKeyTextObject = std::make_shared<dae::GameObject>();
+	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 16);
+	textComponent = std::make_unique<dae::TextComponent>("Press f1 to start", std::move(font), startKeyTextObject.get());
+	startKeyTextObject->SetPosition(50, 125);
+	startKeyTextObject->AddComponent(std::move(textComponent));
+	scene.Add(startKeyTextObject);
+
+	auto generalControlObject = std::make_shared<dae::GameObject>();
+	auto keyboardControllerComponent = std::make_unique<KeyboardControllerComponent>(generalControlObject.get());
+	auto nextSceneCommand = std::make_unique<NextSceneCommand>();
+	auto switchPlayerCountCommand = std::make_unique<SwitchPlayerCountCommand>();
+	keyboardControllerComponent->BindCommandToAction(std::move(nextSceneCommand), static_cast<uint32_t>(Action::nextScene));
+	keyboardControllerComponent->BindCommandToAction(std::move(switchPlayerCountCommand), static_cast<uint32_t>(Action::switchPlayerCount));
+	generalControlObject->AddComponent(std::move(keyboardControllerComponent));
+	scene.Add(generalControlObject);
+}
+
 void Load()
 {
 #if _DEBUG
@@ -222,6 +255,7 @@ void Load()
 	auto& ss = ServiceLocator::get_sound_system();
 	ss.AddAudioClip(0, "../Data/CreditSound.wav");
 
+	LoadStartScene();
 	LoadLevelScene("Level1");
 	LoadLevelScene("Level2");
 	LoadLevelScene("Level3");
